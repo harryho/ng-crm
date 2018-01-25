@@ -1,0 +1,67 @@
+<div *ngIf="!authService.isAuthenticated()">
+  <login (isAuth)="isAuth($even)"></login>
+</div>
+
+<div [hidden]="!authService.isAuthenticated()">
+  <mat-sidenav-container class="app-container" fullscreen>
+    <mat-sidenav dark #sidenav mode="side" opened="true">
+      <mat-card class="profile-card">
+        <mat-card-header>
+          <div mat-card-avatar class="avatar">
+          </div>
+          <mat-card-title style="padding:10px;">{{currentUser.firstName}} {{currentUser.lastName}}
+
+          </mat-card-title>
+
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="logout()">Logout</button>
+            <button mat-menu-item>Change Password</button>
+          </mat-menu>
+        </mat-card-header>
+
+      </mat-card>
+      <mat-nav-list>
+        <a mat-list-item routerLink="dashboard">
+          <mat-icon mat-list-icon>show_chart</mat-icon>
+          <span mat-line>Dashboard</span>
+        </a>
+        <a mat-list-item routerLink="order">
+          <mat-icon mat-list-icon>shopping_cart</mat-icon>
+          <span mat-line>Order</span>
+        </a>
+        <a mat-list-item routerLink="customer">
+          <mat-icon mat-list-icon>account_box</mat-icon>
+          <span mat-line>Customer</span>
+        </a>
+        <a mat-list-item routerLink="product">
+          <mat-icon mat-list-icon>store</mat-icon>
+          <span mat-line>Product</span>
+        </a>
+        <a mat-list-item routerLink="about">
+          <mat-icon mat-list-icon>info_outline</mat-icon>
+          <span mat-line>About</span>
+        </a>
+
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-toolbar dark style="background-color:rgb(228, 224, 224)">
+
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon mat-list-icon>list</mat-icon>
+      </button>
+
+      <span style="margin-left: 20px"></span>
+
+    </mat-toolbar>
+    <div class="main">
+      <router-outlet></router-outlet>
+    </div>
+    <footer class="footer">
+      <span style="font-family:sans-serif">&copy; Reetek 2018 Angular MD App </span>
+    </footer>
+  </mat-sidenav-container>
+  <div>

@@ -1,0 +1,17 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+  <name> -- <role> -- <twitter>
+
+# THANKS
+
+  <name>
+  HarryHo -- @harryho
+  Reetek -- @Reetek
+
+# TECHNOLOGY COLOPHON
+
+  HTML5, CSS3
+  Angular4, TypeScript, Webpack

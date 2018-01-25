@@ -1,0 +1,47 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title class="view-card-title">
+            <h1>{{pageTitle }}</h1>
+        </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <mat-grid-list cols="12" rowHeight="40px">
+            <!--  -->
+            <mat-grid-tile colspan="2">
+                <span class="view-label"> Product Name:</span>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="10">
+                <span class="view-data"> {{product.productName}}</span>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="2">
+                <span class="view-label"> Price:</span>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="10" style="text-align: left">
+                <span class="view-data"> AUD $ {{product.unitPrice | number: 0.00 }}</span>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="2">
+                <span class="view-label"> Quantity: </span>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="10" style="text-align: left">
+                <span class="view-data"> {{product.unitInStock | number: 0 }}</span>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="2">
+                <span class="view-label"> Category:</span>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="10" style="text-align: left">
+                <span class="view-data">{{product.category? product.category.categoryName: ""}}</span>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button (click)="onBack()" color="primary">
+            <mat-icon>back</mat-icon>
+            Back
+        </button>
+        <button mat-raised-button color="warn" [routerLink]="['/productEdit', product.id]">
+            <mat-icon>edit</mat-icon>
+            Edit
+        </button>
+    </mat-card-actions>
+</mat-card>

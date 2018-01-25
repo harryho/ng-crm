@@ -1,0 +1,210 @@
+<mat-sidenav-container>
+    <mat-card class='light' style="height: 100%;">
+        <!-- <div class='panel-heading'>
+            <h1> {{pageTitle}}
+                <button class="pull-right" mat-mini-fab style="margin-right:10px; background-color:#e07c9e" [routerLink]="['/productEdit', 0]"><mat-icon>add</mat-icon>
+                                        </button>
+                <button class="pull-right" mat-mini-fab style="margin-right:10px; background-color:#a28b6e" (click)="sidenav.toggle()"><mat-icon>search</mat-icon></button>
+                <button class="pull-right" mat-mini-fab style="margin-right:10px; background-color:darkgray" (click)="reset()"><mat-icon>refresh</mat-icon></button>                </h1>
+
+        </div> -->
+
+        <mat-card-header>
+            <mat-card-title class="view-card-title">
+                <h1>{{pageTitle }}</h1>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-toolbar>
+            <mat-toolbar-row>
+                <mat-form-field>
+                    <mat-placeholder>
+                        <mat-icon>subject</mat-icon>
+                        <b> Filter</b>
+                    </mat-placeholder>
+                    <input matInput (keyup)="applyFilter($event.target.value)">
+                </mat-form-field>
+                <span class="title-spacer"></span>
+                <button mat-mini-fab style="margin-right:10px; background-color:#e07c9e" [routerLink]="['/productEdit', 0]">
+                    <mat-icon>add</mat-icon>
+                </button>
+                <button mat-mini-fab style="margin-right:10px; background-color:#a28b6e" (click)="sidenav.toggle()">
+                    <mat-icon>search</mat-icon>
+                </button>
+                <button mat-mini-fab style="margin-right:10px; background-color:darkgray" (click)="reset()">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+
+
+        <!-- <div class='panel-body'>
+
+            <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
+
+            <div class='table-responsive'>
+
+
+                <table class='table' *ngIf='products && products.length'>
+                    <thead>
+
+                        <tr>
+
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Quantity In Stock</th>                     
+                            <th>Category</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                 
+                        <tr>
+                            <td> <input type='text' [(ngModel)]="listFilter.productName" (ngModelChange)="searchProducts(listFilter)"
+                                /></td>
+                            <td><input type='text' [(ngModel)]="listFilter.price" (ngModelChange)="searchProducts(listFilter)"
+                                /></td>
+                            <td><input type='text' [(ngModel)]="listFilter.quantity" (ngModelChange)="searchProducts(listFilter)"
+                                /></td>
+                            <td></td>
+                            <td></td>
+
+                            <td>
+                                <button mat-raised-button style="color:white; background-color:darkgrey" (click)="resetListFilter()">Reset</button>
+                            </td>
+                        </tr>
+                        <tr *ngFor='let product of pagedItems'>
+
+                            <td><a [routerLink]="['/product', product.id]">
+                                {{product.productName}}
+                                </a>
+                            </td>
+                            <td>AUD $ {{ product.unitPrice | number: 0.00}}</td>
+                            <td>{{ product.unitInStock | number: 0 }}</td>
+
+                            <td>
+                                {{product.category.categoryName}}
+
+                            </td>
+                            <td>
+                                <button mat-mini-fab style="background-color:teal" [routerLink]="['/productEdit', product.id]">
+                                    <mat-icon>edit</mat-icon>
+                                </button >
+                                &nbsp;
+                                &nbsp;
+                                <button mat-mini-fab style="background-color:lightblue"
+                                (click)="openDialog(product.id)" >       
+                                    <mat-icon>delete</mat-icon>
+                                </button >
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+      
+               
+            </div>
+                   
+                <mat-grid-list cols="5" rowHeight="60px">
+
+                <mat-grid-tile [colspan]="" >&nbsp;</mat-grid-tile>
+                <mat-grid-tile [colspan]="3" [rowspan]="">
+                                
+                    <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+                            <a (click)="setPage(1)"><strong>&lt;&lt;</strong></a>
+                        </li>
+                        <li [ngClass]="{disabled:pager.currentPage === 1}">
+                            <a (click)="setPage(pager.currentPage - 1)"><strong>&lt;</strong></a>
+                        </li>
+                        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                            <a (click)="setPage(page)">{{page}}</a>
+                        </li>
+                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                            <a (click)="setPage(pager.currentPage + 1)"><strong>&gt;</strong></a>
+                        </li>
+                        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                            <a (click)="setPage(pager.totalPages)"><strong>&gt;&gt;</strong></a>
+                        </li>
+                    </ul>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="" > &nbsp;</mat-grid-tile>
+                        </mat-grid-list>
+                <div *ngIf='!products || products.length <=0'>   No record found !</div>
+        </div>    -->
+
+        <mat-table #table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="productName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Product Name </mat-header-cell>
+                <mat-cell *matCellDef="let product">
+                    <a [routerLink]="['/product', product.id]">
+                        {{product.productName}}
+                    </a>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="unitPrice">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Price </mat-header-cell>
+                <mat-cell *matCellDef="let product"> AUD $ {{ product.unitPrice | number: 0.00}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="unitInStock">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Quantity In Stock </mat-header-cell>
+                <mat-cell *matCellDef="let product"> {{ product.unitInStock | number: 0 }} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="categoryName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Category </mat-header-cell>
+                <mat-cell *matCellDef="let product"> {{product.category.categoryName}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef style="justify-content:right;">
+                    <button mat-button style="color:white; background-color:darkgrey" (click)="resetListFilter()">Reset</button>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let product" style="justify-content:right;">
+                    <button mat-mini-fab style="background-color:teal; min-height: 30px;   margin: 5px;" [routerLink]="['/productEdit', product.id]">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-mini-fab style="background-color:lightblue; min-height: 30px;  margin: 5px;" (click)="openDialog(product.id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10]">
+        </mat-paginator>
+
+    </mat-card>
+    <mat-sidenav class="search-panel" dark #sidenav mode="push" opened="false">
+        <mat-card class="profile-card">
+            <mat-card-header>
+                <div mat-card-avatar class="avatar"></div>
+                <mat-card-subtitle>
+
+                    <button mat-raised-button style="color:lightgrey; background-color:darkgreen" (click)="searchProducts(searchFilter);sidenav.toggle()">
+                        <mat-icon>search</mat-icon>Search </button>
+
+                    <button mat-raised-button style="color:lightgrey; background-color:darkred" (click)="resetSearchFilter(sidenav)">
+                        <mat-icon>refresh</mat-icon>Reset</button>
+
+                </mat-card-subtitle>
+            </mat-card-header>
+
+        </mat-card>
+        <mat-nav-list style="margin-left:20px;">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Product Name" style="width:200px;" name="product" [(ngModel)]="searchFilter.productName"
+                    #product />
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput type="text" placeholder="Price" style="width:200px;" name="price" [(ngModel)]="searchFilter.price" #price
+                />
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput type="text" placeholder="Qunantity" style="width:200px;" name="quantity" [(ngModel)]="searchFilter.quantity"
+                    #price />
+            </mat-form-field>
+
+        </mat-nav-list>
+    </mat-sidenav>
+</mat-sidenav-container>

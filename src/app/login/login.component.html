@@ -1,0 +1,29 @@
+﻿<div style="height:100%; width:100%; display:flex; justify-content:center; align-items:center; position:absolute;">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <div card-lg-image class="login-header"></div>
+      <mat-card-title>
+        <h2 style="color:darkcyan">Reetek Angular CRM</h2>
+      </mat-card-title>
+    </mat-card-header>
+    <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+      <mat-card-content>
+        <div style="display:flex;flex-direction:column; padding: 20 0 20 0 px;">
+          <mat-form-field [ngClass]="{ 'mat-input-error': f.submitted && !username.valid }">
+            <input matInput type="text" placeholder="User Name" name="username" [(ngModel)]="model.username" #username="ngModel" required
+            />
+            <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div>
+          </mat-form-field>
+          <mat-form-field [ngClass]="{ 'mat-input-error': f.submitted && !password.valid }">
+            <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="model.password" #password="ngModel" required
+            />
+            <div *ngIf="f.submitted && !password.valid" class="help-block" ui-autocomplete="false">Password is required</div>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="primary" style="text-align:right;padding-right:20px;">
+        <button mat-raised-button [disabled]="loading">Login</button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>

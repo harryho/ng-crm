@@ -1,0 +1,80 @@
+/* this file will be extracted to main dist folder and is imported in index.html */
+/* This file is for setting global styles  */
+@import "variables";
+nav {
+  margin-top: 16px;
+}
+
+nav a {
+  background-color: $nav-button-color;
+  color: white;
+  padding: 8px 16px;
+  margin: 8px;
+  vertical-align: middle;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.table-responsive {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+.mat-table {
+  overflow: auto;
+}
+
+.view-card {
+  width: 100%;
+}
+.view-card-title {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.view-label {
+  justify-content: right;
+  width: 100%;
+  font-weight: bold;
+}
+
+.view-data {
+  justify-content: left;
+  margin-left: 0;
+  padding-left: 0;
+  width: 100%;
+}
+
+.form-card {
+  width: 100%;
+  flex-direction: row;
+}
+
+.form-field {
+  width: 30%;
+}
+
+.dialog-field {
+  width: 90%;
+}
+
+.help-block {
+  color: red;
+}
+
+.title-spacer {
+  flex: 1 1 auto;
+}
+
+.page-title{
+  font-size:24;
+}
+
+.search-panel {
+  max-width:320px;
+  background-color: rgb(244, 244, 247);
+}
+
+// @import '/themes/indigo-pink.css';

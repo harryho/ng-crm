@@ -1,0 +1,31 @@
+/*@import 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css';*/
+
+html,
+body {
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a.active {
+  background-color: gray;
+}
+
+.main {
+  margin: 20px;
+}
+
+div.avatar {
+  background-image: url("/assets/img/avatar0.png");
+  background-size: cover;
+}
+
+.footer {
+  position: absolute;
+  max-height: 18px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+}
