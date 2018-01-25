@@ -65,7 +65,7 @@ type StoreType = {
 };
 
 /**
- * `AppModule` is the main entry point into Angular4's bootstraping process
+ * `AppModule` is the main entry point into Angular's bootstraping process
  */
 @NgModule({
   bootstrap: [AppComponent],
@@ -116,7 +116,7 @@ export class AppModule {
   constructor(
     public appRef: ApplicationRef,
     public appState: AppState // private progress: NgProgressService
-  ) {}
+  ) { }
 
   public hmrOnInit(store: StoreType) {
     if (!store || !store.state) {
