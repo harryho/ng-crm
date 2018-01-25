@@ -2,8 +2,6 @@
 
 > A reusable starter project for real-world business based on Angular 5, Angular-Material 5.
 
-> The [ng-md-app](https://github.com/harryho/ng-md-app.git).
-
 This project starts from a popular starter project [AngularClass/AngularStarter](https://github.com/AngularClass/angular-starter). The goal of this project is to create reusable project for real-world business. To achieve this target, we need a solution which includes simple authentication process, restful API feature with token support and simple but elegant UI design.
 
 #### Features
