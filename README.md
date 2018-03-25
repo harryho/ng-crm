@@ -1,6 +1,6 @@
 # Angular Material Design App
 
-> A reusable starter project for real-world business based on Angular 5, Angular-Material 5.
+> A reusable CRM starter project for real-world business based on Angular 5, Angular-Material 5.
 
 This project starts from a popular starter project [AngularClass/AngularStarter](https://github.com/AngularClass/angular-starter). The goal of this project is to create reusable project for real-world business. To achieve this target, we need a solution which includes simple authentication process, restful API feature with token support and simple but elegant UI design.
 
@@ -8,11 +8,11 @@ This project starts from a popular starter project [AngularClass/AngularStarter]
 
 * This project is built on the top of AngularClass/Angular-Starter.
 * The UI part of this project is comprehensively built on Angular Material.
-* This project includes ng-charts, progress-bar, confirmation dialog, etc. 
+* This project includes ng-charts, progress-bar, confirmation dialog, etc.
 * It uses Json-Server as fake Restful API. (You can simply replace it with your own API)
 * CRUD functions for Customer, Order and Product.
 
-#### Screenshots 
+#### Screenshots
 
 ![Screenshot1](screenshots/screenshot-1.JPG)
 
@@ -21,7 +21,6 @@ This project starts from a popular starter project [AngularClass/AngularStarter]
 ![Screenshot3](screenshots/screenshot-3.JPG)
 
 ![Screenshot4](screenshots/screenshot-4.JPG)
-
 
 ## Build & Setup
 
@@ -40,7 +39,7 @@ npm install -g node-pre-gyp
 npm install
 
 # Or use yarn (recommended)
-yarn 
+yarn
 
 # start the app
 npm start
@@ -89,4 +88,3 @@ There are some similar projects respectively built on the Vue.js and React. If y
 
 * [Vue2Crm](https://github.com/harryho/vue2crm.git).
 * [React-Crm](https://github.com/harryho/react-crm.git).
-
