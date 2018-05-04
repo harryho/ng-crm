@@ -3,21 +3,33 @@ import { ActivatedRoute } from "@angular/router";
 
 import { MatCard } from "@angular/material/card";
 
+const newLocal: string = `
+    .about-card {
+      display: grid;
+      justify-content: center;
+      text-align: center;
+    }
+  `;
+
 @Component({
   selector: "about",
   styles: [
-    `
-  `
+    newLocal
   ],
   template: `
-  <mat-card>
+  <mat-card class="about-card">
+
+  <mat-card-title>
     <h1>About</h1>
+    </mat-card-title>
+    <mat-card-content>
     <div>
       <h3>
-        Reeteek Angular MD App Version 1.0.0
+        Angular MD App Version 1.0.5
       </h3>
     </div>
-    </mat-card>
+    </mat-card-content>
+  </mat-card>
   `
 })
 export class AboutComponent implements OnInit {

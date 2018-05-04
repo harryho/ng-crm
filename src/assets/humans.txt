@@ -9,7 +9,7 @@
 
   <name>
   HarryHo -- @harryho
-  Reetek -- @Reetek
+
 
 # TECHNOLOGY COLOPHON
 

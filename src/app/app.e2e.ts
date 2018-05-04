@@ -8,7 +8,7 @@ describe("App", () => {
 
   it("should have a title", async () => {
     let subject = await browser.getTitle();
-    let result = "Reetek Angular MD App by @haryho from @Reetek";
+    let result = "Angular MD App created by HHO";
     expect(subject).toEqual(result);
   });
 

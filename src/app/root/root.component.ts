@@ -27,7 +27,7 @@ import { AuthenticationService } from "../_services";
   ],
 })
 export class RootComponent implements OnInit {
-  public name = 'Reetek Angular CRM';
+  public name = 'Angular MD App';
 
   currentUser: User;
 

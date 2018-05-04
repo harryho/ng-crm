@@ -71,7 +71,7 @@ npm run dev
 
 ## [at-loader] Ok, 0.002 sec.
 
-# Access the Reetek Angular MD App at localhost:3000
+# Access the Angular MD App at localhost:3000
 ```
 
 # Welcome to fork or clone!

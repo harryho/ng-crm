@@ -30,7 +30,7 @@ const ngcWebpack = require("ngc-webpack");
 const HMR = helpers.hasProcessFlag("hot");
 const AOT = process.env.BUILD_AOT || helpers.hasNpmFlag("aot");
 const METADATA = {
-  title: "Reetek Angular MD App by @haryho from @Reetek",
+  title: "Angular MD App by @haryho",
   baseUrl: "/",
   isDevServer: helpers.isWebpackDevServer(),
   HMR: HMR
@@ -41,7 +41,7 @@ const METADATA = {
  *
  * See: http://webpack.github.io/docs/configuration.html#cli
  */
-module.exports = function(options) {
+module.exports = function (options) {
   isProd = options.env === "production";
   return {
     /**
