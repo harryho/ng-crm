@@ -1,7 +1,7 @@
 {
   "name": "ng-dm-app",
-  "version": "1.0.1",
-  "description": "A simple useable starter project for real-world business based on Angular 5+, Angular-Material 5+",
+  "version": "1.0.3",
+  "description": "A reseable CRM starter project for real-world business built on Angular 5+, Angular-Material 5+",
   "keywords": [
     "angular",
     "angular5",
