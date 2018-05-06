@@ -2,16 +2,17 @@
   "token": {
     "access_token": "fake-token-12345789-abcdefgh",
     "user": {
-      "firstName": "Harry",
-      "lastName": "Ho",
-      "email": "hho@test.com",
+      "firstName": "Admin",
+      "lastName": "",
+      "email": "admin@test.com",
       "password": "password"
     }
   },
   "customers": [
     {
-      "isActive": false,
-      "age": 21,
+      "membership": false,
+      "mobile": "555-555-555",
+      "rewards": 21,
       "id": 2,
       "firstName": "Larsen",
       "lastName": "Shaw",
@@ -19,8 +20,9 @@
       "avatar": "/assets/img/avatar3.png"
     },
     {
-      "isActive": false,
-      "age": 89,
+      "membership": false,
+      "mobile": "555-555-555",
+      "rewards": 89,
       "id": 4,
       "firstName": "Rosseta",
       "lastName": "Wilson",
@@ -28,8 +30,9 @@
       "avatar": "/assets/img/avatar4.png"
     },
     {
-      "isActive": false,
-      "age": 38,
+      "membership": false,
+      "mobile": "555-555-555",
+      "rewards": 38,
       "id": 5,
       "firstName": "William",
       "lastName": "Carney",
@@ -37,8 +40,9 @@
       "avatar": "/assets/img/avatar2.png"
     },
     {
-      "isActive": false,
-      "age": 24,
+      "membership": false,
+      "mobile": "555-555-555",
+      "rewards": 23,
       "id": 6,
       "firstName": "Sarah",
       "lastName": "Dunne",
@@ -46,8 +50,9 @@
       "avatar": "/assets/img/avatar1.png"
     },
     {
-      "isActive": true,
-      "age": 23,
+      "membership": true,
+      "mobile": "555-555-555",
+      "rewards": 23,
       "id": 8,
       "firstName": "Merriana",
       "lastName": "Sean",
@@ -55,8 +60,9 @@
       "avatar": "/assets/img/avatar5.png"
     },
     {
-      "isActive": true,
-      "age": 26,
+      "membership": true,
+      "mobile": "555-555-555",
+      "rewards": 26,
       "id": 9,
       "firstName": "Jubino",
       "lastName": "Gerret",
@@ -64,8 +70,9 @@
       "avatar": "/assets/img/avatar1.png"
     },
     {
-      "isActive": false,
-      "age": 22,
+      "membership": false,
+      "mobile": "555-555-555",
+      "rewards": 22,
       "id": 10,
       "firstName": "Geneva",
       "lastName": "Wilson",
@@ -73,8 +80,9 @@
       "avatar": "/assets/img/avatar2.png"
     },
     {
-      "isActive": true,
-      "age": 38,
+      "membership": true,
+      "mobile": "555-555-555",
+      "rewards": 38,
       "id": 11,
       "firstName": "Mark",
       "lastName": "Carney",
@@ -82,8 +90,9 @@
       "avatar": "/assets/img/avatar5.png"
     },
     {
-      "isActive": false,
-      "age": 27,
+      "membership": false,
+      "mobile": "555-555-555",
+      "rewards": 27,
       "id": 12,
       "firstName": "Yann",
       "lastName": "Larrel",
@@ -91,10 +100,11 @@
       "avatar": "/assets/img/avatar1.png"
     },
     {
-      "isActive": true,
+      "membership": true,
       "firstName": "John",
       "lastName": "Doe",
-      "age": 88,
+      "mobile": "555-555-555",
+      "rewards": 88,
       "email": "john.doe@test.com",
       "id": 13
     },
@@ -102,9 +112,10 @@
       "avatar": null,
       "firstName": "sdfsdf",
       "lastName": "sdfsdf",
-      "age": 22,
+      "mobile": "555-555-555",
+      "rewards": 22,
       "email": "sdfsdfsdfs",
-      "isActive": false,
+      "membership": false,
       "id": 14
     }
   ],
@@ -141,7 +152,7 @@
     },
     {
       "id": 3,
-      "reference": "order-4-3-1-21",
+      "reference": "order-4-3-1-2",
       "customerId": 4,
       "products": [
         {
@@ -161,24 +172,13 @@
       ],
       "amount": 5.99,
       "orderDate": "2017-01-01",
-      "shippedDate": "1/12/2017",
+      "shippedDate": "2017-01-01",
       "shipAddress": {
         "address": "Gran Vía, 0123",
         "city": "Madrid",
         "zipcode": "10298",
         "country": "Spain"
-      },
-      "customer": {
-        "isActive": false,
-        "age": 89,
-        "id": 4,
-        "firstName": "Rosseta",
-        "lastName": "Wilson",
-        "email": "test@test.com",
-        "avatar": "/assets/img/avatar4.png"
-      },
-      "displayOrderDate": "2017-01-01T00:00:00.000Z",
-      "displayShippedDate": "2017-01-11T13:00:00.000Z"
+      }
     },
     {
       "id": 4,
@@ -201,26 +201,14 @@
         }
       ],
       "amount": 499.99,
-      "orderDate": "2017-01-01T00:00:00.000Z",
-      "shippedDate": "1/21/2017",
+      "orderDate": "2017-01-01",
+      "shippedDate": "2017-01-01",
       "shipAddress": {
         "address": "Gran Vía, 0123",
         "city": "Madrid",
         "zipcode": "10298",
         "country": "Spain"
-      },
-      "customer": {
-        "isActive": false,
-        "age": 89,
-        "id": 4,
-        "firstName": "Rosseta",
-        "lastName": "Wilson",
-        "email": "test@test.com",
-        "avatar": "/assets/img/avatar4.png"
-      },
-      "displayOrderDate": "2017-01-01T00:00:00.000Z",
-      "displayShippedDate": "2017-01-20T13:00:00.000Z",
-      "quantity": 3
+      }
     },
     {
       "id": 5,
@@ -243,20 +231,7 @@
         "city": "Madrid",
         "zipcode": "10298",
         "country": "Spain"
-      },
-      "customer": {
-        "isActive": false,
-        "age": 38,
-        "id": 5,
-        "firstName": "William",
-        "lastName": "Carney",
-        "email": "test@test.com",
-        "avatar": "/assets/img/avatar2.png"
-      },
-      "displayOrderDate": "2017-01-01T00:00:00.000Z",
-      "displayShippedDate": "2017-01-01T00:00:00.000Z",
-      "quantity": 3,
-      "price": 399.95
+      }
     },
     {
       "id": 6,
@@ -273,24 +248,13 @@
       ],
       "amount": 329.99,
       "orderDate": "2017-01-01",
-      "shippedDate": "1/19/2017",
+      "shippedDate": "2017-01-01",
       "shipAddress": {
         "address": "Gran Vía, 0123",
         "city": "Madrid",
         "zipcode": "10298",
         "country": "Spain"
-      },
-      "customer": {
-        "isActive": false,
-        "age": 23,
-        "id": 6,
-        "firstName": "Sarah",
-        "lastName": "Dunne",
-        "email": "test@test.com",
-        "avatar": "/assets/img/avatar1.png"
-      },
-      "displayOrderDate": "2017-01-01T00:00:00.000Z",
-      "displayShippedDate": "2017-01-18T13:00:00.000Z"
+      }
     },
     {
       "id": 8,
@@ -306,8 +270,8 @@
         }
       ],
       "amount": 89.99,
-      "orderDate": "2017-01-01",
-      "shippedDate": "2017-01-01",
+      "orderDate": "2017-01-12",
+      "shippedDate": "2017-01-10",
       "shipAddress": {
         "address": "Gran Vía, 0123",
         "city": "Madrid",
@@ -359,19 +323,7 @@
         "city": "Madrid",
         "zipcode": "10298",
         "country": "Spain"
-      },
-      "customer": {
-        "isActive": false,
-        "age": 22,
-        "id": 10,
-        "firstName": "Geneva",
-        "lastName": "Wilson",
-        "email": "test@test.com",
-        "avatar": "/assets/img/avatar2.png"
-      },
-      "displayOrderDate": "2017-01-01T00:00:00.000Z",
-      "displayShippedDate": "2017-01-01T00:00:00.000Z",
-      "quantity": 2
+      }
     },
     {
       "id": 12,
@@ -677,17 +629,17 @@
     },
     {
       "categoryId": 3,
-      "productName": "aaa",
-      "unitPrice": 22,
-      "unitInStock": 2323,
-      "id": 25
-    },
-    {
-      "categoryId": 3,
       "productName": "Product ABCD",
       "unitPrice": 222,
       "unitInStock": 23,
       "id": 26
+    },
+    {
+      "id": 27,
+      "productName": "asdasd",
+      "categoryId": 3,
+      "unitInStock": "22",
+      "unitPrice": "234"
     }
   ],
   "categories": [
