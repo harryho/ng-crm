@@ -78,7 +78,7 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
             price: ['', NumberValidators.range(1, 99999)],
             quantity: ['', NumberValidators.range(1, 20)],
             customerId: ['', NumberValidators.range(1, 9999999)],
-            isActive: false,
+            membership: false,
         });
 
         // Read the product Id from the route parameter
@@ -143,7 +143,7 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
             price: this.product.unitPrice,
             quantity: this.product.unitInStock,
             // customerId: this.product.customerId,     
-            // isActive: this.product.isActive
+            // membership: this.product.membership
         });
     }
 

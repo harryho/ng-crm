@@ -12,9 +12,22 @@ a.active {
   margin: 20px;
 }
 
-div.avatar {
+.profile-card {
+  padding-bottom: 5px;
+}
+
+/* div.avatar {
   background-image: url("/assets/img/avatar0.png");
   background-size: cover;
+} */
+
+.avatar {
+  background-image: url("/assets/img/avatar0.png");
+  background-size: cover;
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
 }
 
 .footer {

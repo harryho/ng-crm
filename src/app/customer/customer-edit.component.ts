@@ -71,7 +71,7 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
                 minlength: 'Customer email must be at least one characters.',
                 maxlength: 'Customer email cannot exceed 200 characters.'
             },
-            age: {
+            rewards: {
                 range: 'Age of the customer must be between 0 (lowest) and 150 (highest).'
             }
         };
@@ -90,8 +90,8 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
             email: ['', [Validators.required,
             Validators.minLength(5),
             Validators.maxLength(200)]],
-            age: ['', NumberValidators.range(0, 150)],
-            isActive: false,
+            rewards: ['', NumberValidators.range(0, 150)],
+            membership: false,
         });
 
         // Read the customer Id from the route parameter
@@ -145,8 +145,8 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
             firstName: this.customer.firstName,
             lastName: this.customer.lastName,
             email: this.customer.email,
-            age: this.customer.age,
-            isActive: this.customer.isActive
+            rewards: this.customer.rewards,
+            membership: this.customer.membership
         });
     }
 

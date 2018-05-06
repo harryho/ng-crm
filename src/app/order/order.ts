@@ -9,7 +9,7 @@ export interface IOrder {
   customerId: number;
   id: number;
   avatar: string;
-  isActive: boolean;
+  membership: boolean;
   orderDate: any;
   shippedDate: any;
   customer: ICustomer;

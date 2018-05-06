@@ -71,7 +71,7 @@
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>
-        <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10]" [length]="totalAmount">
+        <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10]" [length]="totalAmount">
         </mat-paginator>
     </mat-card>
     <mat-sidenav class="search-panel" dark #sidenav mode="push" opened="false">

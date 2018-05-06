@@ -34,7 +34,7 @@ export class CustomerListComponent implements OnInit {
 
     customers: ICustomer[];
     customerList: ICustomer[]; //
-    displayedColumns = ["avatar", "firstName", "lastName", "age", "email", "isActive", "id"];
+    displayedColumns = ["avatar", "firstName", "lastName", "rewards", "email", "membership", "id"];
     dataSource: any = null;
     pager: any = {};
     pagedItems: any[];

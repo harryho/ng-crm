@@ -126,7 +126,7 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
       zipcode: ["", [Validators.required]],
       customerId: ["", Validators.required],
       products: this.fb.array([]),
-      isActive: false
+      membership: false
     });
 
     // Read the order Id from the route parameter
@@ -199,7 +199,7 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
       country: this.order.shipAddress.country,
       zipcode: this.order.shipAddress.zipcode,
       customerId: this.order.customerId,
-      isActive: this.order.isActive
+      membership: this.order.membership
     });
 
     const products = this.order.products.map(product =>

@@ -88,7 +88,7 @@ export class OrderService {
             shipAddress: <IAddress>{},
             customerId: 0,
             quantity: 0,
-            isActive: false,
+            membership: false,
             customer: null,
         };
     }
