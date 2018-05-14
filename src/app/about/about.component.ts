@@ -9,6 +9,10 @@ const newLocal: string = `
       justify-content: center;
       text-align: center;
     }
+    .content {
+font-size: 18px;
+text-align: left;
+    }
   `;
 
 @Component({
@@ -17,16 +21,19 @@ const newLocal: string = `
     newLocal
   ],
   template: `
-  <mat-card class="about-card">
+  <mat-card >
 
-  <mat-card-title>
-    <h1>About</h1>
-    </mat-card-title>
-    <mat-card-content>
+  <mat-card-title class="view-card-title">
+                <h1>About</h1>
+            </mat-card-title>
+    <mat-card-content class="about-card">
     <div>
       <h3>
-        Angular MD App Version 1.0.5
+        Angular MD App Demo
       </h3>
+      <p class="content">
+        This demo app is not a real application. There is no fake API as back-end service behind the scene. Its advanced search doesn't work properly. Any data update (create or update record) will not be stored after hard refresh or logout. The main purpose of this demo is just a proof of concept.
+      </p>
     </div>
     </mat-card-content>
   </mat-card>
@@ -34,6 +41,8 @@ const newLocal: string = `
 })
 export class AboutComponent implements OnInit {
   public localState: any;
+  pageTitle: string = "About";
+
   constructor(public route: ActivatedRoute) { }
 
   public ngOnInit() {
