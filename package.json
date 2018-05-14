@@ -56,6 +56,7 @@
     "server:prod:ci": "http-server dist -p 3000 -c-1 --cors",
     "server": "npm run server:dev",
     "start:hmr": "npm run server:dev:hmr",
+    "demo": "npm run server:dev:hmr",
     "start": "npm-run-all -p start:server server:dev",
     "dev": "npm-run-all -p start:server start:hmr",
     "start:server": "json-server -p 5354 --watch db/db.json",
