@@ -32,7 +32,9 @@ import {
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatDrawerContainer,
+  MatDrawer
   //------------------
   // MatTableDataSource,
   // MatPaginator,
@@ -40,6 +42,7 @@ import {
   // MatSnackBar,
   // MatDialog
 } from "@angular/material";
+import { MatCommonModule } from '@angular/material/core/typings/common-behaviors/common-module';
 
 @NgModule({
   imports: [
@@ -118,4 +121,4 @@ import {
     // MatPaginator
   ]
 })
-export class MaterialModule {}
+export class MaterialModule { }

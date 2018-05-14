@@ -36,12 +36,12 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.authenticationService.logout();
 
-    this.model.username = "hho@test.com";
+    this.model.username = "Admin@test.com";
     this.model.password = "password";
 
     this.returnUrl =

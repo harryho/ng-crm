@@ -2,8 +2,8 @@
   <login (isAuth)="isAuth($even)"></login>
 </div>
 
-<div [hidden]="!authService.isAuthenticated()">
-  <mat-sidenav-container class="app-container" fullscreen>
+<div [hidden]="!authService.isAuthenticated() && currentUser!== null">
+  <mat-sidenav-container class="app-container" autosize fullscreen>
     <mat-sidenav dark #sidenav mode="side" opened="true">
       <mat-card class="profile-card">
         <mat-card-header>
@@ -52,21 +52,25 @@
 
       </mat-nav-list>
     </mat-sidenav>
+    <mat-sidenav-content [hidden]="!authService.isAuthenticated()">
+      <mat-toolbar dark style="background-color:rgb(228, 224, 224)">
 
-    <mat-toolbar dark style="background-color:rgb(228, 224, 224)">
+        <button mat-icon-button (click)="sidenav.toggle()">
+          <mat-icon mat-list-icon>list</mat-icon>
+        </button>
 
-      <button mat-icon-button (click)="sidenav.toggle()">
-        <mat-icon mat-list-icon>list</mat-icon>
-      </button>
+        <span style="margin-left: 20px"></span>
 
-      <span style="margin-left: 20px"></span>
+      </mat-toolbar>
+      <div class="main" [hidden]="!authService.isAuthenticated()">
+        <router-outlet></router-outlet>
+      </div>
+      <footer class="footer">
+        <span style="font-family:sans-serif">&copy; 2018 Angular MD App </span>
+      </footer>
+    </mat-sidenav-content>
 
-    </mat-toolbar>
-    <div class="main">
-      <router-outlet></router-outlet>
-    </div>
-    <footer class="footer">
-      <span style="font-family:sans-serif">&copy; 2018 Angular MD App </span>
-    </footer>
   </mat-sidenav-container>
+
+  <!-- </mat-sidenav-container> -->
 </div>
