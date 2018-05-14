@@ -72,7 +72,7 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
                 maxlength: 'Customer email cannot exceed 200 characters.'
             },
             rewards: {
-                range: 'Age of the customer must be between 0 (lowest) and 150 (highest).'
+                range: 'Rewards of the customer must be between 0 (lowest) and 150 (highest).'
             }
         };
 

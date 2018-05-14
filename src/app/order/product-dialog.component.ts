@@ -57,13 +57,13 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
                 maxlength: 'Product first name cannot exceed 100 characters.'
             },
             price: {
-                range: 'Age of the product must be between 1 (lowest) and 9999 (highest).'
+                range: 'Rewards of the product must be between 1 (lowest) and 9999 (highest).'
             },
             quantity: {
-                range: 'Age of the product must be between 1 (lowest) and 20 (highest).'
+                range: 'Rewards of the product must be between 1 (lowest) and 20 (highest).'
             },
             customerId: {
-                range: 'Age of the product must be between 1 (lowest) and 99999 (highest).'
+                range: 'Rewards of the product must be between 1 (lowest) and 99999 (highest).'
             }
         };
 

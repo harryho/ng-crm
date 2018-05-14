@@ -53,11 +53,11 @@
         <mat-cell *matCellDef="let customer"> {{customer.email}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="rewards">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Age </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Rewards </mat-header-cell>
         <mat-cell *matCellDef="let customer"> {{customer.rewards | number }} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="membership">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Membershiop</mat-header-cell>
         <mat-cell *matCellDef="let customer">
           <span *ngIf="!customer.membership" style="color:green">
             <mat-icon>check_circle</mat-icon>
