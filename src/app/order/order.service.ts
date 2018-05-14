@@ -29,7 +29,7 @@ export class OrderService {
     if (id === 0) {
       return Observable.of(this.initializeOrder());
     };
-    const action = `${this.basicAction}${id}/?_expand=customer`;
+    const action = `${this.basicAction}${id}?_expand=customer`;
     return this.backend.getById(action)
       .map(this.extractData)
       .do(data => console.log('getOrder: ' + JSON.stringify(data)))
@@ -37,7 +37,7 @@ export class OrderService {
   }
 
   deleteOrder(id: number): Observable<Response> {
-    const action = `${this.basicAction}/${id}`;
+    const action = `${this.basicAction}${id}`;
     return this.backend.delete(action)
       .catch(this.handleError);
   }
@@ -57,7 +57,7 @@ export class OrderService {
   }
 
   private updateOrder(order: IOrder): Observable<IOrder> {
-    const action = `products/${order.id}`;
+    const action = `${this.basicAction}${order.id}`;
     return this.backend.update(action, order)
       .map(() => order)
       .catch(this.handleError);
