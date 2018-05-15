@@ -12,6 +12,10 @@ This project starts from a popular starter project [AngularClass/AngularStarter]
 * It uses Json-Server as fake Restful API. (You can simply replace it with your own API)
 * CRUD functions for Customer, Order and Product.
 
+
+#### Live Demo
+[Demo App](https://angular-app-demo.harryho.org): The demo is just a proof of concept. It doesn't have back-end API and all features of master branch.
+
 #### Screenshots
 
 ![Screenshot1](screenshots/screenshot-1.JPG)
