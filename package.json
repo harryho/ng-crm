@@ -1,5 +1,5 @@
 {
-  "name": "ng-dm-app",
+  "name": "ng-md-app",
   "version": "1.0.3",
   "description": "A reseable CRM starter project for real-world business built on Angular 5+, Angular-Material 5+",
   "keywords": [
@@ -183,5 +183,26 @@
   "engines": {
     "node": ">= 4.2.1",
     "npm": ">= 3"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
+      }
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "transform": {
+      "^.+\\.(ts)$": "./node_modules/ts-jest/preprocessor.js"
+    },
+    "testMatch": [
+      "<rootDir>/src/**/*.spec.(ts|js)"
+    ],
+    "testEnvironment": "node"
   }
 }
