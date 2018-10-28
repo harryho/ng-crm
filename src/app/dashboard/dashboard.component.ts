@@ -59,7 +59,6 @@ export class DashboardComponent implements OnInit {
     mediaMatcher: MediaMatcher) {
     this.mediaQueryList = mediaMatcher.matchMedia('(min-width: 640px)');
     this.mediaQueryMin = mediaMatcher.matchMedia('(min-width: 1000px)');
-    console.log(` constructor -- mediaQueryList: ${this.mediaQueryList.matches}`)
 
 
     breakpointObserver.observe([
@@ -69,8 +68,7 @@ export class DashboardComponent implements OnInit {
       if (result.matches) {
         this.isMobile = true;
         this.colNum = this.mediaQueryList.matches ? 2 : 1;
-        this.chartColNum = 1;
-        // this.rowHeight = '100px';
+        this.chartColNum = 1
 
         this.chartRowHeight = this.mediaQueryList.matches ? '300px' : '240px';
         this.cardClass = 'dash-card-inline';
@@ -110,11 +108,6 @@ export class DashboardComponent implements OnInit {
 
 
   public ngOnInit() {
-
-    console.log(` constructor -- mediaQueryList:
-     ${this.mediaQueryList.matches}    mediaQueryMin   ${this.mediaQueryMin.matches}    `)
-
-
     if (this.isMobile) {
       this.colNum = this.mediaQueryList.matches ? 2 : 1;
       this.chartRowHeight = this.mediaQueryList.matches ? '300px' : '240px';

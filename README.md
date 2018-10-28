@@ -47,6 +47,13 @@ npm start
 # serve with hot reload at localhost:3000
 npm run dev
 
+# build for production 
+npm run build:prod
+
+# run as production
+npm run server:prod
+
+
 
 ## You will see the following output. You can test the API with URLs via browser.
 ##
