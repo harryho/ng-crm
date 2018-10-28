@@ -1,7 +1,7 @@
 <!-- <mat-sidenav-container> -->
-<mat-grid-list cols="4" rowHeight="120px">
+<mat-grid-list [cols]="colNum" [rowHeight]="rowHeight">
   <mat-grid-tile>
-    <mat-card class="dash-card" style="background-color: #98caa7;">
+    <mat-card [ngClass]="cardClass" style="background-color: #98caa7;">
       <mat-card-header>
         <mat-card-title>
           <mat-icon>account_circle</mat-icon> &nbsp; &nbsp;&nbsp; User Registrations
@@ -18,12 +18,11 @@
     </mat-card>
   </mat-grid-tile>
   <mat-grid-tile>
-    <mat-card class="dash-card" style="background-color: #c1abbf;">
+    <mat-card [ngClass]="cardClass" style="background-color: #c1abbf;">
       <mat-card-header>
         <mat-card-title>
           <mat-icon>add_shopping_cart</mat-icon> &nbsp; &nbsp;&nbsp; New Orders
         </mat-card-title>
-
       </mat-card-header>
       <mat-card-content>
         <span style="font-size:30px;color:white;padding-left:20px;">
@@ -34,7 +33,7 @@
     </mat-card>
   </mat-grid-tile>
   <mat-grid-tile>
-    <mat-card class="dash-card" style="background-color: #e6cea3">
+    <mat-card [ngClass]="cardClass" style="background-color: #e6cea3">
       <mat-card-header>
         <mat-card-subtitle>
           <mat-icon>assessment</mat-icon> &nbsp; &nbsp;&nbsp; Bounce Rate
@@ -51,7 +50,7 @@
     </mat-card>
   </mat-grid-tile>
   <mat-grid-tile>
-    <mat-card class="dash-card" style="background-color:#adcae2">
+    <mat-card [ngClass]="cardClass" style="background-color:#adcae2">
       <mat-card-header>
         <mat-card-subtitle>
           <mat-icon>card_membership</mat-icon> &nbsp; &nbsp;&nbsp; Unique Visitors
@@ -70,18 +69,18 @@
   </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list cols="2" rowHeight="450px" style="margin-top:20px;">
+<mat-grid-list [cols]="chartColNum" [rowHeight]="chartRowHeight" style="margin-top:1rem;">
 
-  <mat-grid-tile>
+  <mat-grid-tile style="height: 100%">
     <mat-card class="dash-card" style="width:95%">
-      <canvas baseChart [data]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" chartType="line" (chartHover)="chartHovered($event)"
-        (chartClick)="chartClicked($event)"></canvas>
+      <canvas baseChart [data]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" chartType="line"
+        (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
     </mat-card>
   </mat-grid-tile>
-  <mat-grid-tile>
+  <mat-grid-tile style="height: 100%">
     <mat-card class="dash-card" style="width:95%">
-      <canvas baseChart [data]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" chartType="bar" (chartHover)="chartHovered($event)"
-        (chartClick)="chartClicked($event)"></canvas>
+      <canvas baseChart [data]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" chartType="bar"
+        (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
     </mat-card>
 
   </mat-grid-tile>
