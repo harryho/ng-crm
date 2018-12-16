@@ -17,11 +17,36 @@ import { Observable } from "rxjs/Observable";
   templateUrl: "./login.component.html",
   styles: [
     `
-    .login-card {
-      width:20%;
-      margin: 10px;
-      -webkit-align-self: center; /* Safari 7.0+ */
-      align-self: center;
+    Html, body{
+      height:100%;
+        margin:0px;
+        padding:0px;
+    }
+
+    .container {
+      height:100%;
+        margin: 0 auto;
+        padding:0px;
+        position: relative;
+        top: 200px;
+    }
+    .grandParentContaniner{
+            display:table;
+            height:100%;
+            margin: 0 auto;
+    }
+    .parentContainer{
+        display:table-cell;
+        vertical-align:middle;
+    }
+    .parentContainer .loginForm{
+        padding:10px;
+        background: #fff;
+        border: 1px solid #ddd;
+        width:400px;  /*  your login form width */    display:table-cell;
+        display:table-cell;
+        vertical-align:middle;
+
     }
     `
   ]
@@ -36,12 +61,12 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.authenticationService.logout();
 
-    this.model.username = "hho@test.com";
+    this.model.username = "Admin@test.com";
     this.model.password = "password";
 
     this.returnUrl =

@@ -11,7 +11,14 @@ import { NotFoundPageComponent } from "../notfoundpage";
 export const routes = [
   {
     path: "",
+
     children: [
+      {
+        path: "",
+        redicrectTo: "/dashboard",
+        component: DashboardComponent,
+        pathMatch: 'full'
+      },
       {
         path: "dashboard",
         component: DashboardComponent

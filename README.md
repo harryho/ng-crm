@@ -9,8 +9,9 @@ This project starts from a popular starter project [AngularClass/AngularStarter]
 * This project is built on the top of AngularClass/Angular-Starter.
 * The UI part of this project is comprehensively built on Angular Material.
 * This project includes ng-charts, progress-bar, confirmation dialog, etc.
-* It uses Json-Server as fake Restful API. (You can simply replace it with your own API)
-* CRUD functions for Customer, Order and Product.
+* ~~~To simulate real-world business, this starter project chooses Json-Server as fake Restful API. (You can simple replace it with your own API).~~~
+* Fake API is just readonly fake service.
+* CRUD functions for Customer, Order and Product
 
 
 #### Live Demo
@@ -46,36 +47,28 @@ npm install
 yarn
 
 # start the app
-npm start
+npm run demo
+# or
+yarn demo 
+
+# development
+npm run server:dev
+# or
+yarn server:dev
 
 # serve with hot reload at localhost:3000
-npm run dev
+npm run server:dev:hmr
+# or
+yarn server:dev:hmr
+
+# build for production 
+npm run build:prod
+
+# run as production
+npm run server:prod
 
 
-## You will see the following output. You can test the API with URLs via browser.
-##
-## \{^_^}/ hi!
-##
-## Loading db.json
-## Done
-##
-## Resources
-## http://localhost:5354/token
-## http://localhost:5354/customers
-## http://localhost:5354/orders
-## http://localhost:5354/products
-## http://localhost:5354/categories
-##
-## Home
-## http://localhost:5354
-##
-## ...........................
-## ...........................
-## [at-loader] Checking started in a separate process...
 
-## [at-loader] Ok, 0.002 sec.
-
-# Access the Angular MD App at localhost:3000
 ```
 
 # Welcome to fork or clone!
@@ -92,3 +85,14 @@ There are some similar projects respectively built on the Vue.js and React. If y
 
 * [Vue2Crm](https://github.com/harryho/vue2crm.git).
 * [React-Crm](https://github.com/harryho/react-crm.git).
+
+
+###  Change log
+
+* Rebase demo branch to master
+
+  New master doesn't rely on Json-Server as fake API. It will only have Readonly fake API. It means any new or updated data will be stored to any physical file. All test data will be rolled back after system restart.
+
+* Create an archived branch json-server
+
+  This branch was the master which used Json-Server as fake API. Considering the hiccup of setting Json-Server up and maintenance, it will be replaced by fake service ( Readonly fake API). You still can find clone this branch by branch name __json-server__, but it will be no longer updated. It is an archived branch.

@@ -12,7 +12,7 @@ import { ICustomer } from './customer';
 
 @Injectable()
 export class CustomerService {
-  private basicAction = 'customers';
+  private basicAction = 'customers/';
 
   constructor(private http: Http, private backend: BackendService) { }
 
@@ -26,7 +26,7 @@ export class CustomerService {
     if (id === 0) {
       return Observable.of(this.initializeCustomer());
     };
-    const action = `${this.basicAction}/${id}`;
+    const action = `${this.basicAction}${id}`;
     return this.backend.getById(action)
       .map(this.extractData)
       .catch(this.handleError);
@@ -34,7 +34,7 @@ export class CustomerService {
 
   deleteCustomer(id: number): Observable<Response> {
 
-    const action = `${this.basicAction}/${id}`;
+    const action = `${this.basicAction}${id}`;
     return this.backend.delete(action)
       .catch(this.handleError);
   }
@@ -56,7 +56,7 @@ export class CustomerService {
   }
 
   private updateCustomer(customer: ICustomer): Observable<ICustomer> {
-    const action = `${this.basicAction}/${customer.id}`;
+    const action = `${this.basicAction}${customer.id}`;
     return this.backend.update(action, customer)
       .map(() => customer)
       .catch(this.handleError);

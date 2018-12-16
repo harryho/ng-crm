@@ -4,13 +4,30 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+app-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding:0;
+}
+
 a.active {
   background-color: gray;
 }
 
 .main {
   margin: 20px;
+  /* display: flex; */
+  /* height: 100%;
+  align-items: center;
+  justify-content: center; */
 }
+
+/* #sidenav{
+  padding: 20px;
+} */
 
 .profile-card {
   padding-bottom: 5px;
@@ -31,7 +48,6 @@ a.active {
 }
 
 .footer {
-  position: absolute;
   max-height: 18px;
   right: 0;
   bottom: 0;

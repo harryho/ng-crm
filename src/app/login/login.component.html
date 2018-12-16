@@ -1,29 +1,72 @@
-﻿<div style="height:100%; width:100%; display:flex; justify-content:center; align-items:center; position:absolute;">
-  <mat-card class="login-card">
-    <mat-card-header>
-      <div card-lg-image class="login-header"></div>
-      <mat-card-title>
-        <h2 style="color:darkcyan">Angular MD App</h2>
-      </mat-card-title>
-    </mat-card-header>
-    <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
-      <mat-card-content>
-        <div style="display:flex;flex-direction:column; padding: 20 0 20 0 px;">
-          <mat-form-field [ngClass]="{ 'mat-input-error': f.submitted && !username.valid }">
-            <input matInput type="text" placeholder="User Name" name="username" [(ngModel)]="model.username" #username="ngModel" required
-            />
-            <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div>
-          </mat-form-field>
-          <mat-form-field [ngClass]="{ 'mat-input-error': f.submitted && !password.valid }">
-            <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="model.password" #password="ngModel" required
-            />
-            <div *ngIf="f.submitted && !password.valid" class="help-block" ui-autocomplete="false">Password is required</div>
-          </mat-form-field>
-        </div>
-      </mat-card-content>
-      <mat-card-actions class="primary" style="text-align:right;padding-right:20px;">
+﻿<!-- <div class="Aligner">
+
+  <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+    <div class="Aligner">
+      <div class="Aligner-item Aligner-item--top">
+        <h2 style="color:darkcyan">Angular MD App Demo</h2>
+      </div>
+
+      <div class="Aligner-item Aligner-item--fixed">
+        <mat-form-field [ngClass]="{ 'mat-input-error': f.submitted && !username.valid }">
+          <input matInput type="text" placeholder="User Name" name="username" [(ngModel)]="model.username" #username="ngModel"
+            required />
+          <div *ngIf="f.submitted && !username.valid" class="help-block">Username is required</div>
+        </mat-form-field>
+        <mat-form-field [ngClass]="{ 'mat-input-error': f.submitted && !password.valid }">
+          <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="model.password" #password="ngModel"
+            required />
+          <div *ngIf="f.submitted && !password.valid" class="help-block" ui-autocomplete="false">Password is required</div>
+        </mat-form-field>
+      </div>
+
+      <div class="Aligner-item Aligner-item--bottom">
         <button mat-raised-button [disabled]="loading">Login</button>
-      </mat-card-actions>
-    </form>
-  </mat-card>
+      </div>
+    </div>
+  </form>
+</div> -->
+
+
+<div id="container" class="container">
+  <div class="grandParentContaniner">
+    <div class="parentContainer">
+      <!-- <form id='loginForm'> -->
+      <form class="loginForm" name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+        <div>
+          <!-- Your form code will be here - start -->
+
+          <h2>Angular MD App Demo</h2>
+
+          <!-- <label for="inputEmail" class="sr-only">Email address</label> -->
+          <!-- <input type="email" id="inputEmail" class="form-control" style="margin-bottom:10px" placeholder="Email address"
+          required="" autofocus=""> -->
+
+          <mat-form-field style="display: block" [ngClass]="{  'mat-input-error': f.submitted && !username.valid }">
+            <input matInput type="text" placeholder="User Name" name="username" [(ngModel)]="model.username" #username="ngModel"
+              required />
+          </mat-form-field>
+
+          <!-- <label for="inputPassword" class="sr-only">Password</label> -->
+
+          <mat-form-field style="display: block" [ngClass]="{ 'display': 'block','mat-input-error': f.submitted && !password.valid }">
+            <input matInput type="password" placeholder="Password" name="password" [(ngModel)]="model.password"
+              #password="ngModel" required />
+          </mat-form-field>
+
+          <!-- <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+         -->
+          <!-- <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div> -->
+
+          <button mat-raised-button [disabled]="loading">Login</button>
+
+        </div>
+        <!-- Your form code will be here - End -->
+
+      </form>
+    </div>
+  </div>
 </div>
