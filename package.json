@@ -55,7 +55,7 @@
     "server:prod:ci": "http-server dist -p 3000 -c-1 --cors",
     "server": "npm run server:dev",
     "start:hmr": "npm run server:dev:hmr",
-    "demo": "npm run server:dev:hmr",
+    "demo": "npm run server:dev",
     "test": "npm run lint && karma start",
     "tslint": "tslint",
     "typedoc": "typedoc",

@@ -9,7 +9,7 @@ This project starts from a popular starter project [AngularClass/AngularStarter]
 * This project is built on the top of AngularClass/Angular-Starter.
 * The UI part of this project is comprehensively built on Angular Material.
 * This project includes ng-charts, progress-bar, confirmation dialog, etc.
-* ~~~To simulate real-world business, this starter project chooses Json-Server as fake Restful API. (You can simple replace it with your own API).~~~
+* ~~To simulate real-world business, this starter project chooses Json-Server as fake Restful API. (You can simple replace it with your own API).~~
 * Fake API is just readonly fake service.
 * CRUD functions for Customer, Order and Product
 
