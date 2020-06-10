@@ -30,12 +30,14 @@ import { OrderService } from "./order.service";
 import { NumberValidators } from "../shared/number.validator";
 import { GenericValidator } from "../shared/generic-validator";
 import { CustomerService, ICustomer } from "../customer";
-import { MatDialog } from "@angular/material";
+import {MatDialog} from '@angular/material/dialog';
 import { ProductDialogComponent } from "./product-dialog.component";
+import { ConfirmDialog } from "../shared";
 import { Window } from 'selenium-webdriver';
-import { Event } from '_debugger';
+// import { Event } from '_debugger';
 
 @Component({
+  selector: 'order-edit',
   templateUrl: "./order-edit.component.html",
   styles: [
     `
@@ -265,6 +267,37 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
     event.preventDefault();
+  }
+
+
+  openDialog(id: number) {
+    let dialogRef = this.dialog.open(ConfirmDialog, {
+      data: { title: "Dialog", message: "Are you sure to delete this item?" }
+    });
+    dialogRef.disableClose = true;
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.selectedOption = result;
+
+      // if (this.selectedOption === dialogRef.componentInstance.ACTION_CONFIRM) {
+      //   this.orderService.deleteOrder(id).subscribe(
+      //     () => {
+      //       this.orderService.getOrders().subscribe(orders => {
+      //         this.freshDataList(orders);
+      //       }, error => (this.errorMessage = <any>error));
+      //       this.openSnackBar("The item has been deleted successfully. ", "Close");
+      //     },
+      //     (error: any) => {
+      //       this.errorMessage = <any>error;
+      //       console.log(this.errorMessage);
+      //       this.openSnackBar(
+      //         "This item has not been deleted successfully. Please try again.",
+      //         "Close"
+      //       );
+      //     }
+      //   );
+      // }
+    });
   }
 
   deleteProduct(product): void { }

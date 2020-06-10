@@ -18,13 +18,13 @@
                 <span class="view-label"> Price:</span>
             </mat-grid-tile>
             <mat-grid-tile colspan="10" style="text-align: left">
-                <span class="view-data"> AUD $ {{product.unitPrice | number: 0.00 }}</span>
+                <span class="view-data"> AUD $ {{product.unitPrice | number: '0.00' }}</span>
             </mat-grid-tile>
             <mat-grid-tile colspan="2">
                 <span class="view-label"> Quantity: </span>
             </mat-grid-tile>
             <mat-grid-tile colspan="10" style="text-align: left">
-                <span class="view-data"> {{product.unitInStock | number: 0 }}</span>
+                <span class="view-data"> {{product.unitInStock | number: '0' }}</span>
             </mat-grid-tile>
             <mat-grid-tile colspan="2">
                 <span class="view-label"> Category:</span>

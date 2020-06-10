@@ -1,40 +1,20 @@
-/**
- * Angular  decorators and services
- */
-import {
-  Component,
-  OnInit,
-  OnChanges,
-  ViewEncapsulation,
-  DoCheck
-} from '@angular/core';
-import { AppState } from './app.service';
-import { User } from './_models'
-import { Router } from '@angular/router';
-import { MatSidenav } from '@angular/material/sidenav';
-// import { LoginComponent} from './login';
-import { RootComponent } from './root'
-import { AuthenticationService } from "./_services";
-/**
- * App Component
- */
+import { Component } from '@angular/core';
+
 @Component({
-  selector: 'app',
-  template: `  
-   <ng-progress></ng-progress>
-    <root ></root>
-  `
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
+  [x: string]: any;
+  title = 'ngmd';
+  user: any;
 
-  isAuth: boolean;
-
-  constructor(
-    public appState: AppState,
-    private router: Router,
-    private authService: AuthenticationService
-  ) { }
-
-  public ngOnInit() {
+  isAuth(isAuth?: any) {
+    if (isAuth ) {
+      this.user = this.authService.getUser()
+      // this.user = JSON.parse(localStorage.getItem(APP_USER_PROFILE)) || <User>{};
+    }
   }
+
 }

@@ -15,7 +15,10 @@ import { CustomerService } from "./customer.service";
 import { SharedModule } from "../shared/shared.module";
 
 import { MaterialModule } from "../shared/material.module";
-import { MatOption } from "@angular/material";
+import { MatOption } from '@angular/material/core';
+// import { MatOption } from "@angular/material";
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+
 
 @NgModule({
   imports: [
@@ -44,7 +47,15 @@ import { MatOption } from "@angular/material";
     CustomerDetailComponent,
     CustomerEditComponent
   ],
-  providers: [CustomerService, CustomerDetailGuard, CustomerEditGuard],
-  entryComponents: [MatOption]
+  providers: [CustomerService, CustomerDetailGuard, CustomerEditGuard, 
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
+  ],
+  entryComponents: [MatOption],
+  exports: [
+    CustomerListComponent,
+    CustomerEditComponent,
+    CustomerDetailComponent,
+    
+  ]
 })
 export class CustomerModule { }

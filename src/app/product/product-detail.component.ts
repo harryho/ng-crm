@@ -7,6 +7,7 @@ import { ProductService } from './product.service';
 import { WithCategory } from './index';
 
 @Component({
+    selector: 'product-detail',
     templateUrl: './product-detail.component.html'
 })
 export class ProductDetailComponent implements OnInit, OnDestroy {

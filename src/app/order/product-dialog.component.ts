@@ -2,7 +2,8 @@ import { Component, OnInit, AfterViewInit, OnDestroy, ViewChildren, ElementRef }
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatButtonModule } from '@angular/material';
+import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog'
+// import {  MatDialogRef, MAT_DIALOG_DATA, MatButtonModule } from '@angular/material';
 
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/observable/fromEvent';

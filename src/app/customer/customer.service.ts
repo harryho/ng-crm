@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { BackendService } from '../_services'
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
@@ -14,7 +14,7 @@ import { ICustomer } from './customer';
 export class CustomerService {
   private basicAction = 'customers/';
 
-  constructor(private http: Http, private backend: BackendService) { }
+  constructor(private http: HttpClient, private backend: BackendService) { }
 
   getCustomers(): Observable<ICustomer[]> {
     return this.backend.getAll(this.basicAction)
@@ -63,7 +63,7 @@ export class CustomerService {
   }
 
   private extractData(response: Response) {
-    let body = response.json ? response.json() : response;
+    let body : any = response.json ? response.json() : response;
     return body.data ? body.data : (body || {});
   }
 
@@ -71,7 +71,7 @@ export class CustomerService {
     // in a real world app, we may send the server to some remote logging infrastructure
     // instead of just logging it to the console
     console.error(error);
-    return Observable.throw(error.json().error || 'Server error');
+    return Observable.throw(error.json() || 'Server error');
   }
 
   initializeCustomer(): ICustomer {

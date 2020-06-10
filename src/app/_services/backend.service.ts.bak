@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { HttpClient, Headers, RequestOptions, Response } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { User } from '../_models';
 
@@ -9,7 +9,7 @@ export class BackendService {
 
   private baseUrl: string = "http://localhost:5354/";
 
-  constructor(private http: Http, private location: Location) {
+  constructor(private http: HttpClient, private location: Location) {
     console.log(http);
     this.location.prepareExternalUrl(this.baseUrl);
 
@@ -65,7 +65,7 @@ export class BackendService {
 
   private jwt() {
     // create authorization header with jwt token
-    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    let currentUser = JSON.parse(localStorage.getItem(APP_USER_PROFILE));
     if (currentUser && currentUser.token) {
       let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
       return new RequestOptions({ headers: headers });

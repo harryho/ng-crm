@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { HttpClient } from '@angular/common/http';
+// import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import { User } from '../_models'
 import { BackendService } from './backend.service'
 
+
+const APP_USER_PROFILE = "APP_USER_PROFILE"
 @Injectable()
 export class AuthenticationService {
-  constructor(private http: Http, private backend: BackendService) { }
+  constructor(private http: HttpClient, private backend: BackendService) { }
 
   login(user: any) {
     return this.backend.login('token', user)
@@ -19,18 +21,24 @@ export class AuthenticationService {
           // store user details and token in local storage to keep user logged in between page refreshes
           user.token = data.access_token;
           user.isAuthenticated = true;
-          localStorage.setItem('currentUser', JSON.stringify(user));
+          localStorage.setItem(APP_USER_PROFILE, JSON.stringify(user));
         }
       });
   }
 
   logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem(APP_USER_PROFILE);
   }
 
   isAuthenticated() {
-    let user = <User>JSON.parse(localStorage.getItem('currentUser'));
+    let user =   this.getUser() // <User>JSON.parse(localStorage.getItem(APP_USER_PROFILE));
     return user && user.isAuthenticated ? true : false;
   }
+
+  getUser(){
+    let user = <User>JSON.parse(localStorage.getItem(APP_USER_PROFILE));
+    return user;
+  }
+
 }

@@ -78,8 +78,8 @@
                                 {{product.productName}}
                                 </a>
                             </td>
-                            <td>AUD $ {{ product.unitPrice | number: 0.00}}</td>
-                            <td>{{ product.unitInStock | number: 0 }}</td>
+                            <td>AUD $ {{ product.unitPrice | number: '0.00'}}</td>
+                            <td>{{ product.unitInStock | number: '0' }}</td>
 
                             <td>
                                 {{product.category.categoryName}}
@@ -142,11 +142,11 @@
     </ng-container>
     <ng-container matColumnDef="unitPrice">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Price </mat-header-cell>
-      <mat-cell *matCellDef="let product"> AUD $ {{ product.unitPrice | number: 0.00}} </mat-cell>
+      <mat-cell *matCellDef="let product"> AUD $ {{ product.unitPrice | number: '0.00'}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="unitInStock">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Quantity In Stock </mat-header-cell>
-      <mat-cell *matCellDef="let product"> {{ product.unitInStock | number: 0 }} </mat-cell>
+      <mat-cell *matCellDef="let product"> {{ product.unitInStock | number: '0' }} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="categoryName">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Category </mat-header-cell>

@@ -6,6 +6,7 @@ import { IOrder } from './order';
 import { OrderService } from './order.service';
 
 @Component({
+    selector: 'order-detail',
     templateUrl: './order-detail.component.html'
 })
 export class OrderDetailComponent implements OnInit, OnDestroy {

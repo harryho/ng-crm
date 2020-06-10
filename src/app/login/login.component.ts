@@ -9,11 +9,10 @@ import {
 import { Router, ActivatedRoute } from "@angular/router";
 
 import { AuthenticationService } from "../_services";
-import { Observable } from "rxjs/Observable";
 
 @Component({
-  selector: "login",
-  moduleId: module.id.toString(),
+  selector: "login-form",
+  // moduleId: module.id.toString(),
   templateUrl: "./login.component.html",
   styles: [
     `

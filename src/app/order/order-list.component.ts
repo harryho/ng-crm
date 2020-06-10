@@ -5,15 +5,19 @@ import { OrderService } from "./order.service";
 import { PagerService } from "../_services";
 import { ConfirmDialog } from "../shared";
 import * as _ from "lodash";
-import {
-  MatDialog,
-  MatSnackBar,
-  MatPaginator,
-  MatTableDataSource,
-  MatSort
-} from "@angular/material";
+// import {
+//   MatPaginator,
+//   MatTableDataSource,
+//   MatSort
+// } from "@angular/material";
+import {MatSnackBar} from '@angular/material/snack-bar';
 
+import {MatDialog} from '@angular/material/dialog'
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 @Component({
+  selector: 'order-list',
   templateUrl: "./order-list.component.html",
   styleUrls: ["./order-list.component.css"],
   providers: [ConfirmDialog]

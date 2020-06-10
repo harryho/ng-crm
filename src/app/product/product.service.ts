@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { BackendService } from '../_services'
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
@@ -13,7 +13,7 @@ import { IProduct, ICategory } from './product';
 export class ProductService {
   private basicAction = 'products/';
 
-  constructor(private http: Http, private backend: BackendService) { }
+  constructor(private http: HttpClient, private backend: BackendService) { }
 
   getProducts(): Observable<IProduct[]> {
     // return this.http.get(this.baseUrl)
@@ -73,7 +73,7 @@ export class ProductService {
   }
 
   private extractData(response: Response) {
-    let body = response.json ? response.json() : response;
+    let body : any = response.json ? response.json() : response;
     return body.data ? body.data : (body || {});
   }
 
@@ -81,7 +81,7 @@ export class ProductService {
     // in a real world app, we may send the server to some remote logging infrastructure
     // instead of just logging it to the console
     console.error(error);
-    return Observable.throw(error.json().error || 'Server error');
+    return Observable.throw(error.json() || 'Server error');
   }
 
   initializeProduct(): IProduct {

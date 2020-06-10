@@ -16,6 +16,7 @@ import { GenericValidator } from '../shared/generic-validator';
 
 
 @Component({
+    selector: 'customer-edit',
     templateUrl: './customer-edit.component.html',
     styles: [`
     .example-section {

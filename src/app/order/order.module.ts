@@ -14,8 +14,9 @@ import { OrderService } from "./order.service";
 import { SharedModule } from "../shared/shared.module";
 import { MaterialModule } from "../shared/material.module";
 
-import { MatOption } from "@angular/material";
-
+import { MatOption } from "@angular/material/core";
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+// import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 @NgModule({
   imports: [
     SharedModule,
@@ -44,7 +45,15 @@ import { MatOption } from "@angular/material";
     OrderEditComponent,
     ProductDialogComponent
   ],
-  providers: [OrderService, OrderDetailGuard, OrderEditGuard],
+  providers: [OrderService, OrderDetailGuard, OrderEditGuard,
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
+  ],
+  exports: [
+    OrderListComponent,
+    OrderEditComponent,
+    OrderDetailComponent,
+    
+  ],
   entryComponents: [ProductDialogComponent, MatOption]
 })
 export class OrderModule { }

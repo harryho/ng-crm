@@ -6,6 +6,7 @@ import { ICustomer } from './customer';
 import { CustomerService } from './customer.service';
 
 @Component({
+    selector: 'customer-detail',
     templateUrl: './customer-detail.component.html'
 })
 export class CustomerDetailComponent implements OnInit, OnDestroy {

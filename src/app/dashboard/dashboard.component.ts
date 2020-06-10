@@ -7,7 +7,7 @@ import {
   ViewEncapsulation,
   DoCheck
 } from '@angular/core';
-import { AppState } from '../app.service';
+// import { AppState } from '../app.service';
 import { User } from '../_models'
 import { Router } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit {
   isMobile = false;
 
   constructor(
-    public appState: AppState,
+    // public appState: AppState,
     private router: Router,
     breakpointObserver: BreakpointObserver,
     mediaMatcher: MediaMatcher) {

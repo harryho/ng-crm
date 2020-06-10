@@ -5,17 +5,23 @@ import { ProductService } from './product.service';
 import { PagerService } from '../_services';
 import { ConfirmDialog } from '../shared';
 import * as _ from 'lodash';
-import {
-    MatDialog,
-    MatSnackBar,
-    MatPaginator,
-    MatTableDataSource,
-    MatSort
-} from "@angular/material";
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
+// import {
+//     MatDialog,
+//     MatSnackBar,
+//     MatPaginator,
+//     MatTableDataSource,
+//     MatSort
+// } from "@angular/material";
 
 
 
 @Component({
+    selector: 'product-list',
     templateUrl: './product-list.component.html',
     styleUrls: ['./product-list.component.css'],
     providers: [ConfirmDialog]

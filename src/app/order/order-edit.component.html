@@ -110,7 +110,7 @@
           <button mat-mini-fab style="background-color:lightgrey;float:right;" (click)="openDialog(product)">
             <mat-icon>delete</mat-icon>
           </button>
-          <p mat-line> AUD ${{product.unitPrice | number: 0.00 }} </p>
+          <p mat-line> AUD ${{product.unitPrice | number: '0.00' }} </p>
         </mat-list-item>
       </mat-list>
       <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>

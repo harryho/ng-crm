@@ -30,6 +30,7 @@ import { GenericValidator } from "../shared/generic-validator";
 import { ICategory } from "./index";
 
 @Component({
+  selector: 'product-edit',
   templateUrl: "./product-edit.component.html",
   styles: [
     `

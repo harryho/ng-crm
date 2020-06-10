@@ -38,6 +38,12 @@ import { MaterialModule } from "../shared/material.module";
     ProductDetailComponent,
     ProductEditComponent
   ],
-  providers: [ProductService, ProductDetailGuard, ProductEditGuard]
+  providers: [ProductService, ProductDetailGuard, ProductEditGuard],
+  exports: [
+    ProductListComponent,
+    ProductEditComponent,
+    ProductDetailComponent,
+    
+  ]
 })
 export class ProductModule { }

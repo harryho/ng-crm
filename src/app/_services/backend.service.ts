@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
-import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { HttpClient,  } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { User } from '../_models';
 import db from "./demo.db";
+// import { AuthenticationService } from '.';
 
 
 @Injectable()
@@ -12,7 +13,8 @@ export class BackendService {
   private baseUrl: string = "http://localhost:5354/";
   ds: any;
 
-  constructor(private http: Http, private location: Location) {
+  constructor(private http: HttpClient, 
+    private location: Location) {
     // console.log(http);
     // this.location.prepareExternalUrl(this.baseUrl);
     this.ds = Object.assign({}, db) || {}
@@ -141,20 +143,20 @@ export class BackendService {
   // private helper methods
   private form() {
     let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-    return new RequestOptions({ headers: headers });
+    return { headers: headers };
   }
 
-  private jwt() {
-    // create authorization header with jwt token
-    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (currentUser && currentUser.token) {
-      let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-      return new RequestOptions({ headers: headers });
-    }
-  }
+  // private jwt() {
+  //   // create authorization header with jwt token
+  //   let user =  this.authService.getUser() //JSON.parse( );
+  //   if (user && user.token) {
+  //     let headers = new Headers({ 'Authorization': 'Bearer ' + user.token });
+  //     return { headers: headers } ;
+  //   }
+  // }
 
   private handleError(error: Response) {
     console.error(error);
-    return Observable.throw(error.json().error || 'Server error');
+    return Observable.throw(error.json() || 'Server error');
   }
 }
