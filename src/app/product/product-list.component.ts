@@ -1,21 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { IProduct } from './product';
+import { Product } from './product';
 import { ProductService } from './product.service';
 import { PagerService } from '../_services';
 import { ConfirmDialog } from '../shared';
 import * as _ from 'lodash';
-import {
-    MatDialog,
-    MatSnackBar,
-    MatPaginator,
-    MatTableDataSource,
-    MatSort
-} from "@angular/material";
-
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
+    selector: 'product-list',
     templateUrl: './product-list.component.html',
     styleUrls: ['./product-list.component.css'],
     providers: [ConfirmDialog]
@@ -30,8 +28,8 @@ export class ProductListComponent implements OnInit {
     listFilter: any = {};
     errorMessage: string;
 
-    products: IProduct[];
-    productList: IProduct[];
+    products: Product[];
+    productList: Product[];
 
     displayedColumns = ["productName", "unitPrice", "unitInStock", "categoryName", "id"];
     dataSource: any = null;
@@ -44,7 +42,7 @@ export class ProductListComponent implements OnInit {
 
     constructor(
         private productService: ProductService,
-        private pagerService: PagerService,
+        // private pagerService: PagerService,
         public dialog: MatDialog, public snackBar: MatSnackBar) {
     }
 
@@ -58,7 +56,7 @@ export class ProductListComponent implements OnInit {
         this.dataSource.filter = filterValue;
     }
 
-    freshDataList(products: IProduct[]) {
+    freshDataList(products: Product[]) {
         this.products = products;
 
         this.productList = products.map(e => {
@@ -98,7 +96,7 @@ export class ProductListComponent implements OnInit {
                 .subscribe(products => {
                     this.products = products;
                     console.log(this.products.length)
-                    this.products = this.products.filter((product: IProduct) => {
+                    this.products = this.products.filter((product: Product) => {
                         let match = true;
 
                         Object.keys(filters).forEach((k) => {

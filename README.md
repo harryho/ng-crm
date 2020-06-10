@@ -1,17 +1,18 @@
 # Angular Material Design App
 
-> A reusable CRM starter project for real-world business based on Angular 5, Angular-Material 5.
+> A reusable CRM starter project for real-world business based on Angular 9, Angular-Material 9.x.
 
-This project starts from a popular starter project [AngularClass/AngularStarter](https://github.com/AngularClass/angular-starter). The goal of this project is to create reusable project for real-world business. To achieve this target, we need a solution which includes simple authentication process, restful API feature with token support and simple but elegant UI design.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.x. The goal of this project is to create reusable project for real-world business. To achieve this target, we need a solution which includes simple authentication process, restful API feature with token support and simple but elegant UI design.
 
 #### Features
 
 * This project is built on the top of AngularClass/Angular-Starter.
 * The UI part of this project is comprehensively built on Angular Material.
-* This project includes ng-charts, progress-bar, confirmation dialog, etc.
-* ~~To simulate real-world business, this starter project chooses Json-Server as fake Restful API. (You can simple replace it with your own API).~~
-* Fake API is just readonly fake service.
+* This project includes ng-charts.
 * CRUD functions for Customer, Order and Product
+* ~~To simulate real-world business, this starter project chooses Json-Server as fake Restful API. (You can simple replace it with your own API).~~
+* ~~Fake API is just readonly fake service.~~
+
 
 
 #### Live Demo
@@ -31,43 +32,37 @@ This project starts from a popular starter project [AngularClass/AngularStarter]
 
 ```bash
 # Clone project
-git clone https://github.com/harryho/ng-md-app.git
+git clone https://github.com/harryho/ng-crm.git
 
+
+# Install Angular CLI
+npm install -g @angular/cli
 
 # prepare Json-Server as fake Restful API
-cd ng-md-app
+cd ng-crm
 
-# WINDOWS only. In terminal as administrator
-npm install -g node-pre-gyp
 
-# install the packages with npm
+# Install the packages with npm
 npm install
 
-# Or use yarn (recommended)
-yarn
 
-# start the app
-npm run demo
-# or
-yarn demo 
+# Start the app with npm
+npm start
+# Or use ng
+ng serve 
 
-# development
-npm run server:dev
-# or
-yarn server:dev
+# Test with npm
+npm run test
+# Or use ng
+ng test
 
-# serve with hot reload at localhost:3000
-npm run server:dev:hmr
-# or
-yarn server:dev:hmr
 
 # build for production 
-npm run build:prod
+npm run build --prod=true
 
 # run as production
-npm run server:prod
-
-
+install -g serve
+serve dist
 
 ```
 
@@ -78,16 +73,22 @@ For detailed explanation on how things work, checkout following links please.
 * [angular](https://angular.io/)
 * [angular-material](https://material.angular.io/)
 * [ng-charts](https://github.com/valor-software/ng2-charts)
+* [rxjs](https://rxjs.dev/api)
+
 
 #### Alternatives
 
 There are some similar projects respectively built on the Vue.js and React. If you have interests in those technical stacks. You can find and clone those repositories below.
 
-* [Vue2Crm](https://github.com/harryho/vue2crm.git).
+* [Vue2Crm](https://github.com/harryho/vue-crm.git).
 * [React-Crm](https://github.com/harryho/react-crm.git).
 
 
 ###  Change log
+
+* Rebuild the project with Angular CLI
+
+  The whole project is built from scratch based on the Angular CLI & Angular Material Schematics.
 
 * Rebase demo branch to master
 

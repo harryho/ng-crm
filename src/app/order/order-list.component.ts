@@ -5,15 +5,14 @@ import { OrderService } from "./order.service";
 import { PagerService } from "../_services";
 import { ConfirmDialog } from "../shared";
 import * as _ from "lodash";
-import {
-  MatDialog,
-  MatSnackBar,
-  MatPaginator,
-  MatTableDataSource,
-  MatSort
-} from "@angular/material";
+import {MatSnackBar} from '@angular/material/snack-bar';
 
+import {MatDialog} from '@angular/material/dialog'
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 @Component({
+  selector: 'order-list',
   templateUrl: "./order-list.component.html",
   styleUrls: ["./order-list.component.css"],
   providers: [ConfirmDialog]
@@ -46,7 +45,6 @@ export class OrderListComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
-    private pagerService: PagerService,
     public dialog: MatDialog,
     public snackBar: MatSnackBar
   ) { }
@@ -66,7 +64,7 @@ export class OrderListComponent implements OnInit {
     this.orders = orders;
     this.orderList = orders.map(e => {
       let order = e;
-      e["customerName"] = e.customer.firstName + " " + e.customer.lastName;
+      e["customerName"] = e.customer.firstname + " " + e.customer.lastname;
       return order;
     });
     this.totalAmount = this.orders.length;

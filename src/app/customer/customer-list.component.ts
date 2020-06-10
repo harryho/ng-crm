@@ -1,21 +1,20 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { ICustomer } from './customer';
+import { Customer } from './customer';
 import { CustomerService } from './customer.service';
 import { PagerService } from '../_services';
 import { ConfirmDialog } from '../shared';
 import * as _ from 'lodash';
-import {
-    MatDialog,
-    MatSnackBar,
-    MatPaginator,
-    MatTableDataSource,
-    MatSort
-} from "@angular/material";
 
+import {MatDialog} from '@angular/material/dialog'
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
+    selector: 'customer-list',
     templateUrl: './customer-list.component.html',
     styleUrls: ['./customer-list.component.css'],
     providers: [ConfirmDialog]
@@ -32,15 +31,15 @@ export class CustomerListComponent implements OnInit {
     listFilter: any = {};
     errorMessage: string;
 
-    customers: ICustomer[];
-    customerList: ICustomer[]; //
-    displayedColumns = ["avatar", "firstName", "lastName", "rewards", "email", "membership", "id"];
+    customers: Customer[];
+    customerList: Customer[]; //
+    displayedColumns = ["avatar", "firstname", "lastname", "rewards", "email", "membership", "id"];
     dataSource: any = null;
     pager: any = {};
     pagedItems: any[];
     searchFilter: any = {
-        firstName: "",
-        lastName: "",
+        firstname: "",
+        lastname: "",
         email: ""
     };
     selectedOption: string;
@@ -48,7 +47,7 @@ export class CustomerListComponent implements OnInit {
 
     constructor(
         private customerService: CustomerService,
-        private pagerService: PagerService,
+        // private pagerService: PagerService,
         public dialog: MatDialog,
         public snackBar: MatSnackBar) {
     }
@@ -59,7 +58,7 @@ export class CustomerListComponent implements OnInit {
         this.dataSource.filter = filterValue;
     }
 
-    freshDataList(customers: ICustomer[]) {
+    freshDataList(customers: Customer[]) {
         this.customers = customers;
 
         this.dataSource = new MatTableDataSource(this.customers);
@@ -92,7 +91,7 @@ export class CustomerListComponent implements OnInit {
                 .subscribe(customers => {
                     this.customers = customers;
                     console.log(this.customers.length)
-                    this.customers = this.customers.filter((customer: ICustomer) => {
+                    this.customers = this.customers.filter((customer: Customer) => {
                         let match = true;
 
                         Object.keys(filters).forEach((k) => {

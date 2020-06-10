@@ -1,20 +1,21 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogModule, MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatButtonModule } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
 
 
 @Component({
     selector: 'confirm-dialog',
     template: `
         <div class="confirm-dialog">
-        <h1 class="confirm-dialog-title">{{data && data.title? data.title: 'Dialog'}}</h1>
+           <h1 class="confirm-dialog-title">{{data && data.title? data.title: 'Dialog'}}</h1>
 
-        <mat-dialog-content class="confirm-dialog-content">
-        {{data && data.message? data.message: 'Are you sure to do this?'}}
-        </mat-dialog-content>
-        <mat-dialog-actions class="confirm-dialog-action">
-        <button mat-raised-button [mat-dialog-close]="ACTION_CONFIRM" class="accent" >Confirm</button>
-        <button mat-raised-button [mat-dialog-close]="ACTION_CANCEL" class="primary">Cancel</button>
-        </mat-dialog-actions>
+            <mat-dialog-content class="confirm-dialog-content">
+            {{data && data.message? data.message: 'Are you sure to do this?'}}
+            </mat-dialog-content>
+            <mat-dialog-actions class="confirm-dialog-action">
+            <button mat-raised-button [mat-dialog-close]="ACTION_CONFIRM" class="accent" >Confirm</button>
+            <button mat-raised-button [mat-dialog-close]="ACTION_CANCEL" class="primary">Cancel</button>
+            </mat-dialog-actions>
         </div>`
     ,
     styles: [

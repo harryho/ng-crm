@@ -3,9 +3,8 @@ import { RouterModule } from "@angular/router";
 import { ReactiveFormsModule } from "@angular/forms";
 
 import { ProductListComponent } from "./product-list.component";
-import { ProductDetailComponent } from "./product-detail.component";
 import { ProductDetailGuard, ProductEditGuard } from "./product-guard.service";
-import { ProductEditComponent } from "./product-edit.component";
+import { ProductFormComponent } from "./product-form.component";
 
 import { ProductService } from "./product.service";
 import { SharedModule } from "../shared/shared.module";
@@ -17,16 +16,11 @@ import { MaterialModule } from "../shared/material.module";
     ReactiveFormsModule,
     MaterialModule,
     RouterModule.forChild([
-      { path: "products", component: ProductListComponent },
+      { path: "", component: ProductListComponent },
       {
-        path: "product/:id",
-        canActivate: [ProductDetailGuard],
-        component: ProductDetailComponent
-      },
-      {
-        path: "productEdit/:id",
+        path: "edit/:id",
         canDeactivate: [ProductEditGuard],
-        component: ProductEditComponent
+        component: ProductFormComponent
       }
     ])
   ],
@@ -35,9 +29,12 @@ import { MaterialModule } from "../shared/material.module";
      * Components / Directives/ Pipes
      */
     ProductListComponent,
-    ProductDetailComponent,
-    ProductEditComponent
+    ProductFormComponent
   ],
-  providers: [ProductService, ProductDetailGuard, ProductEditGuard]
+  providers: [ProductService, ProductDetailGuard, ProductEditGuard],
+  exports: [
+    ProductListComponent,
+    ProductFormComponent,
+  ]
 })
 export class ProductModule { }

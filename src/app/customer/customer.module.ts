@@ -1,38 +1,34 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { ReactiveFormsModule } from "@angular/forms";
-// import {NgProgressModule, NgProgressBrowserXhr, NgProgressService } from 'ngx-progressbar';
-
 import { CustomerListComponent } from "./customer-list.component";
-import { CustomerDetailComponent } from "./customer-detail.component";
 import {
   CustomerDetailGuard,
   CustomerEditGuard
 } from "./customer-guard.service";
-import { CustomerEditComponent } from "./customer-edit.component";
+import { CustomerFormComponent } from "./customer-form.component";
 
 import { CustomerService } from "./customer.service";
 import { SharedModule } from "../shared/shared.module";
 
 import { MaterialModule } from "../shared/material.module";
-import { MatOption } from "@angular/material";
+
 
 @NgModule({
   imports: [
     SharedModule,
-    ReactiveFormsModule,
+    // ReactiveFormsModule,
     MaterialModule,
     RouterModule.forChild([
-      { path: "customers", component: CustomerListComponent },
+      { path: "", component: CustomerListComponent },
       {
-        path: "customer/:id",
-        canActivate: [CustomerDetailGuard],
-        component: CustomerDetailComponent
+        path: "new/",
+        canDeactivate: [CustomerEditGuard],
+        component: CustomerFormComponent
       },
       {
-        path: "customerEdit/:id",
+        path: "edit/:id",
         canDeactivate: [CustomerEditGuard],
-        component: CustomerEditComponent
+        component: CustomerFormComponent
       }
     ])
   ],
@@ -41,10 +37,15 @@ import { MatOption } from "@angular/material";
      * Components / Directives/ Pipes
      */
     CustomerListComponent,
-    CustomerDetailComponent,
-    CustomerEditComponent
+    CustomerFormComponent
   ],
-  providers: [CustomerService, CustomerDetailGuard, CustomerEditGuard],
-  entryComponents: [MatOption]
+  providers: [CustomerService, CustomerDetailGuard, CustomerEditGuard,
+  ],
+  // entryComponents: [MatOption],
+  exports: [
+    CustomerListComponent,
+    CustomerFormComponent,
+
+  ]
 })
 export class CustomerModule { }

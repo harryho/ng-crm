@@ -1,0 +1,88 @@
+<!-- <div class="panel panel-primary">
+    <div class="panel-heading">
+        {{pageTitle}}
+    </div>
+
+    <div class="panel-body">         -->
+<form novalidate (ngSubmit)="saveProduct()" [formGroup]="productForm">
+  <mat-card>
+    <!--   <mat-card-header> 
+     <mat-card-title class="view-card-title">
+      <h1>{{pageTitle }}</h1>
+    </mat-card-title>
+     </mat-card-header>   -->
+
+    <mat-toolbar style="background-color: #FFF">
+      <mat-toolbar-row>
+        <span class="view-card-title"> {{pageTitle}}</span>
+        <span class="title-spacer"></span>
+
+        <mat-card-actions>
+          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:darkgray" type="submit"
+            [disabled]='!productForm.valid'>
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-mini-fab class="" style="margin-right:10px; " [routerLink]="['/products']">
+            <mat-icon>cancel</mat-icon>
+          </button>
+
+        </mat-card-actions>
+
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <mat-card-content style="margin: 5 0 5 0px;">
+      <div class="form-card">
+        <mat-grid-list cols="12" rowHeight="80px">
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-select placeholder="Select Category" #categoryIdId formControlName="categoryId"
+                [(value)]="product.categoryId">
+                <mat-option *ngFor="let category of categories" [value]="category.id">
+                  {{category.categoryName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput id="productNameId" type="text" placeholder="Product Name (required)"
+                formControlName="productName" />
+              <mat-error *ngIf="displayMessage.productName">
+                {{displayMessage.productName}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput id="unitPriceId" type="currency" placeholder="Price (required)"
+                formControlName="unitPrice" />
+              <mat-error *ngIf="displayMessage.unitPrice">
+                {{displayMessage.unitPrice}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput id="unitInStockId" type="number" placeholder="Quantity In Stock (required)"
+                formControlName="unitInStock" />
+              <mat-error *ngIf="displayMessage.unitInStock">
+                {{displayMessage.unitInStock}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+
+      <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
+    </mat-card-content>
+
+
+
+  </mat-card>
+
+</form>
+
+<!-- <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
+    </div>
+</div> -->

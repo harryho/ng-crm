@@ -1,6 +1,6 @@
 /* Defines the product entity */
 
-export interface IProduct {
+export interface Product {
     id: number;
     avatar: string;
     categoryId: number;
@@ -10,14 +10,14 @@ export interface IProduct {
 }
 
 export type WithCategory = {
-    category: ICategory
+    category: Category
 }
 
 export type WithCategoryName = {
     categoryName: string
 }
 
-export interface ICategory {
+export interface Category {
     id: number;
     categoryName: string;
 }

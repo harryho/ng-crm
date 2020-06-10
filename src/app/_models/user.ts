@@ -4,7 +4,7 @@ export class User {
     token: string;
     username: string;
     password: string;
-    firstName: string;
-    lastName: string;
+    firstname: string;
+    lastname: string;
     isAuthenticated: boolean;
 }

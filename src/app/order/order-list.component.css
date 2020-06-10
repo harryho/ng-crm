@@ -2,6 +2,13 @@ thead {
   color: #337ab7;
 }
 
+.title-spacer {
+  flex: 1 1 auto;
+}
+
+.search-form-fileld{
+    margin-right: 20px;
+}
 
 .table-responsive {
   display: flex;

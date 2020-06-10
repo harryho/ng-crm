@@ -1,40 +1,110 @@
-/**
- * Angular  decorators and services
- */
-import {
-  Component,
-  OnInit,
-  OnChanges,
-  ViewEncapsulation,
-  DoCheck
-} from '@angular/core';
-import { AppState } from './app.service';
-import { User } from './_models'
-import { Router } from '@angular/router';
-import { MatSidenav } from '@angular/material/sidenav';
-// import { LoginComponent} from './login';
-import { RootComponent } from './root'
-import { AuthenticationService } from "./_services";
-/**
- * App Component
- */
-@Component({
-  selector: 'app',
-  template: `  
-   <ng-progress></ng-progress>
-    <root ></root>
-  `
-})
-export class AppComponent implements OnInit {
+import { Component, OnInit, OnDestroy, OnChanges } from '@angular/core';
+import { Breakpoints, BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
+import { AuthenticationService } from './_services';
+import { Observable } from 'rxjs';
 
-  isAuth: boolean;
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent implements OnInit, OnChanges, OnDestroy {
+  title = 'ng crm';
+  user: any = null;
+  isMobile: boolean;
+  mode = "side"
+  uiContent = "content"
+  progrssBarClass = "progress-bar";
+  isloading = true;
 
   constructor(
-    public appState: AppState,
+    // private loadingBar: SlimLoadingBarService,
     private router: Router,
-    private authService: AuthenticationService
-  ) { }
+    public authService: AuthenticationService,
+    private breakpointObserver: BreakpointObserver
+  ) {
+    console.log(" constructor")
 
-  public ngOnInit() {
+    this.isloading = true;
+
+    breakpointObserver.observe([
+      Breakpoints.HandsetLandscape,
+      Breakpoints.HandsetPortrait
+    ]).subscribe(result => {
+      console.log(result)
+      if (result.matches) {
+        // this.activateHandsetLayout();
+        this.isMobile = true;
+        this.mode = "over"
+        this.uiContent = "mobile-content"
+      }
+      else {
+        this.isMobile = false;
+        this.mode = "side"
+        this.uiContent = "content"
+      }
+    });
+    // breakpointObserver.ngOnDestroy()
+
+    this.router.events.subscribe((event: Event) => {
+      this.navigationInterceptor(event);
+    })
+      ;
   }
+
+  ngOnChanges() {
+    console.log(" ngOnChanges")
+  }
+
+
+  ngOnInit(): void {
+    console.log(" ngOnInit")
+    this.user = this.authService.getUser();
+    this.isloading = false;
+  }
+
+  logout(): void {
+    // localStorage.removeItem('currentUser');
+    this.authService.logout()
+    this.router.navigate(['login']);
+  }
+
+
+
+  isAuth(isAuth?: any) {
+    if (isAuth) {
+      this.user = this.authService.getUser()
+      // this.user = JSON.parse(localStorage.getItem(APP_USER_PROFILE)) || <User>{};
+    }
+  }
+
+  private navigationInterceptor(event: Event): void {
+    if (event instanceof NavigationStart) {
+      this. progrssBarClass = "progress-bar";
+      this.isloading = true;
+    }
+    if (event instanceof NavigationEnd) {
+      this. progrssBarClass = "progress-bar-hidden";
+      this.isloading = false;
+    }
+    if (event instanceof NavigationCancel) {
+      this. progrssBarClass = "progress-bar-hidden";
+      this.isloading = false;
+    }
+    if (event instanceof NavigationError) {
+      this. progrssBarClass = "progress-bar-hidden";
+      this.isloading = false;
+    }
+
+  }
+
+
+  ngOnDestroy() {
+    this.breakpointObserver.ngOnDestroy()
+    this.authService.logout()
+    //   this.router.events
+    // this.breakpoint.
+  }
+
 }

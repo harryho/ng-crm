@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, CanDeactivate } from '@angular/router';
 
-import { ProductEditComponent } from './product-edit.component';
+import { ProductFormComponent } from './product-form.component';
 
 @Injectable()
 export class ProductDetailGuard implements CanActivate {
@@ -23,9 +23,9 @@ export class ProductDetailGuard implements CanActivate {
 }
 
 @Injectable()
-export class ProductEditGuard implements CanDeactivate<ProductEditComponent> {
+export class ProductEditGuard implements CanDeactivate<ProductFormComponent> {
 
-    canDeactivate(component: ProductEditComponent): boolean {
+    canDeactivate(component: ProductFormComponent): boolean {
         if (component.productForm.dirty) {
             let productName = component.productForm.get('productName').value || 'New Product';
             return confirm(`Navigate away and lose all changes to ${productName}?`);

@@ -6,18 +6,9 @@
       <h1>{{pageTitle }}</h1>
     </mat-card-title>
   </mat-card-header>
-  <mat-toolbar>
+  <mat-toolbar class="primary">
     <mat-toolbar-row>
-      <!-- <h1> {{pageTitle}}</h1> -->
-      <mat-form-field>
-        <mat-placeholder>
-          <mat-icon>subject</mat-icon>
-          <b> Filter</b>
-        </mat-placeholder>
-        <input matInput (keyup)="applyFilter($event.target.value)">
-      </mat-form-field>
-      <span class="title-spacer"></span>
-      <button mat-mini-fab style="margin-right:10px; background-color:#e07c9e" [routerLink]="['/customerEdit', 0]">
+      <button mat-mini-fab style="margin-right:10px; background-color:#e07c9e" [routerLink]="['/customers/edit/', 0]">
         <mat-icon>add</mat-icon>
       </button>
       <button mat-mini-fab style="margin-right:10px; background-color:#a28b6e" (click)="sidenav.toggle()">
@@ -26,27 +17,34 @@
       <button mat-mini-fab style="margin-right:10px; background-color:darkgray" (click)="reset()">
         <mat-icon>refresh</mat-icon>
       </button>
+
+      <span class="title-spacer"></span>
+      <mat-form-field appearance="standard" class="search-form-fileld">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event.target.value)">
+        <mat-icon>filter_list</mat-icon>
+      </mat-form-field>
+
     </mat-toolbar-row>
   </mat-toolbar>
 
   <mat-table #table [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="avatar">
-
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let customer">
-        <a [routerLink]="['/customer', customer.id]">
-          <img *ngIf='customer.avatar' [src]='customer.avatar' [title]='customer.firstName | uppercase' [style.width.px]='imageWidth'
-            [style.margin.px]='imageMargin'>
-        </a>
+        <!-- <a [routerLink]="['/customer', customer.id]"> -->
+        <img *ngIf='customer.avatar' [src]='customer.avatar' [title]='customer.firstname | uppercase'
+          [style.width.px]='imageWidth' [style.margin.px]='imageMargin'>
+        <!-- </a> -->
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="firstName">
+    <ng-container matColumnDef="firstname">
       <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-      <mat-cell *matCellDef="let customer"> {{customer.firstName}} </mat-cell>
+      <mat-cell *matCellDef="let customer"> {{customer.firstname}} </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="lastName">
+    <ng-container matColumnDef="lastname">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
-      <mat-cell *matCellDef="let customer"> {{customer.lastName}} </mat-cell>
+      <mat-cell *matCellDef="let customer"> {{customer.lastname}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="email">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
@@ -69,13 +67,15 @@
     </ng-container>
     <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef style="justify-content:right;">
-        <button mat-button style="color:white; background-color:darkgrey" (click)="resetListFilter()">Reset</button>
+        <!-- <button mat-button style="color:white; background-color:darkgrey" (click)="resetListFilter()">Reset</button> -->
       </mat-header-cell>
       <mat-cell *matCellDef="let customer" style="justify-content:right;">
-        <button mat-mini-fab style="background-color:teal; min-height: 30px;   margin: 5px;" [routerLink]="['/customerEdit', customer.id]">
+        <button mat-mini-fab style="background-color:teal; min-height: 30px;   margin: 5px;"
+          [routerLink]="['/customers/edit/', customer.id]">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-mini-fab style="background-color:lightblue; min-height: 30px;  margin: 5px;" (click)="openDialog(customer.id)">
+        <button mat-mini-fab style="background-color:lightblue; min-height: 30px;  margin: 5px;"
+          (click)="openDialog(customer.id)">
           <mat-icon>delete</mat-icon>
         </button>
       </mat-cell>
@@ -87,36 +87,46 @@
   </mat-paginator>
 </mat-card>
 
-
-<mat-sidenav class="search-panel" dark #sidenav mode="push" opened="false">
+<mat-sidenav class="search-panel" position="end" dark #sidenav mode="push" opened="false">
   <mat-card class="profile-card">
     <mat-card-header>
-      <div mat-card-avatar class="avatar"></div>
-      <mat-card-subtitle>
-
-        <button mat-raised-button style="color:lightgrey; background-color:darkgreen" (click)="searchCustomers(searchFilter);sidenav.toggle()">
-          <mat-icon>search</mat-icon>Search </button>
-
-        <button mat-raised-button style="color:lightgrey; background-color:darkred" (click)="resetSearchFilter(sidenav)">
-          <mat-icon>refresh</mat-icon>Reset</button>
-
-      </mat-card-subtitle>
+      <div mat-card-avatar class="avatar">
+        <mat-icon>search</mat-icon>
+      </div>
+      <mat-card-title>
+        Advanced Search
+      </mat-card-title>
     </mat-card-header>
-
   </mat-card>
-  <mat-nav-list style="margin-left:20px;">
-    <mat-form-field>
-      <input matInput type="text" placeholder="Reference No." style="width:200px;" name="reference" [(ngModel)]="searchFilter.reference"
-        #reference />
+  <mat-nav-list style="margin-left:50px;">
+    <mat-form-field appearance="standard">
+      <mat-label>First Name</mat-label>
+      <input matInput appearance="standard" placeholder="First Name" name="firstname"
+        [(ngModel)]="searchFilter.firstname" />
     </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" placeholder="Order Date" style="width:200px;" name="reference" [(ngModel)]="searchFilter.customerDate"
-        #reference />
+    <mat-form-field appearance="standard">
+      <mat-label>Last Name</mat-label>
+      <input matInput placeholder="Last Name" name="reference" [(ngModel)]="searchFilter.customerDate" #reference />
     </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" placeholder="Customer" style="width:200px;" name="amount" [(ngModel)]="searchFilter.customerName"
+    <mat-form-field appearance="standard">
+      <mat-label>Mobile</mat-label>
+      <input matInput appearance="standard" placeholder="Mobile" name="amount" [(ngModel)]="searchFilter.customerName"
         #amount />
     </mat-form-field>
+
   </mat-nav-list>
+  <mat-divider></mat-divider>
+  <mat-card-header>
+    <mat-action-list>
+      <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
+        (click)="searchCustomers(searchFilter);sidenav.toggle()">
+        <mat-icon>search</mat-icon>Search
+      </button>
+      <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
+        (click)="resetSearchFilter(sidenav)">
+        <mat-icon>refresh</mat-icon>Reset
+      </button>
+    </mat-action-list>
+  </mat-card-header>
 </mat-sidenav>
 <!-- </mat-sidenav-container> -->

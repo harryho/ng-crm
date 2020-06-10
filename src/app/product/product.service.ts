@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { BackendService } from '../_services'
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
@@ -7,15 +7,15 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
-import { IProduct, ICategory } from './product';
+import { Product, Category } from './product';
 
 @Injectable()
 export class ProductService {
   private basicAction = 'products/';
 
-  constructor(private http: Http, private backend: BackendService) { }
+  constructor(private http: HttpClient, private backend: BackendService) { }
 
-  getProducts(): Observable<IProduct[]> {
+  getProducts(): Observable<Product[]> {
     // return this.http.get(this.baseUrl)
     const action = `${this.basicAction}?_expand=category`;
     return this.backend.getAll(action)
@@ -23,7 +23,7 @@ export class ProductService {
       .catch(this.handleError);
   }
 
-  getProduct(id: number): Observable<IProduct> {
+  getProduct(id: number): Observable<Product> {
     if (id === 0) {
       return Observable.of(this.initializeProduct());
     };
@@ -40,7 +40,7 @@ export class ProductService {
       .catch(this.handleError);
   }
 
-  saveProduct(product: IProduct): Observable<IProduct> {
+  saveProduct(product: Product): Observable<Product> {
     // let headers = new Headers({ 'Content-Type': 'application/json' });
     // let options = new RequestOptions({ headers: headers });
 
@@ -50,7 +50,7 @@ export class ProductService {
     return this.updateProduct(product);
   }
 
-  getCategories(): Observable<ICategory[]> {
+  getCategories(): Observable<Category[]> {
     // return this.http.get(this.baseUrl)
     const action = 'categories/'
     return this.backend.getAll(action)
@@ -58,14 +58,14 @@ export class ProductService {
       .catch(this.handleError);
   }
 
-  private createProduct(product: IProduct): Observable<IProduct> {
+  private createProduct(product: Product): Observable<Product> {
     product.id = null;
     return this.backend.create(this.basicAction, product)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  private updateProduct(product: IProduct): Observable<IProduct> {
+  private updateProduct(product: Product): Observable<Product> {
     const action = `${this.basicAction}${product.id}`;
     return this.backend.update(action, product)
       .map(() => product)
@@ -73,7 +73,7 @@ export class ProductService {
   }
 
   private extractData(response: Response) {
-    let body = response.json ? response.json() : response;
+    let body : any = response.json ? response.json() : response;
     return body.data ? body.data : (body || {});
   }
 
@@ -81,10 +81,10 @@ export class ProductService {
     // in a real world app, we may send the server to some remote logging infrastructure
     // instead of just logging it to the console
     console.error(error);
-    return Observable.throw(error.json().error || 'Server error');
+    return Observable.throw(error.json() || 'Server error');
   }
 
-  initializeProduct(): IProduct {
+  initializeProduct(): Product {
     // Return an initialized object
     return {
       id: 0,
