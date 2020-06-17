@@ -30,10 +30,11 @@ import { OrderService } from "./order.service";
 import { NumberValidators } from "../shared/number.validator";
 import { GenericValidator } from "../shared/generic-validator";
 import { CustomerService, ICustomer } from "../customer";
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ProductDialogComponent } from "./product-dialog.component";
 import { ConfirmDialog } from "../shared";
 import { Window } from 'selenium-webdriver';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 // import { Event } from '_debugger';
 
 @Component({
@@ -41,6 +42,14 @@ import { Window } from 'selenium-webdriver';
   templateUrl: "./order-edit.component.html",
   styles: [
     `
+  .title-spacer {
+      flex: 1 1 auto;
+    }
+  .form-field{
+      width: 100%;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
     .example-section {
         display: flex;
         align-content: center;
@@ -59,20 +68,39 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren(FormControlName, { read: ElementRef })
   formInputElements: ElementRef[];
   // @ViewChild('mydp') mydp: MyDatePicker;
-
   pageTitle: string = "Update Order";
   errorMessage: string;
   orderForm: FormGroup;
-
   order: IOrder = <IOrder>{};
-  private sub: Subscription;
   showImage: boolean;
   customers: ICustomer[];
-
+  fieldColspan = 4;
   // Use with the generic validation messcustomerId class
   displayMessage: { [key: string]: string } = {};
-  private validationMessages: { [key: string]: { [key: string]: string } };
+  private validationMessages: { [key: string]: { [key: string]: string } } = {
+    reference: {
+      required: "Order reference is required.",
+      minlength: "Order reference must be at least one characters.",
+      maxlength: "Order reference cannot exceed 100 characters."
+    },
+    amount: {
+      required: "Order amount is required.",
+      range:
+        "Amount of the order must be between 1 (lowest) and 9999 (highest)."
+    },
+    quantity: {
+      required: "Order quantity is required.",
+      range:
+        "Quantity of the order must be between 1 (lowest) and 20 (highest)."
+    },
+    customerId: {
+      required: "Customer is required."
+    }
+  };
+  private sub: Subscription;
   private genericValidator: GenericValidator;
+
+
 
   constructor(
     private fb: FormBuilder,
@@ -80,30 +108,16 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private orderService: OrderService,
     private customerService: CustomerService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private breakpointObserver: BreakpointObserver
   ) {
-    // Defines all of the validation messcustomerIds for the form.
-    // These could instead be retrieved from a file or database.
-    this.validationMessages = {
-      reference: {
-        required: "Order reference is required.",
-        minlength: "Order reference must be at least one characters.",
-        maxlength: "Order reference cannot exceed 100 characters."
-      },
-      amount: {
-        required: "Order amount is required.",
-        range:
-          "Amount of the order must be between 1 (lowest) and 9999 (highest)."
-      },
-      quantity: {
-        required: "Order quantity is required.",
-        range:
-          "Quantity of the order must be between 1 (lowest) and 20 (highest)."
-      },
-      customerId: {
-        required: "Customer is required."
-      }
-    };
+    breakpointObserver.observe([
+      Breakpoints.HandsetLandscape,
+      Breakpoints.HandsetPortrait
+    ]).subscribe(result => {
+      // console.log(result)
+      this.onScreensizeChange(result);
+    });
 
     this.genericValidator = new GenericValidator(this.validationMessages);
   }
@@ -165,8 +179,8 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.orderService
       .getOrder(id)
       .subscribe(
-      (order: IOrder) => this.onOrderRetrieved(order),
-      (error: any) => (this.errorMessage = <any>error)
+        (order: IOrder) => this.onOrderRetrieved(order),
+        (error: any) => (this.errorMessage = <any>error)
       );
   }
 
@@ -222,8 +236,8 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
       this.orderService
         .saveOrder(order)
         .subscribe(
-        () => this.onSaveComplete(),
-        (error: any) => (this.errorMessage = <any>error)
+          () => this.onSaveComplete(),
+          (error: any) => (this.errorMessage = <any>error)
         );
     } else if (!this.orderForm.dirty && this.orderForm.valid) {
       this.onSaveComplete();
@@ -300,5 +314,25 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  onScreensizeChange(result: any) {
+    // debugger
+    const isLess600 = this.breakpointObserver.isMatched('(max-width: 599px)');
+    const isLess1000 = this.breakpointObserver.isMatched('(max-width: 959px)');
+    console.log(
+      ` isLess600  ${isLess600} 
+        isLess1000 ${isLess1000}  `
+    )
+    if (isLess1000) {
+      if (isLess600) {
+        this.fieldColspan = 12;
+      }
+      else {
+        this.fieldColspan = 6;
+      }
+    }
+    else {
+      this.fieldColspan = 3;
+    }
+  }
   deleteProduct(product): void { }
 }

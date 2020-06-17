@@ -28,12 +28,21 @@ import { ProductService } from "./product.service";
 import { NumberValidators } from "../shared/number.validator";
 import { GenericValidator } from "../shared/generic-validator";
 import { ICategory } from "./index";
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'product-edit',
   templateUrl: "./product-edit.component.html",
   styles: [
     `
+    .title-spacer {
+      flex: 1 1 auto;
+    }
+  .form-field{
+      width: 100%;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
     .example-section {
         display: flex;
         align-content: center;
@@ -59,35 +68,42 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   private sub: Subscription;
   showImage: boolean;
   categories: ICategory[];
-
+  fieldColspan = 4;
   // Use with the generic validation messageId class
   displayMessage: { [key: string]: string } = {};
-  private validationMessages: { [key: string]: { [key: string]: string } };
+  private validationMessages: { [key: string]: { [key: string]: string } } = {
+    product: {
+      required: "Product name is required.",
+      minlength: "Product name must be at least one characters.",
+      maxlength: "Product name cannot exceed 200 characters."
+    },
+    unitPrice: {
+      range:
+        "Price of the product must be between 1 (lowest) and 9999 (highest)."
+    },
+    unitInStock: {
+      range:
+        "Quantity of the product must be between 1 (lowest) and 2000 (highest)."
+    }
+  }
+
   private genericValidator: GenericValidator;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService
+    private productService: ProductService,
+    private breakpointObserver: BreakpointObserver
   ) {
-    // Defines all of the validation messageIds for the form.
-    // These could instead be retrieved from a file or database.
-    this.validationMessages = {
-      product: {
-        required: "Product name is required.",
-        minlength: "Product name must be at least one characters.",
-        maxlength: "Product name cannot exceed 200 characters."
-      },
-      unitPrice: {
-        range:
-          "Price of the product must be between 1 (lowest) and 9999 (highest)."
-      },
-      unitInStock: {
-        range:
-          "Quantity of the product must be between 1 (lowest) and 2000 (highest)."
-      }
-    };
+    breakpointObserver.observe([
+      Breakpoints.HandsetLandscape,
+      Breakpoints.HandsetPortrait
+    ]).subscribe(result => {
+      // console.log(result)
+      this.onScreensizeChange(result);
+    });
+
 
     this.genericValidator = new GenericValidator(this.validationMessages);
   }
@@ -141,8 +157,8 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.productService
       .getProduct(id)
       .subscribe(
-      (product: IProduct) => this.onProductRetrieved(product),
-      (error: any) => (this.errorMessage = <any>error)
+        (product: IProduct) => this.onProductRetrieved(product),
+        (error: any) => (this.errorMessage = <any>error)
       );
   }
 
@@ -150,8 +166,8 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.productService
       .getCategories()
       .subscribe(
-      categories => (this.categories = categories),
-      error => (this.errorMessage = <any>error)
+        categories => (this.categories = categories),
+        error => (this.errorMessage = <any>error)
       );
   }
 
@@ -185,8 +201,8 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.productService
           .deleteProduct(this.product.id)
           .subscribe(
-          () => this.onSaveComplete(),
-          (error: any) => (this.errorMessage = <any>error)
+            () => this.onSaveComplete(),
+            (error: any) => (this.errorMessage = <any>error)
           );
       }
     }
@@ -200,8 +216,8 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       this.productService
         .saveProduct(p)
         .subscribe(
-        () => this.onSaveComplete(),
-        (error: any) => (this.errorMessage = <any>error)
+          () => this.onSaveComplete(),
+          (error: any) => (this.errorMessage = <any>error)
         );
     } else if (!this.productForm.dirty) {
       this.onSaveComplete();
@@ -212,5 +228,26 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     // Reset the form to clear the flags
     this.productForm.reset();
     this.router.navigate(["/products"]);
+  }
+
+  onScreensizeChange(result: any) {
+    // debugger
+    const isLess600 = this.breakpointObserver.isMatched('(max-width: 599px)');
+    const isLess1000 = this.breakpointObserver.isMatched('(max-width: 959px)');
+    console.log(
+      ` isLess600  ${isLess600} 
+        isLess1000 ${isLess1000}  `
+    )
+    if (isLess1000) {
+      if (isLess600) {
+        this.fieldColspan = 12;
+      }
+      else {
+        this.fieldColspan = 6;
+      }
+    }
+    else {
+      this.fieldColspan = 3;
+    }
   }
 }

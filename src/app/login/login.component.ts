@@ -14,41 +14,7 @@ import { AuthenticationService } from "../_services";
   selector: "login-form",
   // moduleId: module.id.toString(),
   templateUrl: "./login.component.html",
-  styles: [
-    `
-    Html, body{
-      height:100%;
-        margin:0px;
-        padding:0px;
-    }
-
-    .container {
-      height:100%;
-        margin: 0 auto;
-        padding:0px;
-        position: relative;
-        top: 200px;
-    }
-    .grandParentContaniner{
-            display:table;
-            height:100%;
-            margin: 0 auto;
-    }
-    .parentContainer{
-        display:table-cell;
-        vertical-align:middle;
-    }
-    .parentContainer .loginForm{
-        padding:10px;
-        background: #fff;
-        border: 1px solid #ddd;
-        width:400px;  /*  your login form width */    display:table-cell;
-        display:table-cell;
-        vertical-align:middle;
-
-    }
-    `
-  ]
+  styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent implements OnInit {
   @Output() isAuth = new EventEmitter<boolean>();
@@ -69,7 +35,7 @@ export class LoginComponent implements OnInit {
     this.model.password = "password";
 
     this.returnUrl =
-      this.route.snapshot.queryParams["returnUrl"] || "/dashboard";
+      this.route.snapshot.queryParams["returnUrl"] || "dashboard";
   }
 
   login() {

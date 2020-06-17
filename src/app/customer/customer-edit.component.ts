@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChildren, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName, MaxLengthValidator } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import 'rxjs/add/operator/debounceTime';
@@ -13,19 +13,35 @@ import { CustomerService } from './customer.service';
 
 import { NumberValidators } from '../shared/number.validator';
 import { GenericValidator } from '../shared/generic-validator';
+import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import { TestObject } from 'protractor/built/driverProviders';
 
 
 @Component({
     selector: 'customer-edit',
     templateUrl: './customer-edit.component.html',
     styles: [`
+    .title-spacer {
+        flex: 1 1 auto;
+      }
+    .form-field{
+        width: 100%;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    .avatar-field {
+        left: 0;
+        margin: 0 auto;
+        position: absolute;
+        margin-left: 50px;
+    }
+
     .example-section {
         display: flex;
         align-content: center;
         align-items: center;
         height: 60px;
         }
-
     .example-margin {
         margin: 0 10px;
         }
@@ -37,61 +53,67 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
     pageTitle: string = 'Update Customer';
     errorMessage: string;
     customerForm: FormGroup;
-
     customer: ICustomer = <ICustomer>{};
     private sub: Subscription;
     showImage: boolean;
-    imageWidth: number = 80;
+    imageWidth: number = 100;
     imageMargin: number = 2;
+    fieldColspan = 3;
 
     // Use with the generic validation message class
     displayMessage: { [key: string]: string } = {};
-    private validationMessages: { [key: string]: { [key: string]: string } };
     private genericValidator: GenericValidator;
+
+    // Defines all of the validation messages for the form.
+    // These could instead be retrieved from a file or database.
+    private validationMessages: { [key: string]: { [key: string]: string } | {} } = {
+        firstName: {
+            required: 'Customer first name is required.',
+            minlength: 'Customer first name must be at least one characters.',
+            maxlength: 'Customer first name cannot exceed 100 characters.'
+        },
+        lastName: {
+            required: 'Customer last name is required.',
+            minlength: 'Customer last name must be at least one characters.',
+            maxlength: 'Customer last name cannot exceed 100 characters.'
+        },
+        email: {
+            required: 'Customer email is required.',
+            minlength: 'Customer email must be at least one characters.',
+            maxlength: 'Customer email cannot exceed 200 characters.'
+        },
+        rewards: {
+            range: 'Rewards of the customer must be between 0 (lowest) and 150 (highest).'
+        },
+        phone: { maxlength: 'Customer phone cannot exceed 12 characters.' },
+        mobile: { maxlength: 'Customer mobile cannot exceed 12 characters.' },
+    };
 
     constructor(private fb: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private customerService: CustomerService) {
-
-        // Defines all of the validation messages for the form.
-        // These could instead be retrieved from a file or database.
-        this.validationMessages = {
-            firstName: {
-                required: 'Customer first name is required.',
-                minlength: 'Customer first name must be at least one characters.',
-                maxlength: 'Customer first name cannot exceed 100 characters.'
-            },
-            lastName: {
-                required: 'Customer last name is required.',
-                minlength: 'Customer last name must be at least one characters.',
-                maxlength: 'Customer last name cannot exceed 100 characters.'
-            },
-            email: {
-                required: 'Customer email is required.',
-                minlength: 'Customer email must be at least one characters.',
-                maxlength: 'Customer email cannot exceed 200 characters.'
-            },
-            rewards: {
-                range: 'Rewards of the customer must be between 0 (lowest) and 150 (highest).'
-            }
-        };
-
+        private customerService: CustomerService,
+        private breakpointObserver: BreakpointObserver
+    ) {
+        breakpointObserver.observe([
+            Breakpoints.HandsetLandscape,
+            Breakpoints.HandsetPortrait
+        ]).subscribe(result => {
+            // console.log(result)
+            this.onScreensizeChange(result);
+        });
         this.genericValidator = new GenericValidator(this.validationMessages);
+
     }
 
     ngOnInit(): void {
         this.customerForm = this.fb.group({
-            firstName: ['', [Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(100)]],
-            lastName: ['', [Validators.required,
-            Validators.minLength(3),
-            Validators.maxLength(100)]],
-            email: ['', [Validators.required,
-            Validators.minLength(5),
-            Validators.maxLength(200)]],
+            firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+            lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+            email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200)]],
             rewards: ['', NumberValidators.range(0, 150)],
+            phone: ['', Validators.maxLength(12)],
+            mobile: ['', Validators.maxLength(12)],
             membership: false,
         });
 
@@ -116,7 +138,7 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
             .map((formControl: ElementRef) => Observable.fromEvent(formControl.nativeElement, 'blur'));
 
         // Merge the blur event observable with the valueChanges observable
-        Observable.merge(this.customerForm.valueChanges, ...controlBlurs).debounceTime(800).subscribe(value => {
+        Observable.merge(this.customerForm.valueChanges, ...controlBlurs).debounceTime(500).subscribe(value => {
             this.displayMessage = this.genericValidator.processMessages(this.customerForm);
         });
     }
@@ -124,8 +146,8 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
     getCustomer(id: number): void {
         this.customerService.getCustomer(id)
             .subscribe(
-            (customer: ICustomer) => this.onCustomerRetrieved(customer),
-            (error: any) => this.errorMessage = <any>error
+                (customer: ICustomer) => this.onCustomerRetrieved(customer),
+                (error: any) => this.errorMessage = <any>error
             );
     }
 
@@ -136,9 +158,9 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
         this.customer = customer;
 
         if (this.customer.id === 0) {
-            this.pageTitle = 'Add Customer';
+            this.pageTitle = 'New Customer';
         } else {
-            this.pageTitle = `Update Customer: ${this.customer.firstName} ${this.customer.lastName}`;
+            this.pageTitle = `Customer: ${this.customer.firstName} ${this.customer.lastName}`;
         }
 
         // Update the data on the form
@@ -147,6 +169,8 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
             lastName: this.customer.lastName,
             email: this.customer.email,
             rewards: this.customer.rewards,
+            phone: this.customer.phone,
+            mobile: this.customer.mobile,
             membership: this.customer.membership
         });
     }
@@ -159,8 +183,8 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
             if (confirm(`Really delete the customer: ${this.customer.firstName}?`)) {
                 this.customerService.deleteCustomer(this.customer.id)
                     .subscribe(
-                    () => this.onSaveComplete(),
-                    (error: any) => this.errorMessage = <any>error
+                        () => this.onSaveComplete(),
+                        (error: any) => this.errorMessage = <any>error
                     );
             }
         }
@@ -179,8 +203,8 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.customerService.saveCustomer(customer)
                 .subscribe(
-                () => this.onSaveComplete(),
-                (error: any) => this.errorMessage = <any>error
+                    () => this.onSaveComplete(),
+                    (error: any) => this.errorMessage = <any>error
                 );
         } else if (!this.customerForm.dirty) {
             this.onSaveComplete();
@@ -191,5 +215,26 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
         // Reset the form to clear the flags
         this.customerForm.reset();
         this.router.navigate(['/customers']);
+    }
+
+    onScreensizeChange(result: any) {
+        // debugger
+        const isLess600 = this.breakpointObserver.isMatched('(max-width: 599px)');
+        const isLess1000 = this.breakpointObserver.isMatched('(max-width: 959px)');
+        console.log(
+            ` isLess600  ${isLess600} 
+            isLess1000 ${isLess1000}  `
+        )
+        if (isLess1000) {
+            if (isLess600) {
+                this.fieldColspan = 12;
+            }
+            else {
+                this.fieldColspan = 6;
+            }
+        }
+        else {
+            this.fieldColspan = 3;
+        }
     }
 }

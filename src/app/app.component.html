@@ -1,34 +1,93 @@
+<div *ngIf="!authService.isAuthenticated()">
+  <login-form (isAuth)="isAuth()"></login-form>
+</div>
+<!-- <mat-progress-bar mode="indeterminate" class=""></mat-progress-bar> -->
+<div *ngIf="authService.isAuthenticated()" [ngClass]="uiContent"  role="main">
+  <!-- calss="content" -->
+  <mat-sidenav-container class="app-container" autosize fullscreen>
 
-<!-- Toolbar -->
-<div class="toolbar" role="banner">
  
+    <mat-sidenav dark #sidenav id="appnav" [mode]="mode" [opened]="!isMobile">
+      <mat-card class="profile-card">
+        <mat-card-header> 
+          <div mat-card-avatar class="avatar">
+            <img src="/assets/img/avatar0.png" class="avatar">
+          </div>
+
+          <mat-card-title style="padding:5px;">
+            {{user.firstName}} {{user.lastName}}
+          </mat-card-title>
+
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+      
+        </mat-card-header> 
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="logout()">Logout</button>
+          <button mat-menu-item>Change Password</button>
+        </mat-menu>
+      </mat-card>
+      <mat-nav-list >
+        <a mat-list-item routerLink="dashboard">
+          <mat-icon mat-list-icon >insert_chart_outline</mat-icon>
+          <span mat-line>Dashboard</span>
+        </a>
+        <a mat-list-item routerLink="orders">
+          <mat-icon mat-list-icon>shopping_cart</mat-icon>
+          <span mat-line>Order</span>
+        </a>
+        <a mat-list-item routerLink="customers">
+          <mat-icon mat-list-icon>account_box</mat-icon>
+          <span mat-line>Customer</span>
+        </a>
+        <a mat-list-item routerLink="products">
+          <mat-icon mat-list-icon>store</mat-icon>
+          <span mat-line>Product</span>
+        </a>
+        <a mat-list-item routerLink="about">
+          <mat-icon mat-list-icon>info_outline</mat-icon>
+          <span mat-line>About</span>
+        </a>
+
+      </mat-nav-list>
+
+
+
+    </mat-sidenav>
+    <!-- <mat-sidenav-content [hidden]="!authService.isAuthenticated()"> -->
+    <mat-sidenav-content class="sidenav-content" > 
+      <mat-toolbar dark style="background-color:rgb(228, 224, 224)">
+        <button mat-icon-button (click)="sidenav.toggle()">
+          <mat-icon mat-list-icon>list</mat-icon>
+        </button>
+
+        <span style="margin-left: 20px;width:100%">
+          <a aria-label="GitHub Repository" style=" float:right" class="docs-button docs-navbar-hide-small mat-button"
+            href="https://github.com/harryho/ng-md-app" mat-button="" tabindex="0" aria-disabled="false">
+            <span class="mat-button-wrapper">
+              <!-- <img _ngcontent-c1="" alt="angular" class="docs-angular-logo" src="/assets/icon/GitHub-Mark-32px.png"> -->
+              <svg height="30" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+              </svg>
+              GitHub </span>
+          </a>
+        </span>
+        <span style="float:right">
+
+        </span>
+      </mat-toolbar>
+      <div class="main-content" > <!-- [hidden]="!authService.isAuthenticated()"> -->
+        <router-outlet></router-outlet>
+      </div>
+      <!-- <footer class="footer" [ngStyle]="{'position': isMobile?'relative':'absolute'}">
+        <span style="font-family:sans-serif">&copy; 2020 NG CRM </span>
+      </footer> -->
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+
 </div>
 
-<div class="content" role="main">
-  <svg id="clouds" alt="Gray Clouds Background" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">
-    <path id="Path_39" data-name="Path 39" d="M2379.709,863.793c10-93-77-171-168-149-52-114-225-105-264,15-75,3-140,59-152,133-30,2.83-66.725,9.829-93.5,26.25-26.771-16.421-63.5-23.42-93.5-26.25-12-74-77-130-152-133-39-120-212-129-264-15-54.084-13.075-106.753,9.173-138.488,48.9-31.734-39.726-84.4-61.974-138.487-48.9-52-114-225-105-264,15a162.027,162.027,0,0,0-103.147,43.044c-30.633-45.365-87.1-72.091-145.206-58.044-52-114-225-105-264,15-75,3-140,59-152,133-53,5-127,23-130,83-2,42,35,72,70,86,49,20,106,18,157,5a165.625,165.625,0,0,0,120,0c47,94,178,113,251,33,61.112,8.015,113.854-5.72,150.492-29.764a165.62,165.62,0,0,0,110.861-3.236c47,94,178,113,251,33,31.385,4.116,60.563,2.495,86.487-3.311,25.924,5.806,55.1,7.427,86.488,3.311,73,80,204,61,251-33a165.625,165.625,0,0,0,120,0c51,13,108,15,157-5a147.188,147.188,0,0,0,33.5-18.694,147.217,147.217,0,0,0,33.5,18.694c49,20,106,18,157,5a165.625,165.625,0,0,0,120,0c47,94,178,113,251,33C2446.709,1093.793,2554.709,922.793,2379.709,863.793Z" transform="translate(142.69 -634.312)" fill="#eee"/>
-  </svg>
 
-</div>
-<!-- <app-form ></app-form> -->
-
-<login-form (isAuth)="isAuth()"></login-form>
-
-<dashboard ></dashboard>
-<about></about>
-<not-found-page></not-found-page>
-
-<customer-list></customer-list>
-<customer-edit></customer-edit>
-<customer-detail></customer-detail>
-
-<product-list></product-list>
-<product-edit></product-edit>
-<product-detail></product-detail>
-
-
-<order-list></order-list>
-<order-edit></order-edit>
-<order-detail></order-detail>
-
-<router-outlet></router-outlet>

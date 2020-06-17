@@ -84,7 +84,8 @@ export class CustomerService {
       rewards: 0,
       email: null,
       membership: false,
-      mobile: null
+      mobile: null,
+      phone:null
     };
   }
 }

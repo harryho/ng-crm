@@ -1,11 +1,61 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { DashboardComponent } from './dashboard';
+import { AboutComponent } from './about';
+import { CustomerListComponent } from './customer';
+import { OrderListComponent } from './order';
+import { ProductListComponent } from './product';
+import { AppComponent } from './app.component';
+import { AuthGuard } from './_guard';
+import { NotFoundPageComponent } from './notfoundpage';
+import { LoginComponent } from './login';
 
 
-const routes: Routes = [];
+// const routes: Routes = [];
+
+const routes: Routes = [
+  {
+    path: "login",
+    component: LoginComponent,
+  },
+  {
+    path: "dashboard",
+    component: DashboardComponent
+    , canActivate: [AuthGuard],
+  },
+  {
+    path: "about",
+    component: AboutComponent
+    , canActivate: [AuthGuard]
+  },
+  {
+    path: "customers",
+    loadChildren: () =>
+    import('./customer/customer.module').then(m => m.CustomerModule)
+    , canActivate: [AuthGuard]
+  },
+  {
+    path: "orders",
+    loadChildren: () =>
+    import('./order/order.module').then(m => m.OrderModule)
+    , canActivate: [AuthGuard]
+  },
+  {
+    path: "products",
+    loadChildren: () =>
+    import('./product/product.module').then(m => m.ProductModule)
+    , canActivate: [AuthGuard]
+  },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  {
+    path: "**",
+    component: NotFoundPageComponent
+  },
+  // ]
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: false })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

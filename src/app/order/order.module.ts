@@ -16,21 +16,22 @@ import { MaterialModule } from "../shared/material.module";
 
 import { MatOption } from "@angular/material/core";
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { CustomerService } from '../customer';
 // import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 @NgModule({
   imports: [
     SharedModule,
-    ReactiveFormsModule,
+    // ReactiveFormsModule,
     MaterialModule,
     RouterModule.forChild([
-      { path: "orders", component: OrderListComponent },
+      { path: "", component: OrderListComponent },
       {
-        path: "order/:id",
+        path: ":id",
         canActivate: [OrderDetailGuard],
         component: OrderDetailComponent
       },
       {
-        path: "orderEdit/:id",
+        path: "edit/:id",
         canDeactivate: [OrderEditGuard],
         component: OrderEditComponent
       }
@@ -45,15 +46,20 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
     OrderEditComponent,
     ProductDialogComponent
   ],
-  providers: [OrderService, OrderDetailGuard, OrderEditGuard,
+  providers: [
+    OrderService,
+    OrderDetailGuard,
+    OrderEditGuard,
+    CustomerService,
+
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
   ],
   exports: [
     OrderListComponent,
     OrderEditComponent,
     OrderDetailComponent,
-    
+
   ],
-  entryComponents: [ProductDialogComponent, MatOption]
+  // entryComponents: [ProductDialogComponent, MatOption]
 })
 export class OrderModule { }

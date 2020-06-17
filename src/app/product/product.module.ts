@@ -17,14 +17,14 @@ import { MaterialModule } from "../shared/material.module";
     ReactiveFormsModule,
     MaterialModule,
     RouterModule.forChild([
-      { path: "products", component: ProductListComponent },
+      { path: "", component: ProductListComponent },
       {
-        path: "product/:id",
+        path: ":id",
         canActivate: [ProductDetailGuard],
         component: ProductDetailComponent
       },
       {
-        path: "productEdit/:id",
+        path: "edit/:id",
         canDeactivate: [ProductEditGuard],
         component: ProductEditComponent
       }
@@ -43,7 +43,6 @@ import { MaterialModule } from "../shared/material.module";
     ProductListComponent,
     ProductEditComponent,
     ProductDetailComponent,
-    
   ]
 })
 export class ProductModule { }

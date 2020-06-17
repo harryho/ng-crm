@@ -8,4 +8,5 @@ export interface ICustomer {
   email: string;
   membership: boolean;
   mobile: string;
+  phone: string;
 }

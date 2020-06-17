@@ -14,12 +14,16 @@ const newLocal: string = `
       text-align: center;
     }
     .subheader{
-      font-size: 22px;
+      font-size: 46px;
       color:darkcyan;
+      padding-top: 50px;
+      padding-bottom: 50px
     }
     .content {
+      padding: 26px;
       font-size: 18px;
       text-align: left;
+      line-height: 2em;
     }
   `;
 
@@ -29,22 +33,24 @@ const newLocal: string = `
     newLocal
   ],
   template: `
-  <mat-card >
+<!--  <mat-card >
 
   <mat-card-title>
             </mat-card-title>
     <mat-card-content class="about-card">
-    <div>
-      <h3 class="title" >About</h3>
+    -->
+
+    <div class="about-card">
+   <!-- <h3 class="title" >About</h3> -->
       <p class="subheader">
-        Angular MD App Demo
+        NG CRM 2.0
       </p>
       <p class="content">
-        This demo app is not a real application. There is no fake API as back-end service behind the scene. Its advanced search doesn't work properly. Any data update (create or update record) will not be stored after hard refresh or logout. The main purpose of this demo is just a proof of concept.
+        This demo app is not a real application. There is no back-end service behind the scene. Any data update (create or update record) will not be stored after hard refresh or logout. The main purpose of this demo is just a proof of concept.
       </p>
     </div>
-    </mat-card-content>
-  </mat-card>
+  <!--  </mat-card-content>
+  </mat-card> -->
   `
 })
 export class AboutComponent implements OnInit {

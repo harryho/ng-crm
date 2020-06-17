@@ -1,74 +1,113 @@
-<mat-card>
-    <mat-card-header>
-        <mat-card-title class="view-card-title">
-            <h1>{{pageTitle}}</h1>
-        </mat-card-title>
-    </mat-card-header>
+<form novalidate (ngSubmit)="saveCustomer()" [formGroup]="customerForm">
+  <mat-card>
+    <!--    <mat-card-header> 
+    <mat-card-title class="view-card-title">
+      <h1>{{pageTitle}}</h1>
+    </mat-card-title> 
+     </mat-card-header> -->
 
-    <form novalidate (ngSubmit)="saveCustomer()" [formGroup]="customerForm">
-        <mat-toolbar style="background-color: #FFF">
-            <mat-toolbar-row>
-                <!-- <span class="view-card-title"> {{pageTitle}}</span> -->
-                <span class="title-spacer"></span>
 
-                <mat-card-actions>
-                    <button mat-mini-fab class="primary" style="margin-right:10px; background-color:darkgray" type="submit" [disabled]='!customerForm.valid'>
-                        <mat-icon>save</mat-icon>
-                    </button>
-                    <button mat-mini-fab class="" style="margin-right:10px; " [routerLink]="['/customers']">
-                        <mat-icon>cancel</mat-icon>
-                    </button>
+    <mat-toolbar style="background-color: #FFF">
+      <mat-toolbar-row>
+        <span class="view-card-title"> {{pageTitle}}</span>
+        <span class="title-spacer"></span>
+        <mat-card-actions>
+          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:darkgray" type="submit"
+            [disabled]='!customerForm.valid'>
+            <mat-icon>save</mat-icon>
+          </button>
+          <button mat-mini-fab class="" style="margin-right:10px; " [routerLink]="['/customers']">
+            <mat-icon>cancel</mat-icon>
+          </button>
 
-                </mat-card-actions>
+        </mat-card-actions>
 
-            </mat-toolbar-row>
-        </mat-toolbar>
+      </mat-toolbar-row>
+    </mat-toolbar>
 
-        <mat-card-content style="margin: 5 0 5 10px;">
+    <mat-card-content style="margin: 5 0 5 10px;">
 
-            <mat-grid-list cols="12" style="width:100%;height:100%">
-                <mat-grid-tile colspan="9">
-                    <!-- <mat-card-content> -->
-                    <div class="form-card">
-                        <mat-form-field class="form-field">
-                            <input matInput id="firstNameId" type="text" placeholder="First Name (required)" formControlName="firstName" />
-                            <mat-error *ngIf="displayMessage.firstName">
-                                {{displayMessage.firstName}}
-                            </mat-error>
-                        </mat-form-field>
+    
+      <mat-grid-list cols="12" rowHeight="120px">
+        <mat-grid-tile [colspan]="fieldColspan">
+          <span class="view-label"> 
+            <img mat-card-avatar *ngIf='customer.avatar' class="center-block img-responsive" [src]='customer.avatar'
+              [title]='customer.firstName | uppercase' [style.width.px]='imageWidth' [style.height.px]='imageWidth'  [style.margin.px]='imageMargin'>
+          </span>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <div class="form-card">
+        <mat-grid-list cols="12" rowHeight="80px">
+          <mat-grid-tile [colspan]="fieldColspan">
+            <!-- colspan="4"> -->
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>First Name</mat-label>
+              <input matInput id="firstNameId" type="text" placeholder="First Name (required)"
+                formControlName="firstName" />
+              <mat-error *ngIf="displayMessage.firstName">
+                {{displayMessage.firstName}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Last Name</mat-label>
+              <input matInput id="lastNameId" type="text" placeholder="Last Name (required)"
+                formControlName="lastName" />
+              <mat-error *ngIf="displayMessage.lastName">
+                {{displayMessage.lastName}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput id="email" type="email" placeholder="Email " formControlName="email" />
+              <mat-error *ngIf="displayMessage.email">
+                {{displayMessage.email}}
+              </mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Phone</mat-label>
+              <input matInput id="phone" type="text" placeholder="Phone" formControlName="phone" />
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <mat-label>Mobile</mat-label>
+              <input matInput id="mobile" type="text" placeholder="Mobile " formControlName="mobile" />
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan]="fieldColspan">
+            <mat-form-field class="form-field" appearance="outline">
+              <input matInput placeholder="Rewards" id="ageId" type="number" formControlName="rewards" />
+            </mat-form-field>
+          </mat-grid-tile>
+            <mat-grid-tile [colspan]="fieldColspan">
+              <!-- <mat-form-field class="form-field" > -->
+                <!-- <mat-label>Membership</mat-label> -->
+                <mat-slide-toggle id="membership" formControlName="membership">Membership</mat-slide-toggle>
+                <!-- </mat-form-field> -->
+          </mat-grid-tile>
+       
 
-                        <mat-form-field class="form-field">
-                            <input matInput id="lastNameId" type="text" placeholder="Last Name (required)" formControlName="lastName" />
-                            <mat-error *ngIf="displayMessage.lastName">
-                                {{displayMessage.lastName}}
-                            </mat-error>
-                        </mat-form-field>
+        </mat-grid-list>
 
-                        <mat-form-field class="form-field">
-                            <input matInput id="amountId" type="email" placeholder="Email (required)" formControlName="email" />
-                            <mat-error *ngIf="displayMessage.email">
-                                {{displayMessage.email}}
-                            </mat-error>
-                        </mat-form-field>
+      </div>
+      <!-- <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div> -->
 
-                        <mat-form-field class="form-field">
-                            <input matInput placeholder="Rewards" id="ageId" type="number" formControlName="rewards" />
-                            <mat-error *ngIf="displayMessage.rewards">
-                                {{displayMessage.rewards}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
+      <!-- </mat-grid-tile>
+        <mat-grid-tile colspan="3">
+          <span class="view-label">
+            <img *ngIf='customer.avatar' class="center-block img-responsive" [src]='customer.avatar'
+              [title]='customer.firstName | uppercase' [style.width.px]='imageWidth' [style.margin.px]='imageMargin'>
+          </span>
+        </mat-grid-tile>
+      </mat-grid-list> -->
 
-                </mat-grid-tile>
-                <mat-grid-tile colspan="3">
-                    <span class="view-label">
-                        <img *ngIf='customer.avatar' class="center-block img-responsive" [src]='customer.avatar' [title]='customer.firstName | uppercase'
-                            [style.width.px]='imageWidth' [style.margin.px]='imageMargin'>
-                    </span>
-                </mat-grid-tile>
-            </mat-grid-list>
+    </mat-card-content>
 
-        </mat-card-content>
-    </form>
-</mat-card>
+  </mat-card>
+</form>

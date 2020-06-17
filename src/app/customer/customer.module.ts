@@ -1,8 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { ReactiveFormsModule } from "@angular/forms";
-// import {NgProgressModule, NgProgressBrowserXhr, NgProgressService } from 'ngx-progressbar';
-
+// import { ReactiveFormsModule } from "@angular/forms";
 import { CustomerListComponent } from "./customer-list.component";
 import { CustomerDetailComponent } from "./customer-detail.component";
 import {
@@ -15,25 +13,29 @@ import { CustomerService } from "./customer.service";
 import { SharedModule } from "../shared/shared.module";
 
 import { MaterialModule } from "../shared/material.module";
-import { MatOption } from '@angular/material/core';
-// import { MatOption } from "@angular/material";
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 
 @NgModule({
   imports: [
     SharedModule,
-    ReactiveFormsModule,
+    // ReactiveFormsModule,
     MaterialModule,
     RouterModule.forChild([
-      { path: "customers", component: CustomerListComponent },
+      { path: "", component: CustomerListComponent },
+      // {
+      //   path: ":id",
+      //   canActivate: [CustomerDetailGuard],
+      //   component: CustomerDetailComponent
+      // }
+      // ,
       {
-        path: "customer/:id",
-        canActivate: [CustomerDetailGuard],
-        component: CustomerDetailComponent
+        path: "new/",
+        canDeactivate: [CustomerEditGuard],
+        component: CustomerEditComponent
       },
       {
-        path: "customerEdit/:id",
+        path: "edit/:id",
         canDeactivate: [CustomerEditGuard],
         component: CustomerEditComponent
       }
@@ -47,15 +49,15 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
     CustomerDetailComponent,
     CustomerEditComponent
   ],
-  providers: [CustomerService, CustomerDetailGuard, CustomerEditGuard, 
+  providers: [CustomerService, CustomerDetailGuard, CustomerEditGuard,
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
   ],
-  entryComponents: [MatOption],
+  // entryComponents: [MatOption],
   exports: [
     CustomerListComponent,
     CustomerEditComponent,
     CustomerDetailComponent,
-    
+
   ]
 })
 export class CustomerModule { }

@@ -20,6 +20,7 @@ import { CustomerModule } from './customer';
 import { ConfirmDialog } from './shared/dialog.component';
 import { ProductModule } from './product';
 import { OrderModule } from './order';
+import { AuthGuard } from './_guard';
 
 @NgModule({
   declarations: [
@@ -34,18 +35,19 @@ import { OrderModule } from './order';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     SharedModule,
     MaterialModule,
     HttpClientModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     ChartsModule,
-    CustomerModule,
-    ProductModule,
-    OrderModule
+    // CustomerModule,
+    // ProductModule,
+    // OrderModule,
+    AppRoutingModule
   ],
   providers: [
+    AuthGuard,
     BackendService,
     AuthenticationService,
     PagerService,

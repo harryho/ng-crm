@@ -1,86 +1,41 @@
 <!-- <mat-sidenav-container> -->
+
 <mat-grid-list [cols]="colNum" [rowHeight]="rowHeight">
-  <mat-grid-tile>
-    <mat-card [ngClass]="cardClass" style="background-color: #98caa7;">
+  <mat-grid-tile  *ngFor="let infoBox of infoBoxes">
+    <mat-card [ngClass]="infoBox.bgClass" class="info-dash-card">
       <mat-card-header>
-        <mat-card-title>
-          <mat-icon>account_circle</mat-icon>User Registrations
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <span style="font-size:30px;color:white;padding-left:20px;">
-          <strong>68</strong>
-        </span>
-        <button mat-button>More Info</button>
-      </mat-card-content>
-      <mat-card-actions>
-      </mat-card-actions>
-    </mat-card>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-card [ngClass]="cardClass" style="background-color: #c1abbf;">
-      <mat-card-header>
-        <mat-card-title>
-          <mat-icon>add_shopping_cart</mat-icon>New Orders
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <span style="font-size:30px;color:white;padding-left:20px;">
-          <strong>49</strong>
-        </span>
-        <button mat-button>More Info</button>
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-card [ngClass]="cardClass" style="background-color: #e6cea3">
-      <mat-card-header>
-        <mat-card-subtitle>
-          <mat-icon>assessment</mat-icon>Bounce Rate
+        <div mat-card-avatar>
+          <mat-icon matListIcon class="icon">{{infoBox.icon}}</mat-icon>
+        </div>
+        <mat-card-title>{{infoBox.title}}</mat-card-title>
+        <mat-card-subtitle class="subtitle">
+          <strong>{{infoBox.subtitle}}</strong>
         </mat-card-subtitle>
-
       </mat-card-header>
-      <mat-card-content>
-        <span style="font-size:30px;color:white;padding-left:20px;">
-          <strong>36%</strong>
-        </span>
-        <button mat-button>More Info</button>
-
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
-  <mat-grid-tile>
-    <mat-card [ngClass]="cardClass" style="background-color:#adcae2">
-      <mat-card-header>
-        <mat-card-subtitle>
-          <mat-icon>card_membership</mat-icon>Unique Visitors
-        </mat-card-subtitle>
-        <span>
-          <mat-icon></mat-icon>
-        </span>
-      </mat-card-header>
-      <mat-card-content>
-        <span style="font-size:30px;color:white;padding-left:20px;">
-          <strong>32</strong>
-        </span>
-        <button mat-button>More Info</button>
-      </mat-card-content>
     </mat-card>
   </mat-grid-tile>
 </mat-grid-list>
 
-<mat-grid-list [cols]="chartColNum" [rowHeight]="chartRowHeight" style="margin-top:1rem;">
 
-  <mat-grid-tile style="height: 100%">
-    <mat-card class="dash-card" style="width:95%">
+<mat-grid-list [cols]="chartColNum" rowHeight="1.8:1"  style="margin-top:1rem;">
+  <!-- style="height: 100%" [rowHeight]="chartRowHeight"-->
+  <mat-grid-tile >
+    <!-- <mat-card class="dash-card" style="width:95%"> -->
+    <mat-card class="dash-card" >
+  <mat-card-content class="dash-card-content">
       <canvas baseChart [data]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" chartType="line"
         (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
-    </mat-card>
+      </mat-card-content>
+      </mat-card>
   </mat-grid-tile>
-  <mat-grid-tile style="height: 100%">
-    <mat-card class="dash-card" style="width:95%">
+  <!-- style="height: 100%" -->
+  <mat-grid-tile >
+    <!-- <mat-card class="dash-card" style="width:95%"> -->
+    <mat-card class="dash-card" >
+      <mat-card-content class="dash-card-content">
       <canvas baseChart [data]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" chartType="bar"
         (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+      </mat-card-content>
     </mat-card>
 
   </mat-grid-tile>
