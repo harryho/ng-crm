@@ -42,7 +42,7 @@ export class ProductListComponent implements OnInit {
 
     constructor(
         private productService: ProductService,
-        private pagerService: PagerService,
+        // private pagerService: PagerService,
         public dialog: MatDialog, public snackBar: MatSnackBar) {
     }
 

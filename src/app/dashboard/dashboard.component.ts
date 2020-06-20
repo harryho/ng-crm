@@ -50,14 +50,6 @@ export class DashboardComponent implements OnInit {
       Breakpoints.HandsetPortrait
     ]).subscribe(result => {
       this.onScreensizeChange()
-      // if (result.matches) {
-      //   this.isMobile = true;
-      //   this.colNum = this.mediaQueryList.matches ? 2 : 1;
-      //   this.chartColNum = 1
-
-      //   this.chartRowHeight = this.mediaQueryList.matches ? '300px' : '240px';
-      //   this.cardClass = 'dash-card-inline';
-      // }
     });
   }
 
@@ -117,19 +109,7 @@ export class DashboardComponent implements OnInit {
     console.log(e);
   }
 
-
-
   ngOnInit() {
-    // if (this.isMobile) {
-    //   this.colNum = this.mediaQueryList.matches ? 2 : 1;
-    //   this.chartRowHeight = this.mediaQueryList.matches ? '300px' : '240px';
-    //   this.cardClass = 'dash-card-inline';
-    // }
-    // else {
-    //   this.colNum = this.mediaQueryMin.matches ? 4 : 2;
-    //   this.chartRowHeight = '450px'
-    //   this.cardClass = 'dash-card'
-    // }
 
   }
 

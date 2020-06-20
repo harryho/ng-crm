@@ -8,7 +8,7 @@
   </mat-card-header>
   <mat-toolbar class="primary">
     <mat-toolbar-row>
-      <button mat-mini-fab style="margin-right:10px; background-color:#e07c9e" [routerLink]="['/customers/new/']">
+      <button mat-mini-fab style="margin-right:10px; background-color:#e07c9e" [routerLink]="['/customers/edit/', 0]">
         <mat-icon>add</mat-icon>
       </button>
       <button mat-mini-fab style="margin-right:10px; background-color:#a28b6e" (click)="sidenav.toggle()">
@@ -33,18 +33,18 @@
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let customer">
         <!-- <a [routerLink]="['/customer', customer.id]"> -->
-        <img *ngIf='customer.avatar' [src]='customer.avatar' [title]='customer.firstName | uppercase'
+        <img *ngIf='customer.avatar' [src]='customer.avatar' [title]='customer.firstname | uppercase'
           [style.width.px]='imageWidth' [style.margin.px]='imageMargin'>
         <!-- </a> -->
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="firstName">
+    <ng-container matColumnDef="firstname">
       <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
       <mat-cell *matCellDef="let customer"> {{customer.firstname}} </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="lastName">
+    <ng-container matColumnDef="lastname">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
-      <mat-cell *matCellDef="let customer"> {{customer.lastName}} </mat-cell>
+      <mat-cell *matCellDef="let customer"> {{customer.lastname}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="email">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>

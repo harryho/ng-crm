@@ -13,28 +13,13 @@ body {
   top: 50px;
 }
 
-// .grandParentContaniner {
-//   display: table;
-//   height: 100%;
-//   margin: 0 auto;
-// }
+.progress-spinner {
 
-// .parentContainer {
-//   display: table-cell;
-//   vertical-align: middle;
-// }
-
-// .parentContainer .loginForm {
-//   padding: 10px;
-//   background: #fff;
-//   border: 1px solid #ddd;
-//   width: 400px;
-//   /*  your login form width */
-//   display: table-cell;
-//   display: table-cell;
-//   vertical-align: middle;
-// }
-
+  margin: 0 auto;
+  // padding: 20px;
+  position: relative;
+  top: 100px;
+}
 
 .login-card {
   max-width: 480px;
@@ -46,11 +31,11 @@ body {
   border: 1px solid #ddd;
 }
 
-.example-header-image {
-  // background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-  background-image: url('/assets/icons/icon-72x72.png');
-  background-size: cover;
-}
+// .example-header-image {
+//   // background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+//   background-image: url('/assets/icons/icon-72x72.png');
+//   background-size: cover;
+// }
 
 .field-item {
   padding: 10px;

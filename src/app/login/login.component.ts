@@ -1,26 +1,25 @@
 import {
   Component,
   EventEmitter,
-  ViewEncapsulation,
   OnInit,
-  DoCheck,
-  Output
-} from "@angular/core";
+  Output} from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 
 import { AuthenticationService } from "../_services";
 
 @Component({
   selector: "login-form",
-  // moduleId: module.id.toString(),
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent implements OnInit {
   @Output() isAuth = new EventEmitter<boolean>();
   model: any = {};
-  loading = false;
+  isValidating = false;
   returnUrl: string;
+  // isloading = true;
+  // isAuthenticated = false;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -29,27 +28,33 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.authenticationService.logout();
-
+    // this.authenticationService.logout();
     this.model.username = "Admin@test.com";
     this.model.password = "password";
-
     this.returnUrl =
-      this.route.snapshot.queryParams["returnUrl"] || "dashboard";
+      this.route.snapshot.queryParams["returnUrl"] || "loading";
+      // this.isloading = false;
+      // this.isAuthenticated =  false;
+
   }
 
   login() {
-    this.loading = true;
-
+    this.isValidating = true;
+    // this.isloading = true;
     this.authenticationService.login(this.model).subscribe(
-      data => {
-        console.log("login " + this.returnUrl);
-        this.router.navigate([this.returnUrl]);
-        this.isAuth.emit(true);
+      () => {
+        // this.isAuthenticated =  true;
+        console.log(" next action here ... " );
       },
       error => {
         console.log(error);
-        this.loading = false;
+        this.isValidating = false;
+      },
+      ()=>{
+        this.isValidating = false;
+        console.log("login " + this.returnUrl);
+        this.isAuth.emit(true);
+        this.router.navigate([this.returnUrl]);
       }
     );
   }

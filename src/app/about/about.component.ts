@@ -33,15 +33,7 @@ const newLocal: string = `
     newLocal
   ],
   template: `
-<!--  <mat-card >
-
-  <mat-card-title>
-            </mat-card-title>
-    <mat-card-content class="about-card">
-    -->
-
     <div class="about-card">
-   <!-- <h3 class="title" >About</h3> -->
       <p class="subheader">
         NG CRM 2.0
       </p>
@@ -49,8 +41,7 @@ const newLocal: string = `
         This demo app is not a real application. There is no back-end service behind the scene. Any data update (create or update record) will not be stored after hard refresh or logout. The main purpose of this demo is just a proof of concept.
       </p>
     </div>
-  <!--  </mat-card-content>
-  </mat-card> -->
+
   `
 })
 export class AboutComponent implements OnInit {

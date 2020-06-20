@@ -26,7 +26,7 @@
         <mat-grid-tile [colspan]="fieldColspan">
           <span class="view-label"> 
             <img mat-card-avatar *ngIf='customer.avatar' class="center-block img-responsive" [src]='customer.avatar'
-              [title]='customer.firstName | uppercase' [style.width.px]='imageWidth' [style.height.px]='imageWidth'  [style.margin.px]='imageMargin'>
+              [title]='customer.firstname | uppercase' [style.width.px]='imageWidth' [style.height.px]='imageWidth'  [style.margin.px]='imageMargin'>
           </span>
         </mat-grid-tile>
       </mat-grid-list>
@@ -37,9 +37,9 @@
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>First Name</mat-label>
               <input matInput id="firstNameId" type="text" placeholder="First Name (required)"
-                formControlName="firstName" />
-              <mat-error *ngIf="displayMessage.firstName">
-                {{displayMessage.firstName}}
+                formControlName="firstname" />
+              <mat-error *ngIf="displayMessage.firstname">
+                {{displayMessage.firstname}}
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>
@@ -47,9 +47,9 @@
             <mat-form-field class="form-field" appearance="outline">
               <mat-label>Last Name</mat-label>
               <input matInput id="lastNameId" type="text" placeholder="Last Name (required)"
-                formControlName="lastName" />
-              <mat-error *ngIf="displayMessage.lastName">
-                {{displayMessage.lastName}}
+                formControlName="lastname" />
+              <mat-error *ngIf="displayMessage.lastname">
+                {{displayMessage.lastname}}
               </mat-error>
             </mat-form-field>
           </mat-grid-tile>

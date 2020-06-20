@@ -10,14 +10,14 @@ export interface Product {
 }
 
 export type WithCategory = {
-    category: ICategory
+    category: Category
 }
 
 export type WithCategoryName = {
     categoryName: string
 }
 
-export interface ICategory {
+export interface Category {
     id: number;
     categoryName: string;
 }

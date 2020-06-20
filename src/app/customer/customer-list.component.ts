@@ -33,13 +33,13 @@ export class CustomerListComponent implements OnInit {
 
     customers: Customer[];
     customerList: Customer[]; //
-    displayedColumns = ["avatar", "firstName", "lastName", "rewards", "email", "membership", "id"];
+    displayedColumns = ["avatar", "firstname", "lastname", "rewards", "email", "membership", "id"];
     dataSource: any = null;
     pager: any = {};
     pagedItems: any[];
     searchFilter: any = {
-        firstName: "",
-        lastName: "",
+        firstname: "",
+        lastname: "",
         email: ""
     };
     selectedOption: string;
@@ -47,7 +47,7 @@ export class CustomerListComponent implements OnInit {
 
     constructor(
         private customerService: CustomerService,
-        private pagerService: PagerService,
+        // private pagerService: PagerService,
         public dialog: MatDialog,
         public snackBar: MatSnackBar) {
     }

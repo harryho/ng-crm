@@ -56,12 +56,12 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
     private validationMessages: { [key: string]: { [key: string]: string } | {} } = {
-        firstName: {
+        firstname: {
             required: 'Customer first name is required.',
             minlength: 'Customer first name must be at least one characters.',
             maxlength: 'Customer first name cannot exceed 100 characters.'
         },
-        lastName: {
+        lastname: {
             required: 'Customer last name is required.',
             minlength: 'Customer last name must be at least one characters.',
             maxlength: 'Customer last name cannot exceed 100 characters.'
@@ -97,8 +97,8 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit(): void {
         this.customerForm = this.fb.group({
-            firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-            lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+            firstname: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+            lastname: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
             email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200)]],
             rewards: ['', NumberValidators.range(0, 150)],
             phone: ['', Validators.maxLength(12)],
@@ -149,13 +149,13 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.customer.id === 0) {
             this.pageTitle = 'New Customer';
         } else {
-            this.pageTitle = `Customer: ${this.customer.firstName} ${this.customer.lastName}`;
+            this.pageTitle = `Customer: ${this.customer.firstname} ${this.customer.lastname}`;
         }
 
         // Update the data on the form
         this.customerForm.patchValue({
-            firstName: this.customer.firstName,
-            lastName: this.customer.lastName,
+            firstname: this.customer.firstname,
+            lastname: this.customer.lastname,
             email: this.customer.email,
             rewards: this.customer.rewards,
             phone: this.customer.phone,
@@ -169,7 +169,7 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
             // Don't delete, it was never saved.
             this.onSaveComplete();
         } else {
-            if (confirm(`Really delete the customer: ${this.customer.firstName}?`)) {
+            if (confirm(`Really delete the customer: ${this.customer.firstname}?`)) {
                 this.customerService.deleteCustomer(this.customer.id)
                     .subscribe(
                         () => this.onSaveComplete(),

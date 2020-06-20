@@ -79,8 +79,8 @@ export class CustomerService {
     return {
       id: 0,
       avatar: null,
-      firstName: null,
-      lastName: null,
+      firstname: null,
+      lastname: null,
       rewards: 0,
       email: null,
       membership: false,

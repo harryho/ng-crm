@@ -5,7 +5,7 @@ import { User } from '../_models'
 import { BackendService } from './backend.service'
 
 
-const APP_USER_PROFILE = "APP_USER_PROFILE"
+const APP_USER_PROFILE = "NG_CRM_USER_2.0"
 @Injectable()
 export class AuthenticationService {
   constructor(private http: HttpClient, private backend: BackendService) { }

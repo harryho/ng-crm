@@ -1,21 +1,23 @@
+
+
+<mat-progress-bar *ngIf="isloading"  class="progress-bar"   mode="indeterminate"  ></mat-progress-bar>
+
 <div *ngIf="!authService.isAuthenticated()">
-  <login-form (isAuth)="isAuth()"></login-form>
+  <login-form (isAuth)="isAuth($event)"></login-form>
 </div>
 <!-- <mat-progress-bar mode="indeterminate" class=""></mat-progress-bar> -->
 <div *ngIf="authService.isAuthenticated()" [ngClass]="uiContent"  role="main">
   <!-- calss="content" -->
   <mat-sidenav-container class="app-container" autosize fullscreen>
-
- 
-    <mat-sidenav dark #sidenav id="appnav" [mode]="mode" [opened]="!isMobile">
-      <mat-card class="profile-card">
-        <mat-card-header> 
-          <div mat-card-avatar class="avatar">
+   <mat-sidenav dark #sidenav id="appnav" [mode]="mode" [opened]="!isMobile">
+      <mat-card   class="profile-card">
+        <mat-card-header  >  
+          <div  mat-card-avatar class="avatar">
             <img src="/assets/img/avatar0.png" class="avatar">
           </div>
 
-          <mat-card-title style="padding:5px;">
-            {{user.firstName}} {{user.lastName}}
+          <mat-card-title [hidden]="user!==null && user!==undefined" style="padding:5px;">
+            {{user?.firstname}} {{user?.lastname}}
           </mat-card-title>
 
           <button mat-icon-button [matMenuTriggerFor]="menu">

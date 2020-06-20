@@ -79,19 +79,15 @@
   </mat-paginator>
 </mat-card>
 <mat-sidenav class="search-panel" position="end" position="end" dark #sidenav mode="push" opened="false">
+
   <mat-card class="profile-card">
     <mat-card-header>
-      <div mat-card-avatar class="avatar"></div>
-      <mat-card-subtitle>
-        <button mat-raised-button style="color:lightgrey; background-color:darkgreen"
-          (click)="searchOrders(searchFilter);sidenav.toggle()">
-          <mat-icon>search</mat-icon>Search
-        </button>
-        <button mat-raised-button style="color:lightgrey; background-color:darkred"
-          (click)="resetSearchFilter(sidenav)">
-          <mat-icon>refresh</mat-icon>Reset
-        </button>
-      </mat-card-subtitle>
+      <div mat-card-avatar class="avatar">
+        <mat-icon>search</mat-icon>
+      </div>
+      <mat-card-title>
+        Advanced Search
+      </mat-card-title>
     </mat-card-header>
   </mat-card>
   <mat-nav-list style="margin-left:20px;">
@@ -112,5 +108,18 @@
         #quantity />
     </mat-form-field>
   </mat-nav-list>
+  <mat-divider></mat-divider>
+  <mat-card-header>
+    <mat-action-list>
+      <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
+        (click)="searchOrders(searchFilter);sidenav.toggle()">
+        <mat-icon>search</mat-icon>Search
+      </button>
+      <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
+        (click)="resetSearchFilter(sidenav)">
+        <mat-icon>refresh</mat-icon>Reset
+      </button>
+    </mat-action-list>
+  </mat-card-header>
 </mat-sidenav>
 <!-- </mat-sidenav-container> -->

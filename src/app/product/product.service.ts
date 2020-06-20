@@ -7,7 +7,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
-import { Product, ICategory } from './product';
+import { Product, Category } from './product';
 
 @Injectable()
 export class ProductService {
@@ -50,7 +50,7 @@ export class ProductService {
     return this.updateProduct(product);
   }
 
-  getCategories(): Observable<ICategory[]> {
+  getCategories(): Observable<Category[]> {
     // return this.http.get(this.baseUrl)
     const action = 'categories/'
     return this.backend.getAll(action)

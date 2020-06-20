@@ -2,13 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard';
 import { AboutComponent } from './about';
-import { CustomerListComponent } from './customer';
-import { OrderListComponent } from './order';
-import { ProductListComponent } from './product';
-import { AppComponent } from './app.component';
 import { AuthGuard } from './_guard';
 import { NotFoundPageComponent } from './notfoundpage';
 import { LoginComponent } from './login';
+import { LoadingComponent } from './loading';
 
 
 // const routes: Routes = [];
@@ -19,9 +16,14 @@ const routes: Routes = [
     component: LoginComponent,
   },
   {
+    path: "loading",
+    component: LoadingComponent,
+  },
+  {
     path: "dashboard",
     component: DashboardComponent
     , canActivate: [AuthGuard],
+
   },
   {
     path: "about",

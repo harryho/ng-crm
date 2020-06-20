@@ -27,7 +27,7 @@ export  class CustomerEditGuard implements CanDeactivate<CustomerEditComponent>
 
     canDeactivate(component: CustomerEditComponent): boolean {
         if (component.customerForm.dirty) {
-            let customerName = component.customerForm.get('firstName').value || 'New Customer';
+            let customerName = component.customerForm.get('firstname').value || 'New Customer';
             return confirm(`Navigate away and lose all changes to ${customerName}?`);
         }
         return true;

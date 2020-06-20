@@ -17,7 +17,6 @@ import { MaterialModule } from "../shared/material.module";
     MaterialModule,
     RouterModule.forChild([
       { path: "", component: ProductListComponent },
-
       {
         path: "edit/:id",
         canDeactivate: [ProductEditGuard],

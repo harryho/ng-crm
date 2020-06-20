@@ -9,8 +9,6 @@ import {
 import {
   FormBuilder,
   FormGroup,
-  FormControl,
-  FormArray,
   Validators,
   FormControlName
 } from "@angular/forms";
@@ -27,7 +25,7 @@ import { ProductService } from "./product.service";
 
 import { NumberValidators } from "../shared/number.validator";
 import { GenericValidator } from "../shared/generic-validator";
-import { ICategory } from "./index";
+import { Category } from "./index";
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
@@ -58,7 +56,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   product: Product = <Product>{};
   private sub: Subscription;
   showImage: boolean;
-  categories: ICategory[];
+  categories: Category[];
   fieldColspan = 4;
   // Use with the generic validation messageId class
   displayMessage: { [key: string]: string } = {};
@@ -92,7 +90,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       Breakpoints.HandsetPortrait
     ]).subscribe(result => {
       // console.log(result)
-      this.onScreensizeChange(result);
+      this.onScreensizeChange();
     });
 
 
@@ -137,7 +135,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     // Merge the blur event observable with the valueChanges observable
     Observable.merge(this.productForm.valueChanges, ...controlBlurs)
       .debounceTime(800)
-      .subscribe(value => {
+      .subscribe(() => {
         this.displayMessage = this.genericValidator.processMessages(
           this.productForm
         );
@@ -221,7 +219,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(["/products"]);
   }
 
-  onScreensizeChange(result: any) {
+  onScreensizeChange() {
     // debugger
     const isLess600 = this.breakpointObserver.isMatched('(max-width: 599px)');
     const isLess1000 = this.breakpointObserver.isMatched('(max-width: 959px)');

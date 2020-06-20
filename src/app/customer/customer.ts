@@ -2,8 +2,8 @@
 export interface Customer {
   id: number;
   avatar: string;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   rewards: number;
   email: string;
   membership: boolean;
