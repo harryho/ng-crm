@@ -44,10 +44,6 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 
-// import { MatPaginator } from '@angular/material/paginator';
-// import { MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-
 @NgModule({
   exports: [
     A11yModule,
@@ -92,10 +88,7 @@ import { MatTableDataSource } from '@angular/material/table';
     MatTooltipModule,
     MatTreeModule,
     MatDialogModule,
-    // MatPaginator,
-    // MatSort,
     PortalModule,
-    // MatTableDataSource,
     ScrollingModule,
   ]
 })

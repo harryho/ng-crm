@@ -3,16 +3,9 @@
  */
 import {
   Component,
-  OnInit,
-  ViewEncapsulation,
-  DoCheck
-} from '@angular/core';
-// import { AppState } from '../app.service';
-import { User } from '../_models'
+  OnInit} from '@angular/core';
 import { Router } from '@angular/router';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints, MediaMatcher } from '@angular/cdk/layout';
-import { StringDecoder } from 'string_decoder';
 
 
 interface InfoBox {
@@ -47,9 +40,6 @@ export class DashboardComponent implements OnInit {
 
 
   constructor(
-    // public appState: AppState,
-    private router: Router,
-    private mediaMatcher: MediaMatcher,
     private breakpointObserver: BreakpointObserver, ) {
     // this.mediaQueryList = mediaMatcher.matchMedia('(min-width: 640px)');
     // this.mediaQueryMin = mediaMatcher.matchMedia('(min-width: 960px)');
@@ -59,7 +49,7 @@ export class DashboardComponent implements OnInit {
       Breakpoints.HandsetLandscape,
       Breakpoints.HandsetPortrait
     ]).subscribe(result => {
-      this.onScreensizeChange(result)
+      this.onScreensizeChange()
       // if (result.matches) {
       //   this.isMobile = true;
       //   this.colNum = this.mediaQueryList.matches ? 2 : 1;
@@ -144,7 +134,7 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  onScreensizeChange(result: any) {
+  onScreensizeChange() {
     // debugger
     const isLess600 = this.breakpointObserver.isMatched('(max-width: 599px)');
     const isLess1000 = this.breakpointObserver.isMatched('(max-width: 959px)');

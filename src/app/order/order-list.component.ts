@@ -5,11 +5,6 @@ import { OrderService } from "./order.service";
 import { PagerService } from "../_services";
 import { ConfirmDialog } from "../shared";
 import * as _ from "lodash";
-// import {
-//   MatPaginator,
-//   MatTableDataSource,
-//   MatSort
-// } from "@angular/material";
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 import {MatDialog} from '@angular/material/dialog'
@@ -50,7 +45,6 @@ export class OrderListComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
-    private pagerService: PagerService,
     public dialog: MatDialog,
     public snackBar: MatSnackBar
   ) { }

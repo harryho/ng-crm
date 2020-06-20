@@ -10,8 +10,6 @@ import {
 import {
   FormBuilder,
   FormGroup,
-  FormControl,
-  FormArray,
   Validators,
   FormControlName,
 
@@ -29,19 +27,17 @@ import { OrderService } from "./order.service";
 
 import { NumberValidators } from "../shared/number.validator";
 import { GenericValidator } from "../shared/generic-validator";
-import { CustomerService, ICustomer } from "../customer";
+import { CustomerService, Customer } from "../customer";
 import { MatDialog } from '@angular/material/dialog';
 import { ProductDialogComponent } from "./product-dialog.component";
 import { ConfirmDialog } from "../shared";
-import { Window } from 'selenium-webdriver';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-// import { Event } from '_debugger';
+import { Product } from '../product';
 
 @Component({
   selector: 'order-edit',
   templateUrl: "./order-edit.component.html",
-  styles: [
-    `
+  styles: [`
   .title-spacer {
       flex: 1 1 auto;
     }
@@ -50,30 +46,18 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
       margin-left: 20px;
       margin-right: 20px;
     }
-    .example-section {
-        display: flex;
-        align-content: center;
-        align-items: center;
-        height: 60px;
-        }
-
-        .example-margin {
-        margin: 0 10px;
-        }
-    `
-  ],
+    `],
   providers: [ProductDialogComponent]
 })
 export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren(FormControlName, { read: ElementRef })
   formInputElements: ElementRef[];
-  // @ViewChild('mydp') mydp: MyDatePicker;
   pageTitle: string = "Update Order";
   errorMessage: string;
   orderForm: FormGroup;
   order: IOrder = <IOrder>{};
   showImage: boolean;
-  customers: ICustomer[];
+  customers: Customer[];
   fieldColspan = 4;
   // Use with the generic validation messcustomerId class
   displayMessage: { [key: string]: string } = {};
@@ -115,8 +99,7 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
       Breakpoints.HandsetLandscape,
       Breakpoints.HandsetPortrait
     ]).subscribe(result => {
-      // console.log(result)
-      this.onScreensizeChange(result);
+      this.onScreensizeChange();
     });
 
     this.genericValidator = new GenericValidator(this.validationMessages);
@@ -168,7 +151,7 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
     // Merge the blur event observable with the valueChanges observable
     Observable.merge(this.orderForm.valueChanges, ...controlBlurs)
       .debounceTime(800)
-      .subscribe(value => {
+      .subscribe(() => {
         this.displayMessage = this.genericValidator.processMessages(
           this.orderForm
         );
@@ -207,7 +190,6 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
       reference: this.order.reference,
       amount: this.order.amount,
       quantity: this.order.products.length,
-      //   products: this.order.products,
       orderDate: new Date(this.order.orderDate),
       shippedDate: new Date(this.order.shippedDate),
       address: this.order.shipAddress.address,
@@ -284,13 +266,13 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  openDialog(id: number) {
+  openDialog(product: Product) {
     let dialogRef = this.dialog.open(ConfirmDialog, {
       data: { title: "Dialog", message: "Are you sure to delete this item?" }
     });
     dialogRef.disableClose = true;
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       // this.selectedOption = result;
 
       // if (this.selectedOption === dialogRef.componentInstance.ACTION_CONFIRM) {
@@ -314,7 +296,7 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  onScreensizeChange(result: any) {
+  onScreensizeChange() {
     // debugger
     const isLess600 = this.breakpointObserver.isMatched('(max-width: 599px)');
     const isLess1000 = this.breakpointObserver.isMatched('(max-width: 959px)');
@@ -334,5 +316,5 @@ export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
       this.fieldColspan = 3;
     }
   }
-  deleteProduct(product): void { }
+  deleteProduct(): void { }
 }

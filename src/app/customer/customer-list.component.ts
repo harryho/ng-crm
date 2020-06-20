@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { ICustomer } from './customer';
+import { Customer } from './customer';
 import { CustomerService } from './customer.service';
 import { PagerService } from '../_services';
 import { ConfirmDialog } from '../shared';
@@ -31,8 +31,8 @@ export class CustomerListComponent implements OnInit {
     listFilter: any = {};
     errorMessage: string;
 
-    customers: ICustomer[];
-    customerList: ICustomer[]; //
+    customers: Customer[];
+    customerList: Customer[]; //
     displayedColumns = ["avatar", "firstName", "lastName", "rewards", "email", "membership", "id"];
     dataSource: any = null;
     pager: any = {};
@@ -58,7 +58,7 @@ export class CustomerListComponent implements OnInit {
         this.dataSource.filter = filterValue;
     }
 
-    freshDataList(customers: ICustomer[]) {
+    freshDataList(customers: Customer[]) {
         this.customers = customers;
 
         this.dataSource = new MatTableDataSource(this.customers);
@@ -91,7 +91,7 @@ export class CustomerListComponent implements OnInit {
                 .subscribe(customers => {
                     this.customers = customers;
                     console.log(this.customers.length)
-                    this.customers = this.customers.filter((customer: ICustomer) => {
+                    this.customers = this.customers.filter((customer: Customer) => {
                         let match = true;
 
                         Object.keys(filters).forEach((k) => {

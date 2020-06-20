@@ -141,10 +141,10 @@ export class BackendService {
   }
 
   // private helper methods
-  private form() {
-    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-    return { headers: headers };
-  }
+  // private form() {
+  //   let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+  //   return { headers: headers };
+  // }
 
   // private jwt() {
   //   // create authorization header with jwt token
@@ -155,8 +155,8 @@ export class BackendService {
   //   }
   // }
 
-  private handleError(error: Response) {
-    console.error(error);
-    return Observable.throw(error.json() || 'Server error');
-  }
+  // private handleError(error: Response) {
+  //   console.error(error);
+  //   return Observable.throw(error.json() || 'Server error');
+  // }
 }

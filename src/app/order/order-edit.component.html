@@ -1,23 +1,20 @@
 <form novalidate (ngSubmit)="saveOrder()" [formGroup]="orderForm">
   <mat-card>
-   <!--    <mat-card-header> 
-  <mat-card-title class="view-card-title">
-      <h1>{{pageTitle }}</h1>
-    </mat-card-title>
-     </mat-card-header>  -->
 
     <mat-toolbar style="background-color: #FFF">
       <mat-toolbar-row>
         <span class="view-card-title"> {{pageTitle}}</span>
         <span class="title-spacer"></span>
         <mat-card-actions>
-          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:darkgray" type="submit" [disabled]='!orderForm.valid'>
+          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:darkgray" type="submit"
+            [disabled]='!orderForm.valid'>
             <mat-icon>save</mat-icon>
           </button>
           <button mat-mini-fab class="" style="margin-right:10px; " [routerLink]="['/orders']">
             <mat-icon>cancel</mat-icon>
           </button>
-          <button mat-mini-fab class="accent" style="margin-right:10px; background-color:#e07c9e" (click)="addProduct($event)">
+          <button mat-mini-fab class="accent" style="margin-right:10px; background-color:#e07c9e"
+            (click)="addProduct($event)">
             <mat-icon>add</mat-icon>
           </button>
         </mat-card-actions>

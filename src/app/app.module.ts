@@ -16,12 +16,12 @@ import { DashboardComponent } from './dashboard';
 import { ChartsModule } from "ng2-charts";  
 import { AboutComponent } from './about';
 import { NotFoundPageComponent } from './notfoundpage';
-import { CustomerModule } from './customer';
 import { ConfirmDialog } from './shared/dialog.component';
-import { ProductModule } from './product';
-import { OrderModule } from './order';
 import { AuthGuard } from './_guard';
-
+// import { DatatableComponent } from './datatable/datatable.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,8 +30,7 @@ import { AuthGuard } from './_guard';
     DashboardComponent,
     AboutComponent,
     NotFoundPageComponent,
-    ConfirmDialog,
-    
+    ConfirmDialog
   ],
   imports: [
     BrowserModule,
@@ -41,17 +40,16 @@ import { AuthGuard } from './_guard';
     HttpClientModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     ChartsModule,
-    // CustomerModule,
-    // ProductModule,
-    // OrderModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [
     AuthGuard,
     BackendService,
     AuthenticationService,
-    PagerService,
-
+    PagerService
   ],
   bootstrap: [AppComponent]
 })

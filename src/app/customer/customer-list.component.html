@@ -33,14 +33,14 @@
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let customer">
         <!-- <a [routerLink]="['/customer', customer.id]"> -->
-          <img *ngIf='customer.avatar' [src]='customer.avatar' [title]='customer.firstName | uppercase'
-            [style.width.px]='imageWidth' [style.margin.px]='imageMargin'>
+        <img *ngIf='customer.avatar' [src]='customer.avatar' [title]='customer.firstName | uppercase'
+          [style.width.px]='imageWidth' [style.margin.px]='imageMargin'>
         <!-- </a> -->
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="firstName">
       <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-      <mat-cell *matCellDef="let customer"> {{customer.firstName}} </mat-cell>
+      <mat-cell *matCellDef="let customer"> {{customer.firstname}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="lastName">
       <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
@@ -87,11 +87,12 @@
   </mat-paginator>
 </mat-card>
 
-
 <mat-sidenav class="search-panel" position="end" dark #sidenav mode="push" opened="false">
   <mat-card class="profile-card">
     <mat-card-header>
-      <div mat-card-avatar class="avatar"><mat-icon>search</mat-icon></div>
+      <div mat-card-avatar class="avatar">
+        <mat-icon>search</mat-icon>
+      </div>
       <mat-card-title>
         Advanced Search
       </mat-card-title>
@@ -100,20 +101,18 @@
   <mat-nav-list style="margin-left:50px;">
     <mat-form-field appearance="standard">
       <mat-label>First Name</mat-label>
-      <input matInput appearance="standard" placeholder="First Name" 
-        name="firstname" [(ngModel)]="searchFilter.firstname" />
-    </mat-form-field >
+      <input matInput appearance="standard" placeholder="First Name" name="firstname"
+        [(ngModel)]="searchFilter.firstname" />
+    </mat-form-field>
     <mat-form-field appearance="standard">
       <mat-label>Last Name</mat-label>
-      <input matInput  placeholder="Last Name"  name="reference"
-        [(ngModel)]="searchFilter.customerDate" #reference />
-    </mat-form-field >
+      <input matInput placeholder="Last Name" name="reference" [(ngModel)]="searchFilter.customerDate" #reference />
+    </mat-form-field>
     <mat-form-field appearance="standard">
       <mat-label>Mobile</mat-label>
-      <input matInput appearance="standard" placeholder="Mobile"  name="amount"
-        [(ngModel)]="searchFilter.customerName" #amount />
+      <input matInput appearance="standard" placeholder="Mobile" name="amount" [(ngModel)]="searchFilter.customerName"
+        #amount />
     </mat-form-field>
-
 
   </mat-nav-list>
   <mat-divider></mat-divider>
@@ -123,7 +122,8 @@
         (click)="searchCustomers(searchFilter);sidenav.toggle()">
         <mat-icon>search</mat-icon>Search
       </button>
-      <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;" (click)="resetSearchFilter(sidenav)">
+      <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
+        (click)="resetSearchFilter(sidenav)">
         <mat-icon>refresh</mat-icon>Reset
       </button>
     </mat-action-list>

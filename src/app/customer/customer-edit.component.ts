@@ -8,13 +8,12 @@ import 'rxjs/add/observable/merge';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { ICustomer } from './customer';
+import { Customer } from './customer';
 import { CustomerService } from './customer.service';
 
 import { NumberValidators } from '../shared/number.validator';
 import { GenericValidator } from '../shared/generic-validator';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { TestObject } from 'protractor/built/driverProviders';
 
 
 @Component({
@@ -35,16 +34,6 @@ import { TestObject } from 'protractor/built/driverProviders';
         position: absolute;
         margin-left: 50px;
     }
-
-    .example-section {
-        display: flex;
-        align-content: center;
-        align-items: center;
-        height: 60px;
-        }
-    .example-margin {
-        margin: 0 10px;
-        }
     `]
 })
 export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -53,7 +42,7 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
     pageTitle: string = 'Update Customer';
     errorMessage: string;
     customerForm: FormGroup;
-    customer: ICustomer = <ICustomer>{};
+    customer: Customer = <Customer>{};
     private sub: Subscription;
     showImage: boolean;
     imageWidth: number = 100;
@@ -146,12 +135,12 @@ export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
     getCustomer(id: number): void {
         this.customerService.getCustomer(id)
             .subscribe(
-                (customer: ICustomer) => this.onCustomerRetrieved(customer),
+                (customer: Customer) => this.onCustomerRetrieved(customer),
                 (error: any) => this.errorMessage = <any>error
             );
     }
 
-    onCustomerRetrieved(customer: ICustomer): void {
+    onCustomerRetrieved(customer: Customer): void {
         if (this.customerForm) {
             this.customerForm.reset();
         }

@@ -7,7 +7,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
-import { IProduct, ICategory } from './product';
+import { Product, ICategory } from './product';
 
 @Injectable()
 export class ProductService {
@@ -15,7 +15,7 @@ export class ProductService {
 
   constructor(private http: HttpClient, private backend: BackendService) { }
 
-  getProducts(): Observable<IProduct[]> {
+  getProducts(): Observable<Product[]> {
     // return this.http.get(this.baseUrl)
     const action = `${this.basicAction}?_expand=category`;
     return this.backend.getAll(action)
@@ -23,7 +23,7 @@ export class ProductService {
       .catch(this.handleError);
   }
 
-  getProduct(id: number): Observable<IProduct> {
+  getProduct(id: number): Observable<Product> {
     if (id === 0) {
       return Observable.of(this.initializeProduct());
     };
@@ -40,7 +40,7 @@ export class ProductService {
       .catch(this.handleError);
   }
 
-  saveProduct(product: IProduct): Observable<IProduct> {
+  saveProduct(product: Product): Observable<Product> {
     // let headers = new Headers({ 'Content-Type': 'application/json' });
     // let options = new RequestOptions({ headers: headers });
 
@@ -58,14 +58,14 @@ export class ProductService {
       .catch(this.handleError);
   }
 
-  private createProduct(product: IProduct): Observable<IProduct> {
+  private createProduct(product: Product): Observable<Product> {
     product.id = null;
     return this.backend.create(this.basicAction, product)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  private updateProduct(product: IProduct): Observable<IProduct> {
+  private updateProduct(product: Product): Observable<Product> {
     const action = `${this.basicAction}${product.id}`;
     return this.backend.update(action, product)
       .map(() => product)
@@ -84,7 +84,7 @@ export class ProductService {
     return Observable.throw(error.json() || 'Server error');
   }
 
-  initializeProduct(): IProduct {
+  initializeProduct(): Product {
     // Return an initialized object
     return {
       id: 0,

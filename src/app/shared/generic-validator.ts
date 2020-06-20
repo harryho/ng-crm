@@ -22,7 +22,6 @@ export class GenericValidator {
     // And returns a set of validation messages to display
     // Structure
     // controlName1: 'Validation Message.',
-    // controlName2: 'Validation Message.'
     processMessages(container: FormGroup): { [key: string]: string } {
         let messages = {};
         for (let controlKey in container.controls) {

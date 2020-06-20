@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 
 import { IOrder, IAddress } from './order';
-import { IProduct } from '../product';
+import { Product } from '../product';
 
 @Injectable()
 export class OrderService {
@@ -82,7 +82,7 @@ export class OrderService {
       avatar: null,
       reference: null,
       amount: 0,
-      products: Array<IProduct>(),
+      products: Array<Product>(),
       orderDate: null,
       shippedDate: null,
       shipAddress: <IAddress>{},

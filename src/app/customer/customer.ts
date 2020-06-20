@@ -1,5 +1,5 @@
 /* Defines the customer entity */
-export interface ICustomer {
+export interface Customer {
   id: number;
   avatar: string;
   firstName: string;

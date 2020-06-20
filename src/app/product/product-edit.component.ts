@@ -22,7 +22,7 @@ import "rxjs/add/observable/merge";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
-import { IProduct } from "./product";
+import { Product } from "./product";
 import { ProductService } from "./product.service";
 
 import { NumberValidators } from "../shared/number.validator";
@@ -43,16 +43,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
       margin-left: 20px;
       margin-right: 20px;
     }
-    .example-section {
-        display: flex;
-        align-content: center;
-        align-items: center;
-        height: 60px;
-        }
-
-        .example-margin {
-        margin: 0 10px;
-        }
+   
     `
   ]
 })
@@ -64,7 +55,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   errorMessage: string;
   productForm: FormGroup;
 
-  product: IProduct = <IProduct>{};
+  product: Product = <Product>{};
   private sub: Subscription;
   showImage: boolean;
   categories: ICategory[];
@@ -157,7 +148,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.productService
       .getProduct(id)
       .subscribe(
-        (product: IProduct) => this.onProductRetrieved(product),
+        (product: Product) => this.onProductRetrieved(product),
         (error: any) => (this.errorMessage = <any>error)
       );
   }
@@ -171,7 +162,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
       );
   }
 
-  onProductRetrieved(product: IProduct): void {
+  onProductRetrieved(product: Product): void {
     if (this.productForm) {
       this.productForm.reset();
     }

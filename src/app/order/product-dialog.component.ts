@@ -1,9 +1,8 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChildren, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators, FormControlName } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControlName } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Inject } from '@angular/core';
-import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog'
-// import {  MatDialogRef, MAT_DIALOG_DATA, MatButtonModule } from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog'
 
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/observable/fromEvent';
@@ -11,12 +10,12 @@ import 'rxjs/add/observable/merge';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { IProduct } from '../product';
+import { Product } from '../product';
 import { ProductService } from '../product';
 
 import { NumberValidators } from '../shared/number.validator';
 import { GenericValidator } from '../shared/generic-validator';
-import { CustomerService, ICustomer } from "../customer";
+import { CustomerService, Customer } from "../customer";
 
 @Component({
     templateUrl: './product-dialog.component.html',
@@ -31,10 +30,10 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
     errorMessage: string;
     productForm: FormGroup;
 
-    product: IProduct;
+    product: Product;
     private sub: Subscription;
     showImage: boolean;
-    customers: ICustomer[];
+    customers: Customer[];
 
     // Use with the generic validation messcustomerId class
     displayMessage: { [key: string]: string } = {};
@@ -103,7 +102,7 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
             .map((formControl: ElementRef) => Observable.fromEvent(formControl.nativeElement, 'blur'));
 
         // Merge the blur event observable with the valueChanges observable
-        Observable.merge(this.productForm.valueChanges, ...controlBlurs).debounceTime(800).subscribe(value => {
+        Observable.merge(this.productForm.valueChanges, ...controlBlurs).debounceTime(800).subscribe(() => {
             this.displayMessage = this.genericValidator.processMessages(this.productForm);
         });
     }
@@ -111,7 +110,7 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
     getProduct(id: number): void {
         this.productService.getProduct(id)
             .subscribe(
-            (product: IProduct) => this.onProductRetrieved(product),
+            (product: Product) => this.onProductRetrieved(product),
             (error: any) => this.errorMessage = <any>error
             );
     }
@@ -126,7 +125,7 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
     }
 
 
-    onProductRetrieved(product: IProduct): void {
+    onProductRetrieved(product: Product): void {
         if (this.productForm) {
             this.productForm.reset();
         }
@@ -142,9 +141,7 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
         this.productForm.patchValue({
             product: this.product.productName,
             price: this.product.unitPrice,
-            quantity: this.product.unitInStock,
-            // customerId: this.product.customerId,     
-            // membership: this.product.membership
+            quantity: this.product.unitInStock
         });
     }
 
