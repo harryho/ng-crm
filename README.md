@@ -1,4 +1,4 @@
-# Angular Material Design App
+# Anguler CRM Demo App
 
 > A reusable CRM starter project for real-world business based on Angular 9, Angular-Material 9.x.
 
@@ -9,7 +9,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 * This project is built on the top of AngularClass/Angular-Starter.
 * The UI part of this project is comprehensively built on Angular Material.
 * This project includes ng-charts.
-* CRUD functions for Customer, Order and Product
 * ~~To simulate real-world business, this starter project chooses Json-Server as fake Restful API. (You can simple replace it with your own API).~~
 * ~~Fake API is just readonly fake service.~~
 
@@ -66,7 +65,29 @@ serve dist
 
 ```
 
-# Welcome to fork or clone!
+## Docker
+
+```
+## Run / Test release without building new image
+npm run build
+
+# Launch nginx image to test latest release
+docker pull nginx:alpine
+docker run -p 8080:80 -v \
+    <your_aboslute_path>/dist:/usr/share/nginx/html nginx:alpine
+
+
+# Build release image
+docker build . -t  nc-prd:2.0
+
+# Launch the development image in the backgroud
+docker run -d --publish 8080:80  --name nc2 nc-prd:2.0
+
+# Check the log
+docker logs nc2  -f
+```
+
+## Welcome to fork or clone!
 
 For detailed explanation on how things work, checkout following links please.
 
@@ -80,20 +101,20 @@ For detailed explanation on how things work, checkout following links please.
 
 There are some similar projects respectively built on the Vue.js and React. If you have interests in those technical stacks. You can find and clone those repositories below.
 
-* [Vue2Crm](https://github.com/harryho/vue-crm.git).
+* [Vue-Crm](https://github.com/harryho/vue-crm.git).
 * [React-Crm](https://github.com/harryho/react-crm.git).
 
 
 ###  Change log
 
-* Rebuild the project with Angular CLI
+* Jun 2020 - Re-create the project with Angular CLI
 
   The whole project is built from scratch based on the Angular CLI & Angular Material Schematics.
 
-* Rebase demo branch to master
+* Oct 2018 - Rebase demo branch to master
 
   New master doesn't rely on Json-Server as fake API. It will only have Readonly fake API. It means any new or updated data will be stored to any physical file. All test data will be rolled back after system restart.
 
-* Create an archived branch json-server
+* Jan 2018 - Create an archived branch json-server
 
   This branch was the master which used Json-Server as fake API. Considering the hiccup of setting Json-Server up and maintenance, it will be replaced by fake service ( Readonly fake API). You still can find clone this branch by branch name __json-server__, but it will be no longer updated. It is an archived branch.
