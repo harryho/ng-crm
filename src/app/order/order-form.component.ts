@@ -35,8 +35,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Product } from '../product';
 
 @Component({
-  selector: 'order-edit',
-  templateUrl: "./order-edit.component.html",
+  selector: 'order-form',
+  templateUrl: "./order-form.component.html",
   styles: [`
   .title-spacer {
       flex: 1 1 auto;
@@ -49,7 +49,7 @@ import { Product } from '../product';
     `],
   providers: [ProductDialogComponent]
 })
-export class OrderEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class OrderFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren(FormControlName, { read: ElementRef })
   formInputElements: ElementRef[];
   pageTitle: string = "Update Order";

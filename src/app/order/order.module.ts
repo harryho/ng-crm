@@ -3,7 +3,7 @@ import { RouterModule } from "@angular/router";
 
 import { OrderListComponent } from "./order-list.component";
 import { OrderDetailGuard, OrderEditGuard } from "./order-guard.service";
-import { OrderEditComponent } from "./order-edit.component";
+import { OrderFormComponent } from "./order-form.component";
 import { ProductDialogComponent } from "./product-dialog.component";
 
 import { OrderService } from "./order.service";
@@ -20,13 +20,13 @@ import { ProductService } from '../product';
       {
         path: "edit/:id",
         canDeactivate: [OrderEditGuard],
-        component: OrderEditComponent
+        component: OrderFormComponent
       }
     ])
   ],
   declarations: [
     OrderListComponent,
-    OrderEditComponent,
+    OrderFormComponent,
     ProductDialogComponent
   ],
   providers: [
@@ -38,7 +38,7 @@ import { ProductService } from '../product';
   ],
   exports: [
     OrderListComponent,
-    OrderEditComponent
+    OrderFormComponent
   ]
 })
 export class OrderModule { }

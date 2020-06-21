@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 
 import { ProductListComponent } from "./product-list.component";
 import { ProductDetailGuard, ProductEditGuard } from "./product-guard.service";
-import { ProductEditComponent } from "./product-edit.component";
+import { ProductFormComponent } from "./product-form.component";
 
 import { ProductService } from "./product.service";
 import { SharedModule } from "../shared/shared.module";
@@ -20,7 +20,7 @@ import { MaterialModule } from "../shared/material.module";
       {
         path: "edit/:id",
         canDeactivate: [ProductEditGuard],
-        component: ProductEditComponent
+        component: ProductFormComponent
       }
     ])
   ],
@@ -29,12 +29,12 @@ import { MaterialModule } from "../shared/material.module";
      * Components / Directives/ Pipes
      */
     ProductListComponent,
-    ProductEditComponent
+    ProductFormComponent
   ],
   providers: [ProductService, ProductDetailGuard, ProductEditGuard],
   exports: [
     ProductListComponent,
-    ProductEditComponent,
+    ProductFormComponent,
   ]
 })
 export class ProductModule { }

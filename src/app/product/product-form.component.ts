@@ -29,8 +29,8 @@ import { Category } from "./index";
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
-  selector: 'product-edit',
-  templateUrl: "./product-edit.component.html",
+  selector: 'product-form',
+  templateUrl: "./product-form.component.html",
   styles: [
     `
     .title-spacer {
@@ -45,7 +45,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
     `
   ]
 })
-export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren(FormControlName, { read: ElementRef })
   formInputElements: ElementRef[];
 

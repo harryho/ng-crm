@@ -17,8 +17,8 @@ import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 
 
 @Component({
-    selector: 'customer-edit',
-    templateUrl: './customer-edit.component.html',
+    selector: 'customer-form',
+    templateUrl: './customer-form.component.html',
     styles: [`
     .title-spacer {
         flex: 1 1 auto;
@@ -36,7 +36,7 @@ import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
     }
     `]
 })
-export class CustomerEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CustomerFormComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
 
     pageTitle: string = 'Update Customer';

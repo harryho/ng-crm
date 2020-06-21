@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, CanDeactivate } from '@angular/router';
 
-import { CustomerEditComponent } from './customer-edit.component';
+import { CustomerFormComponent } from './customer-form.component';
 
 @Injectable()
 export  class CustomerDetailGuard implements CanActivate {
@@ -23,9 +23,9 @@ export  class CustomerDetailGuard implements CanActivate {
 }
 
 @Injectable()
-export  class CustomerEditGuard implements CanDeactivate<CustomerEditComponent> {
+export  class CustomerEditGuard implements CanDeactivate<CustomerFormComponent> {
 
-    canDeactivate(component: CustomerEditComponent): boolean {
+    canDeactivate(component: CustomerFormComponent): boolean {
         if (component.customerForm.dirty) {
             let customerName = component.customerForm.get('firstname').value || 'New Customer';
             return confirm(`Navigate away and lose all changes to ${customerName}?`);

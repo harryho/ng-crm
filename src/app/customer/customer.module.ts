@@ -5,7 +5,7 @@ import {
   CustomerDetailGuard,
   CustomerEditGuard
 } from "./customer-guard.service";
-import { CustomerEditComponent } from "./customer-edit.component";
+import { CustomerFormComponent } from "./customer-form.component";
 
 import { CustomerService } from "./customer.service";
 import { SharedModule } from "../shared/shared.module";
@@ -23,12 +23,12 @@ import { MaterialModule } from "../shared/material.module";
       {
         path: "new/",
         canDeactivate: [CustomerEditGuard],
-        component: CustomerEditComponent
+        component: CustomerFormComponent
       },
       {
         path: "edit/:id",
         canDeactivate: [CustomerEditGuard],
-        component: CustomerEditComponent
+        component: CustomerFormComponent
       }
     ])
   ],
@@ -37,14 +37,14 @@ import { MaterialModule } from "../shared/material.module";
      * Components / Directives/ Pipes
      */
     CustomerListComponent,
-    CustomerEditComponent
+    CustomerFormComponent
   ],
   providers: [CustomerService, CustomerDetailGuard, CustomerEditGuard,
   ],
   // entryComponents: [MatOption],
   exports: [
     CustomerListComponent,
-    CustomerEditComponent,
+    CustomerFormComponent,
 
   ]
 })
