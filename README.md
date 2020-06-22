@@ -1,4 +1,4 @@
-# Anguler CRM Demo App
+# Angular CRM Demo App
 
 > A reusable CRM starter project for real-world business based on Angular 9, Angular-Material 9.x.
 
