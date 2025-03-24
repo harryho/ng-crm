@@ -1,0 +1,39 @@
+<div mat-dialog-title>
+    {{pageTitle}}
+</div>
+<mat-dialog-content>
+    <form class="form-horizontal" novalidate (ngSubmit)="saveProduct()" [formGroup]="productForm">
+        <!-- <div class="form-group">
+                <img style="padding-left:100px;" *ngIf='showImage && product.avatar' [src]='product.avatar' [title]='product.product | uppercase'
+                    [style.width.px]='imcustomerIdWidth' [style.margin.px]='imcustomerIdMargin'>
+            </div> -->
+        <!-- <div class="form-group" [ngClass]="{'has-error': displayMessage.product }">
+                <label class="col-md-2 control-label" for="productId">Product</label>
+
+                <div class="col-md-8"> -->
+        <mat-form-field class="dialog-field ">
+            <input matInput #productId type="text" placeholder="Product (required)" formControlName="product" />
+            <mat-error *ngIf="displayMessage.product ">
+                {{displayMessage.product}}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="dialog-field ">
+            <input matInput placeholder="Amount" id="priceId" type="number" placeholder="Price (required)" formControlName="price" />
+            <mat-error *ngIf="displayMessage.price">
+                {{displayMessage.price}}
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="dialog-field ">
+            <input matInput placeholder="Quantity" id="quantityId" type="number" placeholder="Quantity (required)" formControlName="quantity"
+            />
+            <mat-error *ngIf="displayMessage.quantity">
+                {{displayMessage.quantity}}
+            </mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button [mat-dialog-close]="ACTION_SAVE">Confirm</button>
+    <button mat-raised-button [mat-dialog-close]="ACTION_CANCEL">Cancel</button>
+</mat-dialog-actions>>

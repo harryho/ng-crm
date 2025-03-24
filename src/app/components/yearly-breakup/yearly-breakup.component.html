@@ -1,0 +1,34 @@
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <mat-card-title>Yearly Breakup</mat-card-title>
+        <div class="row m-t-24">
+            <div class="col-7">
+                <h4 class="f-s-24">$36,358</h4>
+                <div class="d-flex align-items-center m-t-16">
+                    <button mat-icon-button class="bg-light-success text-success shadow-none icon-27 p-0 d-flex align-items-center justify-content-center">
+                        <i-tabler name="arrow-up-right" class="icon-20 d-flex align-items-center"></i-tabler>
+                    </button>
+                    <div class="f-w-600 m-l-12 f-s-14">+9%</div>
+                    <div class="m-l-4 f-s-14">last year</div>
+                </div>
+
+                <div class="d-flex align-items-center m-t-32">
+                    <div class="d-flex align-items-center">
+                        <i-tabler name="circle-filled" class="text-primary icon-12 d-flex"></i-tabler>
+                        <div class="m-l-12 f-s-14">2025</div>
+                    </div>
+                    <div class="d-flex align-items-center m-l-16">
+                        <i-tabler name="circle-filled" class="text-light-primary icon-12 d-flex"></i-tabler>
+                        <div class="m-l-12 f-s-14">2024</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5 d-flex align-items-start">
+                <apx-chart [series]="yearlyChart.series" [dataLabels]="yearlyChart.dataLabels"
+                    [chart]="yearlyChart.chart" [legend]="yearlyChart.legend" [colors]="yearlyChart.colors"
+                    [stroke]="yearlyChart.stroke" [tooltip]="yearlyChart.tooltip"
+                    [plotOptions]="yearlyChart.plotOptions" [responsive]="yearlyChart.responsive"></apx-chart>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

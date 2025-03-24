@@ -1,0 +1,108 @@
+
+
+
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title class="m-b-0">{{pageTitle()}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="b-t-1">
+    
+
+    
+    <form novalidate (ngSubmit)="saveCustomer()" [formGroup]="customerForm">
+    
+      <div class="row">
+        <div class="col-lg-12">
+          <span class="m-l-16">
+            @if(customer!= null && customer()){
+            <img mat-card-avatar class="" [src]='getAvatar(customer())'  [style.width.px]='imageWidth'
+              [style.height.px]='imageWidth' [style.margin.px]='imageMargin'>
+            }
+          </span>
+        </div>
+        <div class="col-lg-6">
+          <!-- input -->
+          <mat-label class="f-w-600 m-b-8 d-block">First Name</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="firstname" type="text" placeholder="First Name (required)"  formControlName="firstname" />
+            @if(this.customerForm.controls['firstname']!=null){
+              <mat-error *ngIf="customerForm.controls['firstname'].hasError('required')">
+                {{ValidatorMessages.firstname.required}}
+              </mat-error>
+              }
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <!-- input -->
+          <mat-label class="f-w-600 m-b-8 d-block">Last Name</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="lastname" placeholder="Last Name (required)" formControlName="lastname" />
+            <!-- @if(this.customerForm.controls['lastname']!=null){ -->
+            <mat-error *ngIf="customerForm.controls['lastname'].hasError('required')">
+              {{ValidatorMessages.lastname.required}}
+            </mat-error>
+          <!-- } -->
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <!-- input -->
+          <mat-label class="f-w-600 m-b-8 d-block">Email</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="email" type="email" placeholder="Email " formControlName="email" />
+            @if(this.customerForm.controls['email']!=null){
+            <mat-error *ngIf="customerForm.controls['email'].hasError('required')">
+              {{ValidatorMessages.email.required}}
+            </mat-error>
+          }
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <!-- input -->
+          <mat-label class="f-w-600 m-b-8 d-block">Phone</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="phone" type="text" placeholder="Phone" formControlName="phone" />
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <!-- input -->
+          <mat-label class="f-w-600 m-b-8 d-block">Mobile</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="mobile" type="text" placeholder="Mobile " formControlName="mobile" />
+            @if(this.customerForm.controls['mobile']!=null){
+            <mat-error *ngIf="customerForm.controls['mobile'].hasError('required')">
+              {{ValidatorMessages.mobile.required}}
+            </mat-error>
+            <mat-error *ngIf="customerForm.controls['mobile'].hasError('maxlength')">
+              {{ValidatorMessages.mobile.maxlength}}
+            </mat-error>
+          }
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <!-- input -->
+          <mat-label class="f-w-600 m-b-8 d-block">Rewards</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput placeholder="Rewards" id="ageId" type="number" formControlName="rewards" />
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Membership</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select id="membership" formControlName="membership">
+              <mat-option value="standard">Standard</mat-option>
+              <mat-option value="vip">VIP</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="m-t-12 button-float-right" >
+        <button mat-flat-button extended color="secondary" class="m-r-8" type="submit"
+          [disabled]='!customerForm.valid'><mat-icon fontIcon="save"></mat-icon>Submit</button>
+        <button mat-stroked-button extended color="warn" [routerLink]="['/customer']">
+          <mat-icon fontIcon="cancel"></mat-icon>Cancel</button>
+      </div>
+    </form>
+  </mat-card-content>
+
+</mat-card>

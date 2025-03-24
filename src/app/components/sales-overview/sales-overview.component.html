@@ -1,0 +1,22 @@
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <div class="d-flex w-100">
+            <mat-card-title>Sales Overview</mat-card-title>
+            <div class="m-l-auto">
+                <mat-form-field class="theme-select" appearance="outline">
+                    <mat-select value="mar">
+                        @for(month of months; track month.viewValue ) {
+                        <mat-option [value]="month.value">
+                            {{ month.viewValue }}
+                        </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <apx-chart [series]="salesOverviewChart.series" [dataLabels]="salesOverviewChart.dataLabels"
+            [chart]="salesOverviewChart.chart" [legend]="salesOverviewChart.legend" [xaxis]="salesOverviewChart.xaxis"
+            [yaxis]="salesOverviewChart.yaxis" [grid]="salesOverviewChart.grid" [stroke]="salesOverviewChart.stroke"
+            [tooltip]="salesOverviewChart.tooltip" [plotOptions]="salesOverviewChart.plotOptions"></apx-chart>
+    </mat-card-content>
+</mat-card>

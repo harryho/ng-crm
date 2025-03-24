@@ -1,0 +1,98 @@
+<mat-card class="cardWithShadow">
+    <mat-card-content>
+        <div class="d-flex">
+            <div class="m-r-auto">
+                <mat-card-title>Top Projects</mat-card-title>
+                <mat-card-subtitle>Best Products</mat-card-subtitle>
+            </div>
+            <mat-form-field class="theme-select" appearance="outline">
+                <mat-select value="mar">
+                    @for(month of months; track month.value) {
+                    <mat-option [value]="month.value">
+                        {{ month.viewValue }}
+                    </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" class="w-100">
+                <!-- Position Column -->
+                <ng-container matColumnDef="product">
+                    <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14 p-l-0">
+                        Product
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="p-l-0">
+                        <div class="d-flex align-items-center">
+                            <img [src]="element.imagePath" alt="users" width="48" class="rounded" />
+                            <div class="m-l-16">
+                                <h6 class="f-s-14 f-w-600">
+                                    {{ element.pname }}
+                                </h6>
+                                <span class=" f-s-12">
+                                    {{ element.category }}
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="progress">
+                    <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14">
+                        Progress
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{ element.progress }}%
+                    </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14">
+                        Status
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        @if(element.status == 'low') {
+                        <span class="bg-light-success text-success rounded f-w-600 p-6 p-y-4 f-s-12">
+                            {{ element.status | titlecase }}
+                        </span>
+                        }
+
+                        @if(element.status == 'medium') {
+                        <span class="bg-light-warning text-warning rounded f-w-600 p-6 p-y-4 f-s-12">
+                            {{ element.status | titlecase }}
+                        </span>
+                        }
+
+                        @if(element.status == 'high') {
+                        <span class="bg-light-primary text-primary rounded f-w-600 p-6 p-y-4 f-s-12">
+                            {{ element.status | titlecase }}
+                        </span>
+                        }
+
+                        @if(element.status == 'critical') {
+                        <span class="bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12">
+                            {{ element.status | titlecase }}
+                        </span>
+                        }
+
+                    </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="sales">
+                    <th mat-header-cell *matHeaderCellDef class="f-w-600 f-s-14">
+                        Sales
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        ${{ element.sales }}k
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+        </div>
+    </mat-card-content>
+</mat-card>
