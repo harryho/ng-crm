@@ -2,7 +2,7 @@
 import { Customer } from "../customer";
 import { Product } from "../product";
 
-export interface IOrder {
+export interface Order {
   reference: string;
   amount: number;
   quantity: number;
@@ -15,6 +15,7 @@ export interface IOrder {
   customer: Customer;
   products: Array<Product>;
   shipAddress: IAddress;
+  expand?:""
 }
 
 export interface IAddress {

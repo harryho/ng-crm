@@ -4,20 +4,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog'
 
-
-
 import { Product } from '../product';
 import { ProductService } from '../product';
 
-
 import { CustomerService, Customer } from "../customer";
-import { Observable } from 'rxjs';
-import { GenericValidator, NumberValidators } from 'src/app/shared';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgIf } from '@angular/common';
+import { NumberValidators } from 'src/app/shared';
 
 @Component({
     templateUrl: './product-dialog.component.html',
-    imports:[MatFormFieldModule,MatDialogModule,ReactiveFormsModule]
+    imports:[MatFormFieldModule,MatDialogModule,ReactiveFormsModule, NgIf]
 })
 export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
@@ -58,7 +55,7 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
             price: {
                 range: 'Rewards of the product must be between 1 (lowest) and 9999 (highest).'
             },
-            quantity: {
+            unitInStock: {
                 range: 'Rewards of the product must be between 1 (lowest) and 20 (highest).'
             },
             customerId: {
@@ -75,7 +72,7 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
             Validators.minLength(3),
             Validators.maxLength(100)]],
             price: ['', NumberValidators.range(1, 99999)],
-            quantity: ['', NumberValidators.range(1, 20)],
+            unitInStock: ['', NumberValidators.range(1, 20)],
             customerId: ['', NumberValidators.range(1, 9999999)],
             membership: false,
         });
@@ -84,7 +81,7 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
         // this.sub = 
         this.route.params.subscribe(
             params => {
-                let id = +params['id'];
+                let id = params['id'];
                 this.getProduct(id);
             }
         );
@@ -107,12 +104,12 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
         // });
     }
 
-    getProduct(id: number): void {
+    getProduct(id: string): void {
         this.productService.getProduct(id)
-            .subscribe(
-            (product: Product) => this.onProductRetrieved(product),
-            (error: any) => this.errorMessage = <any>error
-            );
+            // .subscribe(
+            // (product: Product) => this.onProductRetrieved(product),
+            // (error: any) => this.errorMessage = <any>error
+            // );
     }
 
 
@@ -134,14 +131,14 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
         if (this.product.id ) {
             this.pageTitle = 'Add Product';
         } else {
-            this.pageTitle = `Edit Product: ${this.product.productName} ${this.product.unitPrice}`;
+            this.pageTitle = `Edit Product: ${this.product.name} ${this.product.price}`;
         }
 
         // Update the data on the form
         this.productForm.patchValue({
-            product: this.product.productName,
-            price: this.product.unitPrice,
-            quantity: this.product.unitInStock
+            product: this.product.name,
+            price: this.product.price,
+            unitInStock: this.product.unitInStock
         });
     }
 
@@ -150,7 +147,7 @@ export class ProductDialogComponent implements OnInit, AfterViewInit, OnDestroy 
             // Don't delete, it was never saved.
             this.onSaveComplete();
         } else {
-            if (confirm(`Really delete the product: ${this.product.productName}?`)) {
+            if (confirm(`Really delete the product: ${this.product.name}?`)) {
                 // this.productService.deleteProduct(this.product.id)
                 //     .subscribe(
                 //     () => this.onSaveComplete(),

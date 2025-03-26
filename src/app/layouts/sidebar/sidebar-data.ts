@@ -39,44 +39,44 @@ export const navItems: NavItem[] = [
     iconName: 'adjustments',
     route: '/staff',
   },
-  {
-    navCap: 'Ui Components',
-  },
-  {
-    displayName: 'Badge',
-    iconName: 'archive',
-    route: '/ui-components/badge',
-  },
-  {
-    displayName: 'Chips',
-    iconName: 'info-circle',
-    route: '/ui-components/chips',
-  },
-  {
-    displayName: 'Lists',
-    iconName: 'list-details',
-    route: '/ui-components/lists',
-  },
-  {
-    displayName: 'Menu',
-    iconName: 'file-text',
-    route: '/ui-components/menu',
-  },
-  {
-    displayName: 'Tooltips',
-    iconName: 'file-text-ai',
-    route: '/ui-components/tooltips',
-  },
-  {
-    displayName: 'Forms',
-    iconName: 'clipboard-text',
-    route: '/ui-components/forms',
-  },
-  {
-    displayName: 'Tables',
-    iconName: 'table',
-    route: '/ui-components/tables',
-  },
+  // {
+  //   navCap: 'Ui Components',
+  // },
+  // {
+  //   displayName: 'Badge',
+  //   iconName: 'archive',
+  //   route: '/ui-components/badge',
+  // },
+  // {
+  //   displayName: 'Chips',
+  //   iconName: 'info-circle',
+  //   route: '/ui-components/chips',
+  // },
+  // {
+  //   displayName: 'Lists',
+  //   iconName: 'list-details',
+  //   route: '/ui-components/lists',
+  // },
+  // {
+  //   displayName: 'Menu',
+  //   iconName: 'file-text',
+  //   route: '/ui-components/menu',
+  // },
+  // {
+  //   displayName: 'Tooltips',
+  //   iconName: 'file-text-ai',
+  //   route: '/ui-components/tooltips',
+  // },
+  // {
+  //   displayName: 'Forms',
+  //   iconName: 'clipboard-text',
+  //   route: '/ui-components/forms',
+  // },
+  // {
+  //   displayName: 'Tables',
+  //   iconName: 'table',
+  //   route: '/ui-components/tables',
+  // },
 
 
  

@@ -17,7 +17,7 @@ import { SharedModule } from "src/app/shared/shared.module";
       { path: "", component: ProductListComponent },
       {
         path: "edit/:id",
-        canDeactivate: [ProductEditGuard],
+        // canDeactivate: [ProductEditGuard],
         component: ProductFormComponent
       }
     ])

@@ -2,11 +2,13 @@
 
 export interface Product {
     id: string;
-    avatar: string;
+    imageUri: string;
     categoryId: number;
-    productName: string;
-    unitPrice: number;
+    name: string;
+    price: number;
+    retailPrice: number;
     unitInStock: number;
+    colors?: string[]
 }
 
 export type WithCategory = {

@@ -1,124 +1,104 @@
-<!-- <mat-sidenav-container> -->
+@if (orders.isLoading()) {
+  <mat-progress-bar mode="query" />
+  }
+
 <mat-card class='light' style="height: 100%;">
-  <mat-card-header>
-    <mat-card-title class="view-card-title">
-      <h1>{{pageTitle }}</h1>
-    </mat-card-title>
-  </mat-card-header>
-  <mat-toolbar>
+  <mat-toolbar style="background-color: #FFF">
     <mat-toolbar-row>
-
-      <button mat-mini-fab style="margin-right:10px; background-color:#e07c9e" [routerLink]="['/orders/edit/', 0]">
-        <mat-icon>add</mat-icon>
-      </button>
-
-      <button mat-mini-fab style="margin-right:10px; background-color:darkgray" (click)="reset()">
-        <mat-icon>refresh</mat-icon>
-      </button>
+      <span class="view-card-title"> {{pageTitle}}</span>
       <span class="title-spacer"></span>
-
-      <mat-form-field appearance="outline" class="search-form-fileld">
-        <mat-label>Filter</mat-label>
-        <input matInput >
-        <!-- (keyup)="applyFilter($event.target.value as any)"> -->
-        <mat-icon>filter_list</mat-icon>
-      </mat-form-field>
-
-
+      <mat-card-actions>
+        <button mat-mini-fab color="bg-light-primary" class="m-r-16" [routerLink]="['/customer/new']">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-mini-fab  class="bg-light-secondary" (click)="reload()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </mat-card-actions>
     </mat-toolbar-row>
   </mat-toolbar>
-  <mat-table #table [dataSource]="dataSource" matSort>
-    <ng-container matColumnDef="reference">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Reference No. </mat-header-cell>
-      <mat-cell *matCellDef="let order">
-        <!-- <a [routerLink]="['/order', order.id]"> -->
-        {{order.reference}}
-        <!-- </a> -->
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="quantity">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Quantity </mat-header-cell>
-      <mat-cell *matCellDef="let order"> {{order.products.length}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="amount">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Amount </mat-header-cell>
-      <mat-cell *matCellDef="let order"> {{order.amount}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="customerName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Customer </mat-header-cell>
-      <mat-cell *matCellDef="let order"> {{order.customerName}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="orderDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Order Date </mat-header-cell>
-      <mat-cell *matCellDef="let order"> {{order.orderDate | date }} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="shippedDate">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Shipped Date </mat-header-cell>
-      <mat-cell *matCellDef="let order"> {{order.shippedDate | date}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef style="justify-content:right;">
-        <!-- <button mat-button style="color:white; background-color:darkgrey" (click)="resetListFilter()">Reset</button> -->
-      </mat-header-cell>
-      <mat-cell *matCellDef="let order" style="justify-content:right;">
-        <button mat-mini-fab style="background-color:teal; min-height: 30px;   margin: 5px;"
-          [routerLink]="['/orders/edit/', order.id]">
-          <mat-icon>edit</mat-icon>
+
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <mat-form-field appearance="outline" class="search-form-fileld w-100">
+        <mat-label>Filter</mat-label>
+        <input matInput>
+        <mat-icon>filter_list</mat-icon>
+      </mat-form-field>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <table mat-table [dataSource]="dataSource()" matSort multiTemplateDataRows class="mat-elevation-z8">
+
+    <ng-container matColumnDef="expand">
+      <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;XXXXX</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button aria-label="expand row" (click)="toggle(element); $event.stopPropagation()"
+          class="example-toggle-button" [class.example-toggle-button-expanded]="isExpanded(element)">
+          <mat-icon>keyboard_arrow_down</mat-icon>
         </button>
-        <button mat-mini-fab style="background-color:lightblue; min-height: 30px;  margin: 5px;"
-          (click)="openDialog(order.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-cell>
+      </td>
     </ng-container>
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
+
+
+    @for (column of displayedColumns; track column) {
+    <ng-container matColumnDef="{{column}}">
+      <th mat-header-cell *matHeaderCellDef>{{displayedColumnHeaders[column]}}</th>
+      <td mat-cell *matCellDef="let element">
+        @if(column=="id"){
+
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [routerLink]="['/order/edit/', element[column]]">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="openDialog(element[column])">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+
+        }
+        @else {
+        {{element[column]}}
+        }
+
+      </td>
+    </ng-container>
+    }
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumnsExpand.length">
+        <div class="example-element-detail-wrapper"
+          [class.example-element-detail-wrapper-expanded]="isExpanded(element)">
+          <div class="example-element-detail">
+            <div class="example-element-description">
+              <div class="row">
+                <div class="col-lg-4"><span class="f-w-600">Address:</span></div>
+                <div class="col-lg-8">{{element.shipAddress.address}}</div>
+                <div class="col-lg-4"><span class="f-w-600">City: </span></div>
+                <div class="col-lg-8">{{element.shipAddress.city}}</div>
+                <div class="col-lg-4"><span class="f-w-600"> Country:</span> </div>
+                <div class="col-lg-8">{{element.shipAddress.country}}</div>
+                <div class="col-lg-4"><span class="f-w-600"> Postcode:</span> </div>
+                <div class="col-lg-8">{{element.shipAddress.zipcode}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumnsExpand;" class="example-element-row"
+      [class.example-expanded-row]="isExpanded(element)" (click)="toggle(element)">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </table>
   <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10]" [length]="totalAmount">
   </mat-paginator>
-</mat-card>
-<!-- <mat-sidenav class="search-panel" position="end" position="end" dark #sidenav mode="push" opened="false">
 
-  <mat-card class="profile-card">
-    <mat-card-header>
-      <div mat-card-avatar class="avatar">
-        <mat-icon>search</mat-icon>
-      </div>
-      <mat-card-title>
-        Advanced Search
-      </mat-card-title>
-    </mat-card-header>
-  </mat-card>
-  <mat-nav-list style="margin-left:20px;">
-    <mat-form-field>
-      <input matInput type="text" placeholder="Reference No." name="reference" [(ngModel)]="searchFilter.reference"
-        #reference />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" placeholder="Order Date" name="reference" [(ngModel)]="searchFilter.orderDate"
-        #reference />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" placeholder="Customer" name="amount" [(ngModel)]="searchFilter.customerName"
-        #amount />
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput type="text" placeholder="Customer Email" name="quantity" [(ngModel)]="searchFilter.customerEmail"
-        #quantity />
-    </mat-form-field>
-  </mat-nav-list>
-  <mat-divider></mat-divider>
-  <mat-card-header>
-    <mat-action-list>
-      <button mat-raised-button style="color:lightgrey; background-color:darkgreen; margin:5px;"
-        (click)="searchOrders(searchFilter);sidenav.toggle()">
-        <mat-icon>search</mat-icon>Search
-      </button>
-      <button mat-raised-button style="color:lightgrey; background-color:darkred;margin:5px;"
-        (click)="resetSearchFilter(sidenav)">
-        <mat-icon>refresh</mat-icon>Reset
-      </button>
-    </mat-action-list>
-  </mat-card-header>
-</mat-sidenav> -->
-<!-- </mat-sidenav-container> -->
+</mat-card>

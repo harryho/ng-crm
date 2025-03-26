@@ -83,10 +83,20 @@ export class BackendService {
     });
   }
 
+  getDataByModel(model:string){ 
 
-  getAll(action: string) {
-    // return Observable.fromPromise(this.getData(action))
+    return this.ds[model]
+  }
+
+ getAllData (model: string) {
+    return this.getDataByModel(model)
+
+  }
+
+
+  getAll(model: string) {
     return {} as any
+
   }
 
   getByQuery(action: string) {

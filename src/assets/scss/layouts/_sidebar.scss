@@ -4,10 +4,15 @@
   width: $sidenav-desktop;
   flex-shrink: 0;
   transition: swift-ease-out(width);
-  position: absolute;
+  // position: absolute;
   overflow-x: hidden;
   border-right: 1px solid $borderColor;
   border-radius: 0px !important;
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  margin-top: 4rem;
 }
 
 .branding {

@@ -1,33 +1,26 @@
-<!-- <mat-sidenav-container> -->
-<!-- <mat-card class='light' style="height: 100%;"> -->
-
-
 @if (customers.isLoading()) {
 <mat-progress-bar mode="query" />
-}
+} 
 
-<mat-card class="cardWithShadow theme-card">
-
-
-  <mat-card-header>
-    <mat-card-title class="view-card-title">
-      <h2>{{pageTitle}}</h2>
-    </mat-card-title>
-  </mat-card-header>
-
-  <mat-toolbar class="primary">
-    <mat-toolbar-row>
-      <!-- style="margin-right:10px; background-color:#e07c9e"  -->
-      <button mat-mini-fab  color="bg-light-primary" class="m-r-16"  [routerLink]="['/customer/new']">
+<mat-card >
+  <mat-toolbar >
+  <mat-toolbar-row>
+    <span class="f-w-800 f-s-24"> {{pageTitle}}</span>
+    <span class="title-spacer"></span>
+    <mat-card-actions>
+      <button mat-mini-fab color="bg-light-primary" class="m-r-16" [routerLink]="['/customer/new']">
         <mat-icon>add</mat-icon>
-      </button> 
-      <!-- style="margin-right:10px; background-color:darkgray" -->
-      <button mat-mini-fab  class="bg-light-secondary" (click)="reload()">
+      </button>
+      <button mat-mini-fab class="bg-light-secondary" (click)="reload()">
         <mat-icon>refresh</mat-icon>
       </button>
+    </mat-card-actions>
+  </mat-toolbar-row>
+</mat-toolbar>
 
-      <span class="title-spacer"></span>
-      <mat-form-field appearance="outline" class="search-form-fileld" color="primary">
+  <mat-toolbar class="m-t-8">
+    <mat-toolbar-row>
+      <mat-form-field appearance="outline" class="search-form-fileld w-100" color="primary">
         <mat-label>Filter</mat-label>
         <input matInput (input)="query.set($any($event.target).value)" />
 
@@ -37,110 +30,81 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
+  <!-- @if (!customers.isLoading()) { -->
 
 
-  @if (!customers.isLoading()) {
-
-  <!-- <mat-card-content class="b-t-1"> -->
-
-  <mat-table #table [dataSource]="dataSource()" matSort style="word-break: break-all;">
-    <ng-container matColumnDef="avatar">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let customer">
-        <!-- <a [routerLink]="['/customer/edit', customer.id]"> -->
-        <img [src]='getAvatar(customer)' [title]='customer.firstname' [style.width.px]='imageWidth'
-          [style.margin.px]='imageMargin'>
-        <!-- </a> -->
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="firstname">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
-      <mat-cell *matCellDef="let customer"> {{customer.firstname}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="lastname">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
-      <mat-cell *matCellDef="let customer"> {{customer.lastname}} </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="email" class="w-600">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
-      <mat-cell *matCellDef="let customer"> {{customer.email}} </mat-cell>
-    </ng-container>
-    <!-- <ng-container matColumnDef="rewards">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Rewards </mat-header-cell>
-        <mat-cell *matCellDef="let customer"> {{customer.rewards }} </mat-cell>
-      </ng-container> -->
-    <ng-container matColumnDef="membership">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Membershiop</mat-header-cell>
-      <mat-cell *matCellDef="let customer" style="display: inline-grid ; justify-content: center;">
-        @if(customer.membership=="standard"){
-        <span style="color:rgb(7, 124, 202);padding-left: 5px;">
-          <mat-icon fontIcon="verified" color="orange"></mat-icon>
-        </span>
-        } @if(customer.membership=="vip"){
-        <span style="color:rgb(210, 123, 37);padding-left: 5px;">
-          <mat-icon fontIcon="brightness_7" color="gold"></mat-icon>
-        </span>
-        }
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="hasItemInShoppingCart">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Shopping Cart</mat-header-cell>
-      <mat-cell *matCellDef="let customer" style="display: inline-grid ; justify-content: center;">
-        @if(customer.hasItemInShoppingCart){
-        <span style="color: rgb(125, 12, 12);padding-left: 5px;">
-          <mat-icon fontIcon="shopping-cart" color="orange"></mat-icon>
-        </span>
-        }
-        <!-- @if(customer.membership=="vip"){
-          <span style="color:rgb(210, 123, 37);padding-left: 5px;">
-            <mat-icon fontIcon="star-shine" color="gold"></mat-icon>
+    <mat-table #table [dataSource]="dataSource()" matSort  style="word-break: break-all;">
+      <ng-container matColumnDef="avatar">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let customer">
+          <!-- <a [routerLink]="['/customer/edit', customer.id]"> -->
+          <img [src]='getAvatar(customer)' style="clip-path: circle(50%);" [title]='customer.firstname'
+            [style.width.px]='imageWidth' [style.margin.px]='imageMargin'>
+          <!-- </a> -->
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="firstname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> First Name </mat-header-cell>
+        <mat-cell *matCellDef="let customer"> {{customer.firstname}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="lastname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </mat-header-cell>
+        <mat-cell *matCellDef="let customer"> {{customer.lastname}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="email" class="w-600">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+        <mat-cell *matCellDef="let customer"> {{customer.email}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="membership">
+        <mat-header-cell *matHeaderCellDef >Membershiop</mat-header-cell>
+        <mat-cell *matCellDef="let customer" style="display: inline-grid ; justify-content: center;">
+          @if(customer.membership=="standard"){
+          <span style="color:rgb(7, 124, 202);padding-left: 5px;">
+            <mat-icon fontIcon="verified" color="orange"></mat-icon>
           </span>
-          } -->
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let customer" style="justify-content:center;">
-        <!-- <div class="example-button-row">
-            <div class="example-flex-container">
-              <div class="example-button-container">
-                 <button mat-mini-fab [routerLink]="['/customer/edit/', customer.id]">
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-mini-fab style="background-color:lightblue; " (click)="openDialog(customer.id)">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div>
-            </div>
-          </div> -->
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <!-- <button mat-menu-item>
-              <mat-icon>add</mat-icon>
-              <span>Add</span>
-            </button> -->
-          <button mat-menu-item [routerLink]="['/customer/edit/', customer.id]">
-            <mat-icon>edit</mat-icon>
-            <span>Edit</span>
+          } @if(customer.membership=="vip"){
+          <span style="color:rgb(210, 123, 37);padding-left: 5px;">
+            <mat-icon fontIcon="brightness_7" color="gold"></mat-icon>
+          </span>
+          }
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="hasItemInShoppingCart">
+        <mat-header-cell *matHeaderCellDef >Shopping Cart</mat-header-cell>
+        <mat-cell *matCellDef="let customer" style="display: inline-grid ; justify-content: center;">
+          @if(customer.hasItemInShoppingCart){
+          <span style="color: rgb(125, 12, 12);padding-left: 5px;">
+            <mat-icon fontIcon="shopping-cart" color="orange"></mat-icon>
+          </span>
+          }
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let customer" style="justify-content:center;">
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
           </button>
-          <button mat-menu-item (click)="openDialog(customer.id)">
-            <mat-icon>delete</mat-icon>
-            <span>Delete</span>
-          </button>
-        </mat-menu>
-      </mat-cell>
-    </ng-container>
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
-  }
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item [routerLink]="['/customer/edit/', customer.id]">
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item (click)="openDialog(customer.id)">
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let customer; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10]" >
+    </mat-paginator>
+    <!-- } -->
 
-  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10]">
-  </mat-paginator>
 
 
-  <!-- </mat-card-content> -->
 
 </mat-card>

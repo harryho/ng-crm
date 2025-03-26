@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, inject, OnInit, resource, signal, ViewChild } from "@angular/core";
 
-import { IOrder } from "./order";
+import { Order } from "./order";
 import { OrderService } from "./order.service";
 
 import * as _ from "lodash";
@@ -9,17 +9,19 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog'
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatCell, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ConfirmDialog } from "src/app/shared";
 import { CommonModule } from "@angular/common";
 import { MatCardModule } from "@angular/material/card";
-import { MatFormField, MatLabel } from "@angular/material/form-field";
+import { MatFormField, MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
-import { MatInput } from "@angular/material/input";
-import { MatMenuModule } from "@angular/material/menu";
+import { MatInput, MatInputModule } from "@angular/material/input";
+import { MatMenu, MatMenuModule } from "@angular/material/menu";
 import { MatProgressBar } from "@angular/material/progress-bar";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { RouterLink } from "@angular/router";
+import { MatMiniFabButton, MatIconButton, MatButtonModule } from "@angular/material/button";
+import { Product } from "../product";
 @Component({
   selector: 'order-list',
   templateUrl: "./order-list.component.html",
@@ -38,21 +40,38 @@ import { RouterLink } from "@angular/router";
     MatPaginatorModule,
     MatMenuModule,
     MatIconModule,
-]
+    MatFormFieldModule,
+    MatInputModule,
+    MatMiniFabButton,
+    MatCell,
+    MatMenu,
+    MatIconButton,
+    MatButtonModule,
+    MatProgressBar
+
+  ]
 })
-export class OrderListComponent implements OnInit {
+export class OrderListComponent  {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
+  service = inject(OrderService)
+  readonly dialog = inject(MatDialog);
+  readonly snackBar = inject(MatSnackBar);
+  
   pageTitle: string = "Orders";
 
   showImage: boolean = false;
   listFilter: any = {};
   errorMessage: string;
-  orders: IOrder[];
-  orderList: IOrder[]; //
-  displayedColumns = ["reference", "quantity", "amount", "customerName", "orderDate", "shippedDate", "id"];
-  dataSource: any = null; // new MatTableDataSource<Element>(ELEMENT_DATA);
+
+  orderList: Order[]; //
+  displayedColumns = [ " ", "reference", "quantity", "amount", "customerName", "orderDate", "shippedDate", "id"];
+  displayedColumnsEmpty = ["expand", "reference", "quantity", "amount", "customerName", "orderDate", "shippedDate", "id"];
+  displayedColumnsExpand = [ "expand", "reference", "quantity", "amount", "customerName", "orderDate", "shippedDate", "id"]//, "shipAddress"]//,"id"];
+
+  displayedColumnHeaders : any = { "reference": "Reference No.",
+      "quantity": "Quantity", "amount":"Total Price", "customerName": "Customer", "orderDate":"Billing Date", 
+      "shippedDate":"Shipping Date", "id":""};
   pager: any = {};
   pagedItems: any[];
   totalAmount: number;
@@ -64,95 +83,45 @@ export class OrderListComponent implements OnInit {
   };
   selectedOption: string;
 
+  query = signal('');
+  dataSource = signal(new MatTableDataSource([] as Order[]))
+  
+  orders = resource<Order[], { query: string }>(
+      {
+          request: () => ({ query: this.query() }),
+          loader: async ({ request, abortSignal }) => {
+              // fetch cancels any outstanding HTTP requests when the given `AbortSignal`
+              // indicates that the request has been aborted.
+              const data = await fetch(`http://localhost:3333/orders`, { signal: abortSignal });
+              console.log(data)
+              if (!data.ok) throw Error(`Could not fetch...`)
+              const list = await data.json();
+              this.service.storeCount(list.length)
+              // debugger
+              const filteredList = list.filter((d: Order) => {
+                  console.log(d.reference, '             ', request.query)
+                  return !request.query ? true : (
+                      d.reference && d.reference.toLowerCase().indexOf(request.query.toLowerCase()) > -1)
+              })
+              console.log(filteredList)
 
 
-  constructor(
-    private orderService: OrderService,
-    public dialog: MatDialog,
-    public snackBar: MatSnackBar
-  ) { }
+              const ds = new MatTableDataSource(filteredList as Order[])
+              ds.paginator = this.paginator;
+              ds.sort = this.sort;
+              this.dataSource.set(ds)
+              return filteredList
+          }
+
+      });
+
+  reload() {
+    this.query.set('')
+    this.orders.reload()
+}
 
   toggleImage(): void {
     this.showImage = !this.showImage;
-  }
-
-
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
-  }
-
-  freshDataList(orders: IOrder[]) {
-    this.orders = orders;
-    this.orderList = orders.map(e => {
-      let order = e;
-      // e["customerName"] = e.customer.firstname + " " + e.customer.lastname;
-      return order;
-    });
-    this.totalAmount = this.orders.length;
-    this.dataSource = new MatTableDataSource(this.orderList);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  ngOnInit(): void {
-    this.orderService.getOrders().subscribe(orders => {
-      this.freshDataList(orders);
-    }, error => (this.errorMessage = <any>error));
-
-    this.searchFilter = {};
-    this.listFilter = {};
-  }
-
-  getOrders(pageNum?: number) {
-    this.orderService.getOrders().subscribe(orders => {
-      this.freshDataList(orders);
-
-    }, error => (this.errorMessage = <any>error));
-  }
-
-  // searchOrders(filters: any) {
-  //   if (filters) {
-  //     this.orderService.getOrders().subscribe(orders => {
-  //       this.orders = orders;
-  //       console.log(this.orders.length);
-  //       this.orders = this.orders.filter((order: IOrder) => {
-  //         let match = true;
-
-  //         Object.keys(filters).forEach(k => {
-  //           match =
-  //             match && filters[k]
-  //               ? order[k] 
-  //                 .toLocaleLowerCase()
-  //                 .indexOf(filters[k].toLocaleLowerCase()) > -1
-  //               : match;
-  //         })
-
-  //         this.freshDataList(orders);
-  //         return match;
-  //       });
-  //     }, error => (this.errorMessage = <any>error));
-  //   }
-  // }
-
-  resetListFilter() {
-    this.listFilter = {};
-    this.getOrders();
-  }
-
-  reset() {
-    this.listFilter = {};
-    this.searchFilter = {};
-
-    this.getOrders();
-  }
-
-  resetSearchFilter(searchPanel: any) {
-    searchPanel.toggle();
-    this.searchFilter = {};
-
-    this.getOrders();
   }
 
   openSnackBar(message: string, action: string) {
@@ -161,33 +130,50 @@ export class OrderListComponent implements OnInit {
     });
   }
 
-  openDialog(id: number) {
-    let dialogRef = this.dialog.open(ConfirmDialog, {
-      data: { title: "Dialog", message: "Are you sure to delete this item?" }
-    });
-    dialogRef.disableClose = true;
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.selectedOption = result;
-
-      if (this.selectedOption === dialogRef.componentInstance.ACTION_CONFIRM) {
-        this.orderService.deleteOrder(id).subscribe(
-          () => {
-          //   this.orderService.getOrders().subscribe(orders => {
-          //     this.freshDataList(orders);
-          //   }, error => (this.errorMessage = <any>error));
-          //   this.openSnackBar("The item has been deleted successfully. ", "Close");
-          // },
-          // (error: any) => {
-          //   this.errorMessage = <any>error;
-          //   console.log(this.errorMessage);
-          //   this.openSnackBar(
-          //     "This item has not been deleted successfully. Please try again.",
-          //     "Close"
-          //   );
-          }
-        );
+  openDialog(id: string,enterAnimationDuration = '0ms', exitAnimationDuration = '0ms') {
+    let dialogRef = this.dialog.open(ConfirmDialog,
+      {
+          width: '350px', 
+          enterAnimationDuration,
+          exitAnimationDuration,
       }
-    });
+  );
+  dialogRef.disableClose = true;
+
+
+  dialogRef.afterClosed().subscribe(result => {
+      this.selectedOption = result;
+      console.log('  dialog  result ', result)
+      if (this.selectedOption === dialogRef.componentInstance.ACTION_CONFIRM) {
+          this.service.deleteOrder(id).subscribe(
+              () => {
+                  this.openSnackBar("The item has been deleted successfully. ", "Close")
+                  this.orders.reload()
+              }
+          );
+      }
+  });
   }
+
+  expandedElement: PeriodicElement | null;
+
+  /** Checks whether an element is expanded. */
+  isExpanded(element: PeriodicElement) {
+    return this.expandedElement === element;
+  }
+
+  /** Toggles the expanded state of an element. */
+  toggle(element: PeriodicElement) {
+    console.log(  JSON.stringify(element))
+    this.expandedElement = this.isExpanded(element) ? null : element;
+  }
+
+}
+
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+  description: string;
 }

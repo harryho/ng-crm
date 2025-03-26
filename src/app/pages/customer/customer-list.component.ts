@@ -1,27 +1,25 @@
-import { AfterViewInit, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnInit, resource, signal, ViewChild } from '@angular/core';
+import { Component, inject, resource, signal, ViewChild } from '@angular/core';
 
 import { Customer } from './customer';
 import { CustomerService } from './customer.service';
-// import { ConfirmDialog } from '../shared';
 import * as _ from 'lodash';
 
 import { MatDialog } from '@angular/material/dialog'
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatCell, MatHeaderCell, MatHeaderCellDef, MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatCard, MatCardHeader, MatCardModule, MatCardTitle } from '@angular/material/card';
-import { MatToolbar, MatToolbarModule, MatToolbarRow } from '@angular/material/toolbar';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { ConfirmDialog } from 'src/app/shared/dialog.component';
-import { MatInput } from '@angular/material/input';
-import { MatButtonModule, MatIconButton, MatMiniFabButton } from '@angular/material/button';
-import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatInput, MatInputModule } from '@angular/material/input';
+import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { MatMenuItem, MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
-import { MaterialModule } from 'src/app/material.module';
+import { MatMenu, MatMenuModule } from '@angular/material/menu';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 
 
@@ -32,19 +30,27 @@ import { MaterialModule } from 'src/app/material.module';
     providers: [ConfirmDialog],
 
     imports: [
-        CommonModule, 
+        CommonModule,
         RouterLink,
-        MatCardModule, 
+        MatCardModule,
         MatToolbarModule,
-        MatFormField, 
-        MatLabel,
-        MatProgressBar,
-        MatTableModule, 
-        MatInput, 
-        MatSortModule, 
+        MatTableModule,
+        MatSortModule,
         MatPaginatorModule,
         MatMenuModule,
         MatIconModule,
+        MatFormField,
+        MatLabel,
+        MatFormFieldModule,
+        MatInputModule,
+        MatMiniFabButton,
+        MatIcon,
+        MatMenu,
+        MatIconButton,
+        MatInput,
+        MatProgressBar,
+
+
     ]
 })
 export class CustomerListComponent {
@@ -75,27 +81,14 @@ export class CustomerListComponent {
         {
             request: () => ({ query: this.query() }),
             loader: async ({ request, abortSignal }) => {
-                // fetch cancels any outstanding HTTP requests when the given `AbortSignal`
-                // indicates that the request has been aborted.
-                const data = await fetch(`http://localhost:3333/customers`, { signal: abortSignal });
-                console.log(data)
-                if (!data.ok) throw Error(`Could not fetch...`)
-                const list = await data.json();
-                this.customerService.storeCount(list.length)
-                // debugger
-                const filteredList = list.filter((d: Customer) => {
-                    console.log(d.name, '             ', request.query)
-                    return !request.query ? true : (
-                        d.name && d.name.toLowerCase().indexOf(request.query.toLowerCase()) > -1)
-                })
-                console.log(filteredList)
-
-
+                this.customerService.useMock()
+                const filteredList = await this.customerService.fetchDataWithFilter({ request, abortSignal })
                 const ds = new MatTableDataSource(filteredList as Customer[])
                 ds.paginator = this.paginator;
                 ds.sort = this.sort;
                 this.dataSource.set(ds)
                 return filteredList
+
             }
 
         });

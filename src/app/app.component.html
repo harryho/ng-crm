@@ -4,7 +4,7 @@
 }
 
 @if(authService.isAuthenticated()){
-<mat-sidenav-container class="mainWrapper blue_theme light-theme" autosize autoFocus dir="ltr">
+<mat-sidenav-container class="mainWrapper  blue_theme light-theme" autosize autoFocus dir="ltr">
     <!-- ============================================================== -->
     <!-- Vertical Sidebar -->
     <!-- ============================================================== -->
@@ -32,7 +32,7 @@
         <!-- ============================================================== -->
 
         <app-header [showToggle]="true" (toggleMobileNav)="sidenav.toggle()" />
-        <main class="pageWrapper maxWidth">
+        <main class="pageWrapper maxWidth" style="scroll-behavior: smooth;">
             <!-- ============================================================== -->
             <!-- Outlet -->
             <!-- ============================================================== -->

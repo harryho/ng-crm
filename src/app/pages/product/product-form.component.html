@@ -1,87 +1,85 @@
-<!-- <div class="panel panel-primary">
-    <div class="panel-heading">
-        {{pageTitle}}
-    </div>
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title class="m-b-0">{{pageTitle()}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="b-t-1">
 
-    <div class="panel-body">         -->
-<form novalidate (ngSubmit)="saveProduct()" [formGroup]="productForm">
-  <mat-card>
-    <!--   <mat-card-header> 
-     <mat-card-title class="view-card-title">
-      <h1>{{pageTitle }}</h1>
-    </mat-card-title>
-     </mat-card-header>   -->
+    <form novalidate (ngSubmit)="saveProduct()" [formGroup]="productForm">
+      <div class="row">
+        <div class="col-lg-12">
+          <span class="m-l-16">
+            @if(product!= null && product()){
+            <img mat-card-avatar class="" [src]='getImage(product())' [style.width.px]='imageWidth'
+              [style.height.px]='imageWidth' [style.margin.px]='imageMargin'>
+            }
+          </span>
+        </div>
+        <div class="col-lg-6">
+          <!-- input -->
+          <mat-label class="f-w-600 m-b-8 d-block">Product Name</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="name" type="text" placeholder="First Name (required)" formControlName="name" />
+            @if(this.productForm.controls['name']!=null){
+            <mat-error *ngIf="productForm.controls['name'].hasError('required')">
+              {{ValidatorMessages.name.required}}
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
 
-    <mat-toolbar style="background-color: #FFF">
-      <mat-toolbar-row>
-        <span class="view-card-title"> {{pageTitle}}</span>
-        <span class="title-spacer"></span>
+        <div class="col-lg-6">
+          <!-- input -->
+          <mat-label class="f-w-600 m-b-8 d-block">Unit In Stock</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="unitInStock" type="unitInStock" placeholder="Email " formControlName="unitInStock" />
+            @if(this.productForm.controls['unitInStock']!=null){
+            <mat-error *ngIf="productForm.controls['unitInStock'].hasError('required')">
+              {{ValidatorMessages.unitInStock.required}}
+            </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <!-- input -->
+          <mat-label class="f-w-600 m-b-8 d-block">Unit Price</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="price" type="number" placeholder="Unit Price (required)" formControlName="price" />
 
-        <mat-card-actions>
-          <button mat-mini-fab class="primary" style="margin-right:10px; background-color:darkgray" type="submit"
-            [disabled]='!productForm.valid'>
-            <mat-icon>save</mat-icon>
-          </button>
-          <button mat-mini-fab class="" style="margin-right:10px; " [routerLink]="['/products']">
-            <mat-icon>cancel</mat-icon>
-          </button>
+            <mat-error *ngIf="productForm.controls['price'].hasError('required')">
+              {{ValidatorMessages.price.required}}
+            </mat-error>
 
-        </mat-card-actions>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <!-- input -->
+          <mat-label class="f-w-600 m-b-8 d-block">Retail Price</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="retailPrice" type="number" placeholder="Retail Price (required)"
+              formControlName="retailPrice" />
 
-      </mat-toolbar-row>
-    </mat-toolbar>
+            <mat-error *ngIf="productForm.controls['retailPrice'].hasError('required')">
+              {{ValidatorMessages.retailPrice.required}}
+            </mat-error>
 
-    <mat-card-content style="margin: 5 0 5 0px;">
-      <div class="form-card">
-        <mat-grid-list cols="12" rowHeight="80px">
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <mat-select placeholder="Select Category" #categoryIdId formControlName="categoryId"
-                [(value)]="product.categoryId">
-                <mat-option *ngFor="let category of categories" [value]="category.id">
-                  {{category.categoryName}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <input matInput id="productNameId" type="text" placeholder="Product Name (required)"
-                formControlName="productName" />
-              <mat-error *ngIf="displayMessage.productName">
-                {{displayMessage.productName}}
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <input matInput id="unitPriceId" type="currency" placeholder="Price (required)"
-                formControlName="unitPrice" />
-              <mat-error *ngIf="displayMessage.unitPrice">
-                {{displayMessage.unitPrice}}
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile [colspan]="fieldColspan">
-            <mat-form-field class="form-field" appearance="outline">
-              <input matInput id="unitInStockId" type="number" placeholder="Quantity In Stock (required)"
-                formControlName="unitInStock" />
-              <mat-error *ngIf="displayMessage.unitInStock">
-                {{displayMessage.unitInStock}}
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-        </mat-grid-list>
-    </div>
+          </mat-form-field>
+        </div>
+      </div>
 
-      <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
-    </mat-card-content>
+      <div class="m-t-12 button-float-right">
+        <button mat-flat-button extended color="secondary" class="m-r-8" type="submit"
+          [disabled]='!productForm.valid'><mat-icon fontIcon="save"></mat-icon>Submit</button>
+        <button mat-stroked-button extended color="warn" [routerLink]="['/product']">
+          <mat-icon fontIcon="cancel"></mat-icon>Cancel</button>
+      </div>
 
 
+    </form>
+  </mat-card-content>
 
-  </mat-card>
+</mat-card>
 
-</form>
+
 
 <!-- <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
     </div>

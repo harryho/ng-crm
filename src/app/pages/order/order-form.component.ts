@@ -5,6 +5,7 @@ import {
   OnDestroy,
   ViewChildren,
   ElementRef,
+  signal,
 
 } from "@angular/core";
 import {
@@ -19,7 +20,7 @@ import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 
 
 
-import { IOrder } from "./order";
+import { Order } from "./order";
 import { OrderService } from "./order.service";
 
 
@@ -34,7 +35,7 @@ import { GenericValidator, NumberValidators, ConfirmDialog } from "src/app/share
 import { CommonModule } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
-import { MatFormField, MatLabel } from "@angular/material/form-field";
+import { MatFormField, MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
@@ -42,45 +43,58 @@ import { MatGridList, MatGridListModule, MatGridTile, MatLine } from "@angular/m
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatList, MatListItem } from "@angular/material/list";
+import { provideNativeDateAdapter } from "@angular/material/core";
 
 @Component({
   selector: 'order-form',
   templateUrl: "./order-form.component.html",
   styles: [`
-  .title-spacer {
-      flex: 1 1 auto;
+    .button-float-right {
+       float: right;
+      }
+    .form-field{
+        width: 100%;
+        margin-left: 20px;
+        margin-right: 20px;
     }
-  .form-field{
-      width: 100%;
-      margin-left: 20px;
-      margin-right: 20px;
+    .avatar-field {
+        left: 0;
+        margin: 0 auto;
+        position: absolute;
+        margin-left: 50px;
     }
     `],
-  providers: [ProductDialogComponent],
+  providers: [ProductDialogComponent, provideNativeDateAdapter()],
   imports: [
     CommonModule,
     MatCardModule,
-    MatIconModule, 
-    MatFormField, 
+    MatIconModule,
+    MatFormField,
     RouterModule,
     ReactiveFormsModule,
     MatInputModule,
     MatButtonModule,
     MatCardModule,
     MatSelectModule
-,MatGridList,MatGridTile, MatDatepickerModule, MatList,MatListItem,
-MatToolbarModule]
+    , MatGridList, MatGridTile,
+    MatDatepickerModule, MatList,
+    MatListItem,
+    MatToolbarModule,
+    MatFormFieldModule,
+    MatInputModule, MatDatepickerModule]
 })
-export class OrderFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class OrderFormComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })
   formInputElements: ElementRef[];
-  pageTitle: string = "Update Order";
+  // pageTitle: string = "Update Order";
   errorMessage: string;
   orderForm: FormGroup;
-  order: IOrder = <IOrder>{};
+  // order: Order = <Order>{};
   showImage: boolean;
   customers: Customer[];
   fieldColspan = 4;
+  pageTitle = signal('');
+  order = signal({}as Order)
   // Use with the generic validation messcustomerId class
   displayMessage: { [key: string]: string } & any = {};
   private validationMessages: { [key: string]: { [key: string]: string } } = {
@@ -151,43 +165,46 @@ export class OrderFormComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     // Read the order Id from the route parameter
-    this.sub = this.route.params.subscribe(params => {
-      let id = +params["id"];
-      this.getOrder(id);
+    // this.sub =
+    this.route.params.subscribe(async params => {
+      let id = params["id"];
+      if (id) {
+        const order = await this.orderService.getOrder(id);
+        this.orderForm.patchValue({
+          reference: order.reference,
+          amount: order.amount,
+          // quantity: order.products.length,
+          orderDate: new Date(order.orderDate),
+          shippedDate: new Date(order.shippedDate),
+          address: order.shipAddress.address,
+          city: order.shipAddress.city,
+          country: order.shipAddress.country,
+          zipcode: order.shipAddress.zipcode,
+          customerId: order.customerId
+
+        });
+
+        const products = [] as any
+        //  this.order.products.map(product =>
+        //   this.fb.group({
+        //     productName: [product.name],
+        //     price: [product.price]
+        //   })
+        // );
+        const productList = this.fb.array(products);
+        this.orderForm.setControl("products", productList);
+        this.pageTitle.set('Edit Order')
+      }
+      // else{
+      //   // this.order.set({} as Customer)
+      //   this.pageTitle.set('New Order')
+      // }
     });
 
     this.getCustomers();
   }
 
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-  }
 
-  ngAfterViewInit(): void {
-    // // Watch for the blur event from any input element on the form.
-    // let controlBlurs: Observable<any>[] = this.formInputElements.map(
-    //   (formControl: ElementRef) =>
-    //     Observable.fromEvent(formControl.nativeElement, "blur")
-    // );
-
-    // // Merge the blur event observable with the valueChanges observable
-    // Observable.merge(this.orderForm.valueChanges, ...controlBlurs)
-    //   .debounceTime(800)
-    //   .subscribe(() => {
-    //     this.displayMessage = this.genericValidator.processMessages(
-    //       this.orderForm
-    //     );
-    //   });
-  }
-
-  getOrder(id: number): void {
-    this.orderService
-      .getOrder(id)
-      .subscribe(
-        (order: IOrder) => this.onOrderRetrieved(order),
-        (error: any) => (this.errorMessage = <any>error)
-      );
-  }
 
   getCustomers() {
     this.customerService.getCustomers().subscribe(customers => {
@@ -195,42 +212,42 @@ export class OrderFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }, error => (this.errorMessage = <any>error));
   }
 
-  onOrderRetrieved(order: IOrder): void {
-    if (this.orderForm) {
-      this.orderForm.reset();
-    }
-    this.order = order;
+  // onOrderRetrieved(order: Order): void {
+  //   if (this.orderForm) {
+  //     this.orderForm.reset();
+  //   }
+  //   this.order = order;
 
-    // if (this.order.id === 0) {
-    //   this.pageTitle = "Add Order";
-    // } else {
-    //   this.pageTitle = `Update Order: ${this.order.reference} `;
-    // }
+  //   // if (this.order.id === 0) {
+  //   //   this.pageTitle = "Add Order";
+  //   // } else {
+  //   //   this.pageTitle = `Update Order: ${this.order.reference} `;
+  //   // }
 
-    // Update the data on the form
-    this.orderForm.patchValue({
-      reference: this.order.reference,
-      amount: this.order.amount,
-      quantity: this.order.products.length,
-      orderDate: new Date(this.order.orderDate),
-      shippedDate: new Date(this.order.shippedDate),
-      address: this.order.shipAddress.address,
-      city: this.order.shipAddress.city,
-      country: this.order.shipAddress.country,
-      zipcode: this.order.shipAddress.zipcode,
-      customerId: this.order.customerId,
-      membership: this.order.membership
-    });
+  //   // Update the data on the form
+  //   this.orderForm.patchValue({
+  //     reference: this.order.reference,
+  //     amount: this.order.amount,
+  //     quantity: this.order.products.length,
+  //     orderDate: new Date(this.order.orderDate),
+  //     shippedDate: new Date(this.order.shippedDate),
+  //     address: this.order.shipAddress.address,
+  //     city: this.order.shipAddress.city,
+  //     country: this.order.shipAddress.country,
+  //     zipcode: this.order.shipAddress.zipcode,
+  //     customerId: this.order.customerId,
+  //     membership: this.order.membership
+  //   });
 
-    const products = this.order.products.map(product =>
-      this.fb.group({
-        productName: [product.productName],
-        price: [product.unitPrice]
-      })
-    );
-    const productList = this.fb.array(products);
-    this.orderForm.setControl("products", productList);
-  }
+  //   const products = this.order.products.map(product =>
+  //     this.fb.group({
+  //       name: [product.name],
+  //       price: [product.price]
+  //     })
+  //   );
+  //   const productList = this.fb.array(products);
+  //   this.orderForm.setControl("products", productList);
+  // }
 
   saveOrder(): void {
     if (this.orderForm.dirty && this.orderForm.valid) {

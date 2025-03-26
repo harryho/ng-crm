@@ -1,92 +1,139 @@
-import { Injectable } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
-
-
-
-import { IOrder, IAddress } from './order';
-import { Product } from '../product';
+import { inject, Injectable, resource } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BackendService } from 'src/app/services/backend.service';
+import { Order } from './order';
+import db from "../../services/mock.db";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class OrderService {
-  private basicAction = 'orders/';
+  private API_URL = 'http://localhost:3333/orders';
+  private ORDER: string = 'ORDER_TOTAL_COUNT'
+  private ds: Order[];
+  private USE_MOCK = false
+  private http = inject(HttpClient)
 
-  constructor(private http: HttpClient, private backend: BackendService) { }
-
-  getOrders(): Observable<IOrder[]> {
-    // return this.http.get(this.basicAction)
-    const action = `${this.basicAction}?_expand=customer`;
-    return this.backend.getAll(action)
-      .map(this.extractData)
-      .catch(this.handleError);
+  useMock() {
+    this.USE_MOCK = true;
+  }
+  useApi() {
+    this.USE_MOCK = false;
+  }
+  constructor() {
+    this.ds = db['orders'] as any
   }
 
-  getOrder(id: number): Observable<IOrder> {
-    // if (id === 0) {
-    //   return Observable.of(this.initializeOrder());
-    // };
-    const action = `${this.basicAction}${id}?_expand=customer`;
-    return this.backend.getById(action)
-      .map(this.extractData)
-      // .do(data => console.log('getOrder: ' + JSON.stringify(data)))
-      .catch(this.handleError);
+  reload() {
+    this.ds = db['orders'] as any
   }
 
-  deleteOrder(id: number): Observable<Response> {
-    const action = `${this.basicAction}${id}`;
-    return this.backend.delete(action)
-      .catch(this.handleError);
+  storeCount(count: string) {
+    localStorage.setItem(this.ORDER, count)
   }
 
-  saveOrder(order: IOrder): Observable<IOrder> {
-    if (order.id) {
-      return this.createOrder(order);
+  async fetchDataWithFilter({ request, abortSignal }: any) {
+    let list, filteredList = [];
+    if (!this.USE_MOCK) {
+      // fetch cancels any outstanding HTTP requests when the given `AbortSignal`
+      // indicates that the request has been aborted.
+      const data = await fetch(`http://localhost:3333/orders`, { signal: abortSignal });
+      if (!data.ok) throw Error(`Could not fetch...`)
+      list = await data.json();
+
     }
-    return this.updateOrder(order);
+    else {
+      list = Object.assign([], this.ds)
+    }
+    this.storeCount(list.length)
+    filteredList = list.filter((d: Order) => {
+      return !request.query ? true : (
+        d.reference && d.reference.toLowerCase()
+          .indexOf(request.query.toLowerCase()) > -1)
+    })
+    console.log(filteredList)
+    return filteredList
   }
 
-  private createOrder(order: IOrder): Observable<IOrder> {
-    order.id = ""
-    return this.backend.create(this.basicAction, order)
-      .map(this.extractData)
-      .catch(this.handleError);
+
+
+  getOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.API_URL}`);
   }
 
-  private updateOrder(order: IOrder): Observable<IOrder> {
-    const action = `${this.basicAction}${order.id}`;
-    return this.backend.update(action, order)
-      .map(() => order)
-      .catch(this.handleError);
+
+
+
+  getCount(): number {
+    return localStorage.getItem(this.ORDER) ? Number(localStorage.getItem(this.ORDER)) : 100
   }
 
-  private extractData(response: Response) {
-    const body : any = response.json ? response.json() : response;
-    return body.data ? body.data : (body || {});
+  // @ts-ignore
+  async getOrder(id: string): Order {
+    if (!id) {
+      return {} as any
+    };
+    if (!this.USE_MOCK) {
+      const data = await fetch(`${this.API_URL}/${id}`);
+
+      if (!data.ok) throw Error(`Could not fetch...`)
+      const order = await data.json();
+      return order
+    }
+    else {
+      const c = this.ds.find(d => String(d.id) == id)
+      return c as any
+    }
+
   }
 
-  private handleError(error: Response): Observable<any> {
-    // in a real world app, we may send the server to some remote logging infrastructure
-    // instead of just logging it to the console
-    console.error(error);
-    return {} as any //Observable.throw(error.json() || 'Server error');
+  private createObservable(mock?: any): Observable<any> {
+    return new Observable((subscriber) => {
+      subscriber.next(mock);
+      setTimeout(() => {
+        subscriber.complete();
+      }, 500);
+    })
   }
 
-  // initializeOrder(): IOrder {
-  //   // Return an initialized object
-  //   return {
-  //     id: 0,
-  //     avatar: null,
-  //     reference: null,
-  //     amount: 0,
-  //     products: Array<Product>(),
-  //     orderDate: null,
-  //     shippedDate: null,
-  //     shipAddress: <IAddress>{},
-  //     customerId: 0,
-  //     quantity: 0,
-  //     membership: false,
-  //     customer: null,
-  //   };
-  // }
+  deleteOrder(id: string): Observable<any> {
+    if (!this.USE_MOCK) {
+      const url = `${this.API_URL}/${id}`;
+      return this.http.delete<Response>(url);
+    }
+    else {
+      const idx = this.ds.findIndex(d => d.id = id)
+      this.ds.splice(idx, 1)
+      return this.createObservable()
+    }
+  }
+
+  saveOrder(order: Order): Observable<Order> {
+    const id = order.id
+    if (!this.USE_MOCK) {
+      if (id) {
+        const url = `http://localhost:3333/orders/${id}`;
+        return this.http.put<Order>(url, order);
+      }
+      else {
+        const id = this.getCount() + 1
+        order.id = String(id)
+        // order.avatar = '/assets/images/avatar/avatar-0.webp'
+        const url = `http://localhost:3333/orders/`;
+        return this.http.post<Order>(url, order);
+      }
+    }
+    else {
+      if (id) {
+        const idx = this.ds.findIndex(d => d.id = order.id)
+        this.ds[idx] = Object.assign({}, order)
+        return this.createObservable()
+      }
+      else {
+        order.id = String(this.ds.length)
+        this.ds[this.ds.length] = Object.assign({}, order)
+        return this.createObservable()
+      }
+    }
+  }
 }

@@ -1,17 +1,14 @@
-thead {
-  color: #337AB7;
-}
 
 .title-spacer {
   flex: 1 1 auto;
 }
 
-.search-form-fileld{
+/* .search-form-fileld{
     margin-bottom: 40px;
  
-}
+} */
 
-.example-button-row {
+/* .example-button-row {
   display: table-cell;
   max-width: 600px;
 }
@@ -30,4 +27,4 @@ thead {
   display: flex;
   justify-content: center;
   width: 140px;
-}
+} */

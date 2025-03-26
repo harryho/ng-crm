@@ -1,21 +1,15 @@
-
-
-
 <mat-card class="cardWithShadow theme-card">
   <mat-card-header>
     <mat-card-title class="m-b-0">{{pageTitle()}}</mat-card-title>
   </mat-card-header>
   <mat-card-content class="b-t-1">
-    
-
-    
     <form novalidate (ngSubmit)="saveCustomer()" [formGroup]="customerForm">
-    
+
       <div class="row">
         <div class="col-lg-12">
           <span class="m-l-16">
             @if(customer!= null && customer()){
-            <img mat-card-avatar class="" [src]='getAvatar(customer())'  [style.width.px]='imageWidth'
+            <img mat-card-avatar class="" [src]='getAvatar(customer())' [style.width.px]='imageWidth'
               [style.height.px]='imageWidth' [style.margin.px]='imageMargin'>
             }
           </span>
@@ -24,12 +18,13 @@
           <!-- input -->
           <mat-label class="f-w-600 m-b-8 d-block">First Name</mat-label>
           <mat-form-field appearance="outline" class="w-100" color="primary">
-            <input matInput id="firstname" type="text" placeholder="First Name (required)"  formControlName="firstname" />
+            <input matInput id="firstname" type="text" placeholder="First Name (required)"
+              formControlName="firstname" />
             @if(this.customerForm.controls['firstname']!=null){
-              <mat-error *ngIf="customerForm.controls['firstname'].hasError('required')">
-                {{ValidatorMessages.firstname.required}}
-              </mat-error>
-              }
+            <mat-error *ngIf="customerForm.controls['firstname'].hasError('required')">
+              {{ValidatorMessages.firstname.required}}
+            </mat-error>
+            }
           </mat-form-field>
         </div>
         <div class="col-lg-6">
@@ -41,7 +36,7 @@
             <mat-error *ngIf="customerForm.controls['lastname'].hasError('required')">
               {{ValidatorMessages.lastname.required}}
             </mat-error>
-          <!-- } -->
+            <!-- } -->
           </mat-form-field>
         </div>
         <div class="col-lg-6">
@@ -53,7 +48,7 @@
             <mat-error *ngIf="customerForm.controls['email'].hasError('required')">
               {{ValidatorMessages.email.required}}
             </mat-error>
-          }
+            }
           </mat-form-field>
         </div>
         <div class="col-lg-6">
@@ -75,7 +70,7 @@
             <mat-error *ngIf="customerForm.controls['mobile'].hasError('maxlength')">
               {{ValidatorMessages.mobile.maxlength}}
             </mat-error>
-          }
+            }
           </mat-form-field>
         </div>
         <div class="col-lg-6">
@@ -96,7 +91,7 @@
         </div>
       </div>
 
-      <div class="m-t-12 button-float-right" >
+      <div class="m-t-12 button-float-right">
         <button mat-flat-button extended color="secondary" class="m-r-8" type="submit"
           [disabled]='!customerForm.valid'><mat-icon fontIcon="save"></mat-icon>Submit</button>
         <button mat-stroked-button extended color="warn" [routerLink]="['/customer']">

@@ -4,7 +4,9 @@ import {
   AfterViewInit,
   OnDestroy,
   ViewChildren,
-  ElementRef
+  ElementRef,
+  signal,
+  inject
 } from "@angular/core";
 import {
   FormBuilder,
@@ -34,12 +36,16 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatFormFieldModule } from "@angular/material/form-field";
 
 @Component({
   selector: 'product-form',
   templateUrl: "./product-form.component.html",
   styles: [
-    `
+    `  
+    .button-float-right {
+      float: right;
+     }
     .title-spacer {
       flex: 1 1 auto;
     }
@@ -53,75 +59,70 @@ import { MatToolbarModule } from "@angular/material/toolbar";
   ],
   imports: [
     CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatCardModule,
     MatIconModule,
     RouterModule,
     ReactiveFormsModule,
-    MatInputModule,
     MatButtonModule,
     MatCardModule,
     MatSelectModule,
     MatDatepickerModule,
     MatToolbarModule,
-    MatGridList,
-    MatGridTile
-]
+  ]
 })
-export class ProductFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductFormComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef })
+  IMAGE_URI_PLACEHOLDER = '/assets/images/product/product-0.webp'
+
+  route = inject(ActivatedRoute)
+  router = inject(Router)
+  service = inject(ProductService)
+  fb = inject(FormBuilder)
+
   formInputElements: ElementRef[];
 
-  pageTitle: string = "Update Product";
+
   errorMessage: string;
   productForm: FormGroup;
 
-  product: Product = <Product>{};
-  private sub: Subscription;
   showImage: boolean;
   categories: Category[];
-  fieldColspan = 4;
+  imageWidth: number = 200;
+  imageMargin: number = 5;
+  fieldColspan = 2;
+
+  pageTitle = signal('');
+  product = signal({} as Product)
   // Use with the generic validation messageId class
   displayMessage: { [key: string]: string } & any = {};
-  private validationMessages: { [key: string]: { [key: string]: string } } = {
-    product: {
+  ValidatorMessages: { [key: string]: { [key: string]: string } } & any = {
+    name: {
       required: "Product name is required.",
       minlength: "Product name must be at least one characters.",
       maxlength: "Product name cannot exceed 200 characters."
     },
-    unitPrice: {
+    price: {
       range:
         "Price of the product must be between 1 (lowest) and 9999 (highest)."
     },
     unitInStock: {
       range:
-        "Quantity of the product must be between 1 (lowest) and 2000 (highest)."
+        "Unit In Stock of the product must be between 1 (lowest) and 2000 (highest)."
     }
   }
 
   private genericValidator: GenericValidator;
 
-  constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private productService: ProductService,
-    private breakpointObserver: BreakpointObserver
-  ) {
-    breakpointObserver.observe([
-      Breakpoints.HandsetLandscape,
-      Breakpoints.HandsetPortrait
-    ]).subscribe(result => {
-      // console.log(result)
-      this.onScreensizeChange();
-    });
 
-
-    this.genericValidator = new GenericValidator(this.validationMessages);
+  getImage(product: Product) {
+    return (product.imageUri) ? product.imageUri : this.IMAGE_URI_PLACEHOLDER
   }
 
   ngOnInit(): void {
     this.productForm = this.fb.group({
-      productName: [
+      name: [
         "",
         [
           Validators.required,
@@ -129,86 +130,99 @@ export class ProductFormComponent implements OnInit, AfterViewInit, OnDestroy {
           Validators.maxLength(100)
         ]
       ],
-      unitPrice: ["", NumberValidators.range(1, 99999)],
+      price: ["",   [Validators.required,,NumberValidators.range(1, 99999)]],
+      retailPrice: ["", NumberValidators.range(1, 99999)],
       unitInStock: ["", NumberValidators.range(1, 2000)],
-      categoryId: ["", NumberValidators.range(1, 9999999)],
+      category: [""],
     });
+
+
+
 
     // Read the product Id from the route parameter
-    this.sub = this.route.params.subscribe(params => {
-      let id = +params["id"];
-      this.getProduct(id);
-    });
+    // this.sub = 
+    this.route.params.subscribe(
+      async (params) => {
+        let id = params["id"];
+        if (id) {
+          console.log(id)
+          // this.getCustomer(id||"");
 
-    this.getCategories();
+          const data = await fetch(`http://localhost:3333/products/${id}`);
+          console.log(data)
+          if (!data.ok) throw Error(`Could not fetch...`)
+          const product = await data.json();
+          console.log(product)
+          console.log(product.values)
+
+          this.productForm.patchValue({
+            name: product.name,
+            price: product.price,
+            retailPrice:product.retailPrice,
+            unitInStock: product.unitInStock,
+            
+          });
+          // this.avatar.set(product.avatar)
+          this.product.set(product)
+          this.pageTitle.set('Edit Product')
+        }
+        else {
+          this.product.set({} as Product)
+          this.pageTitle.set('New Product')
+        }
+      });
+
+    // this.getCategories();
   }
 
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-  }
 
-  ngAfterViewInit(): void {
-    // Watch for the blur event from any input element on the form.
-    // let controlBlurs: Observable<any>[] = this.formInputElements.map(
-    //   (formControl: ElementRef) =>
-    //     Observable.fromEvent(formControl.nativeElement, "blur")
-    // );
 
-    // // Merge the blur event observable with the valueChanges observable
-    // Observable.merge(this.productForm.valueChanges, ...controlBlurs)
-    //   .debounceTime(800)
-    //   .subscribe(() => {
-    //     this.displayMessage = this.genericValidator.processMessages(
-    //       this.productForm
-    //     );
-    //   });
-  }
 
   getProduct(id: number): void {
-    this.productService
-      .getProduct(id)
-      .subscribe(
-        (product: Product) => this.onProductRetrieved(product),
-        (error: any) => (this.errorMessage = <any>error)
-      );
+    // this.productService
+    //   .getProduct(id)
+    //   .subscribe(
+    //     (product: Product) => this.onProductRetrieved(product),
+    //     (error: any) => (this.errorMessage = <any>error)
+    //   );
   }
 
   getCategories(): void {
-    this.productService
-      .getCategories()
-      .subscribe(
-        // categories => (this.categories = categories),
-        // error => (this.errorMessage = <any>error)
-      );
+    // this.productService
+    //   .getCategories()
+    //   .subscribe(
+    //     // categories => (this.categories = categories),
+    //     // error => (this.errorMessage = <any>error)
+    //   );
   }
 
-  onProductRetrieved(product: Product): void {
-    if (this.productForm) {
-      this.productForm.reset();
-    }
-    this.product = product;
+  // onProductRetrieved(product: Product): void {
+  //   if (this.productForm) {
+  //     this.productForm.reset();
+  //   }
+  //   this.product = product;
 
-    // if (this.product.id === 0) {
-    //   this.pageTitle = "Add Product";
-    // } else {
-    //   this.pageTitle = `Update Product: ${this.product.productName} `;
-    // }
+  //   // if (this.product.id === 0) {
+  //   //   this.pageTitle = "Add Product";
+  //   // } else {
+  //   //   this.pageTitle = `Update Product: ${this.product.name} `;
+  //   // }
 
-    // Update the data on the form
-    this.productForm.patchValue({
-      productName: this.product.productName,
-      unitPrice: this.product.unitPrice,
-      unitInStock: this.product.unitInStock,
-      categoryId: this.product.categoryId
-    });
-  }
+  //   // Update the data on the form
+  //   this.productForm.patchValue({
+  //     name: this.product.name,
+  //     price: this.product.price,
+  //     unitInStock: this.product.unitInStock,
+  //     categoryId: this.product.categoryId
+  //   });
+  // }
 
   deleteProduct(): void {
     // if (this.product.id === 0) {
     //   // Don't delete, it was never saved.
     //   this.onSaveComplete();
     // } else {
-    //   if (confirm(`Really delete the product: ${this.product.productName}?`)) {
+    //   if (confirm(`Really delete the product: ${this.product.name}?`)) {
     //     this.productService
     //       .deleteProduct(this.product.id)
     //       .subscribe(
@@ -224,12 +238,12 @@ export class ProductFormComponent implements OnInit, AfterViewInit, OnDestroy {
       // Copy the form values over the product object values
       let p = Object.assign({}, this.product, this.productForm.value);
 
-      this.productService
-        .saveProduct(p)
-        .subscribe(
-          () => this.onSaveComplete(),
-          (error: any) => (this.errorMessage = <any>error)
-        );
+      // this.productService
+      //   .saveProduct(p)
+      //   .subscribe(
+      //     () => this.onSaveComplete(),
+      //     (error: any) => (this.errorMessage = <any>error)
+      //   );
     } else if (!this.productForm.dirty) {
       this.onSaveComplete();
     }
@@ -241,24 +255,24 @@ export class ProductFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(["/products"]);
   }
 
-  onScreensizeChange() {
-    // debugger
-    const isLess600 = this.breakpointObserver.isMatched('(max-width: 599px)');
-    const isLess1000 = this.breakpointObserver.isMatched('(max-width: 959px)');
-    console.log(
-      ` isLess600  ${isLess600} 
-        isLess1000 ${isLess1000}  `
-    )
-    if (isLess1000) {
-      if (isLess600) {
-        this.fieldColspan = 12;
-      }
-      else {
-        this.fieldColspan = 6;
-      }
-    }
-    else {
-      this.fieldColspan = 3;
-    }
-  }
+  // onScreensizeChange() {
+  //   // debugger
+  //   const isLess600 = this.breakpointObserver.isMatched('(max-width: 599px)');
+  //   const isLess1000 = this.breakpointObserver.isMatched('(max-width: 959px)');
+  //   console.log(
+  //     ` isLess600  ${isLess600} 
+  //       isLess1000 ${isLess1000}  `
+  //   )
+  //   if (isLess1000) {
+  //     if (isLess600) {
+  //       this.fieldColspan = 12;
+  //     }
+  //     else {
+  //       this.fieldColspan = 6;
+  //     }
+  //   }
+  //   else {
+  //     this.fieldColspan = 3;
+  //   }
+  // }
 }

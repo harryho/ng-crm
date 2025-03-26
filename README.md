@@ -1,23 +1,17 @@
-# Angular CRM Demo App
+## Angular Demo App V3 (WIP)
 
-> A reusable CRM starter project for real-world business based on Angular 9, Angular-Material 9.x.
+> A reusable CRM starter project for real-world business based on Angular 19, Angular-Material 19.x.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.x. The goal of this project is to create reusable project for real-world business. To achieve this target, we need a solution which includes simple authentication process, restful API feature with token support and simple but elegant UI design.
-
-#### Features
-
-* This project is built on the top of AngularClass/Angular-Starter.
-* The UI part of this project is comprehensively built on Angular Material.
-* This project includes ng-charts.
-* ~~To simulate real-world business, this starter project chooses Json-Server as fake Restful API. (You can simple replace it with your own API).~~
-* ~~Fake API is just readonly fake service.~~
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 19.x. The goal of this project is to create reusable project for real-world business. To achieve this target, we need a solution which includes simple authentication process, restful API feature with token support and simple but elegant UI design.
 
 
 
-#### Live Demo
+
+
+### Live Demo
 [Demo App](https://angular-app-demo.harryho.org): The demo is just a proof of concept. It doesn't have back-end API and all features of master branch.
 
-#### Screenshots
+### Screenshots
 
 ![Screenshot1](screenshots/screenshot-1.JPG)
 
@@ -106,6 +100,8 @@ There are some similar projects respectively built on the Vue.js and React. If y
 
 
 ###  Change log
+
+* Dec 2024 - Uplift from version 9 to 19
 
 * Jun 2020 - Re-create the project with Angular CLI
 

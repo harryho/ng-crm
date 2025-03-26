@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, resource, signal, ViewChild } from '@angular/core';
 
 import { Product } from './product';
 import { ProductService } from './product.service';
@@ -7,17 +7,19 @@ import * as _ from 'lodash';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
+import { MatFormField, MatFormFieldControl, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatMenu, MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule, MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSortModule, MatSort } from '@angular/material/sort';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatTableModule, MatTableDataSource, MatCell } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
 import { ConfirmDialog } from 'src/app/shared';
-
+import { MatInputModule } from '@angular/material/input';
+import { MatMiniFabButton, MatIconButton } from '@angular/material/button';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 
 @Component({
@@ -26,129 +28,103 @@ import { ConfirmDialog } from 'src/app/shared';
     styleUrls: ['./product-list.component.css'],
     providers: [ConfirmDialog],
     imports: [
-    CommonModule,
-    RouterLink,
-    MatCardModule,
-    MatToolbarModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatMenuModule,
-    MatIconModule,
-    MatFormField,
-    MatLabel
-]
+        CommonModule,
+        RouterLink,
+        MatCardModule,
+        MatToolbarModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        MatMenuModule,
+        MatIconModule,
+        MatFormField,
+        MatLabel,
+        MatFormFieldModule,
+        MatInputModule,
+        MatMiniFabButton,
+        MatIcon,
+        MatMiniFabButton,
+        MatMenu,
+        MatIconButton,
+        MatProgressBar
+    ]
 })
-export class ProductListComponent implements OnInit {
+export class ProductListComponent {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
+
+    service = inject(ProductService)
+    readonly dialog = inject(MatDialog);
+    readonly snackBar = inject(MatSnackBar);
 
     pageTitle: string = 'Products';
 
     showImage: boolean = false;
-    listFilter: any = {};
-    errorMessage: string;
+    // listFilter: any = {};
+    // errorMessage: string;
 
-    products: Product[];
-    productList: Product[];
+    // productList: Product[];
 
-    displayedColumns = ["productName", "unitPrice", "unitInStock", "categoryName", "id"];
-    dataSource: any = null;
+    displayedColumns = ["name", "price", "unitInStock", "categoryName", "id"];
+
     pager: any = {};
     pagedItems: any[];
     searchFilter: any = {};
     selectedOption: string;
 
+    query = signal('');
+    // dataSource = signal(new MatTableDataSource([] as Product[]))
+
+    pageIndex = signal(0)
+    pageSize = signal(10)
+    paginatorLength = signal(0)
+
+    filteredList = signal([] as Product[])
+    paginatedList = signal([] as Product[])
 
 
-    constructor(
-        private productService: ProductService,
-        // private pagerService: PagerService,
-        public dialog: MatDialog, public snackBar: MatSnackBar) {
+    handlePageEvent(e: PageEvent) {
+
+        this.pageIndex.set(e.pageIndex)
+        this.pageSize.set(e.pageSize)
+        const fl = this.filteredList();
+
+        console.log(fl)
+        console.log(this.pageIndex(), '   ', this.pageSize())
+        const start = this.pageIndex() * this.pageSize()
+        const paginatedList = fl.slice(start, start + this.pageSize())
+        console.log(paginatedList)
+
+        this.paginatedList.set(paginatedList)
+
     }
+
+    products = resource<Product[], { query: string }>(
+        {
+            request: () => ({ query: this.query() }),
+            loader: async ({ request, abortSignal }) => {
+                const filteredList = await this.service.fetchDataWithFilter({ request, abortSignal })
+                          this.filteredList.set(filteredList)
+                this.paginatorLength.set(filteredList.length)
+                const paginatedList = filteredList.slice(this.pageIndex() * this.pageSize(), this.pageSize())
+                console.log(paginatedList)
+                this.paginatedList.set(paginatedList)
+                return filteredList
+            }
+
+        });
+
+
 
     toggleImage(): void {
         this.showImage = !this.showImage;
     }
 
-    applyFilter(filterValue: string) {
-        filterValue = filterValue.trim(); // Remove whitespace
-        filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-        this.dataSource.filter = filterValue;
-    }
-
-    freshDataList(products: Product[]) {
-        this.products = products;
-
-        this.productList = products.map(e => {
-            const product = e as any;
-            // e["categoryName"] = e["category"]["categoryName"];
-            return product;
-        });
-
-        this.dataSource = new MatTableDataSource(this.products);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-    }
 
 
-    ngOnInit(): void {
-        this.productService.getProducts()
-        // .subscribe(products => {
-        //     this.freshDataList(products);
-        // },
-        // error => this.errorMessage = <any>error);
-
-        this.searchFilter = {};
-        this.listFilter = {};
-    }
-
-    getProducts(pageNum?: number) {
-        this.productService.getProducts()
-        // .subscribe(products => {
-        //     this.freshDataList(products);
-        // },
-        // error => this.errorMessage = <any>error);
-    }
-
-    searchProducts(filters: any) {
-        if (filters) {
-            this.productService.getProducts()
-                .subscribe(() => {
-                    // this.products = products;
-                    // console.log(this.products.length)
-                    // this.products = this.products.filter((product: Product) => {
-                    //     let match = true;
-
-                    //     Object.keys(filters).forEach((k) => {
-                    //         match = match && filters[k] ?
-                    //             product[k] && product[k].toLocaleLowerCase().indexOf(filters[k].toLocaleLowerCase()) > -1 : match;
-                    //     })
-                    //     return match;
-                    // });
-                    // this.freshDataList(products);
-                    // },
-                    // error => this.errorMessage = <any>error);
-                })
-        }
-    }
-
-
-    resetListFilter() {
-        this.listFilter = {};
-        this.getProducts();
-    }
-
-    reset() {
-        this.listFilter = {};
-        this.searchFilter = {};
-        this.getProducts();
-    }
-
-    resetSearchFilter(searchPanel: any) {
-        searchPanel.toggle();
-        this.searchFilter = {};
-        this.getProducts();
+    reload() {
+        this.query.set('')
+        this.products.reload()
     }
 
     openSnackBar(message: string, action: string) {
@@ -157,32 +133,29 @@ export class ProductListComponent implements OnInit {
         });
     }
 
-    openDialog(id: number) {
+    openDialog(id: string, enterAnimationDuration = '0ms', exitAnimationDuration = '0ms') {
         let dialogRef = this.dialog.open(ConfirmDialog,
-            { data: { title: 'Dialog', message: 'Are you sure to delete this item?' } });
+            {
+                width: '350px',
+                enterAnimationDuration,
+                exitAnimationDuration,
+            }
+        );
         dialogRef.disableClose = true;
 
 
         dialogRef.afterClosed().subscribe(result => {
             this.selectedOption = result;
-
+            console.log('  dialog  result ', result)
             if (this.selectedOption === dialogRef.componentInstance.ACTION_CONFIRM) {
-                this.productService.deleteProduct(id).subscribe(
+                this.service.deleteProduct(id).subscribe(
                     () => {
-                        //     this.productService.getProducts()
-                        //         .subscribe(products => {
-                        //             this.freshDataList(products);
-                        //         },
-                        //         error => this.errorMessage = <any>error);
-                        //     this.openSnackBar("The item has been deleted successfully. ", "Close");
-                        // },
-                        // (error: any) => {
-                        //     this.errorMessage = <any>error;
-                        //     console.log(this.errorMessage);
-                        //     this.openSnackBar("This item has not been deleted successfully. Please try again.", "Close");
+                        this.openSnackBar("The item has been deleted successfully. ", "Close")
+                        this.products.reload()
                     }
                 );
             }
         });
     }
+
 }

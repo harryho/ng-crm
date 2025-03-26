@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChildren, ElementRef, signal } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControlName, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit, ViewChildren, ElementRef, signal, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControlName, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 
@@ -9,18 +9,16 @@ import { Customer } from './customer';
 import { CustomerService } from './customer.service';
 
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { MatCard, MatCardContent, MatCardModule } from '@angular/material/card';
-import { MatError, MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { NumberValidators } from '../../shared/number.validator';
 import { GenericValidator } from '../../shared/generic-validator';
-import { MatSelect, MatSelectModule } from '@angular/material/select';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { MatRadioModule } from '@angular/material/radio';
 
 
 
@@ -43,19 +41,27 @@ import { MatRadioModule } from '@angular/material/radio';
         margin-left: 50px;
     }
     `],
-    imports: [CommonModule,
+    imports: [
+        CommonModule,
         MatCardModule,
-        MatIconModule, 
+        MatIconModule,
         MatFormField, MatLabel,
         RouterModule,
         ReactiveFormsModule,
         MatInputModule,
         MatButtonModule,
         MatCardModule,
-        MatSelectModule],
+        MatSelectModule,
+        MatFormFieldModule,
+    ]
 })
 export class CustomerFormComponent implements OnInit {
     @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
+
+    route = inject(ActivatedRoute)
+    router = inject(Router)
+    service = inject(CustomerService)
+    fb = inject(FormBuilder)
 
     AVATAR_PLACEHOLDER = '/assets/images/avatar/avatar-0.webp'
 
@@ -101,18 +107,10 @@ export class CustomerFormComponent implements OnInit {
     };
 
 
-
-    constructor(private fb: FormBuilder,
-        private route: ActivatedRoute,
-        private router: Router,
-        private customerService: CustomerService,
-        private breakpointObserver: BreakpointObserver
-    ) {
-    }
-
     getAvatar(customer: Customer) {
         return (customer.avatar) ? customer.avatar : this.AVATAR_PLACEHOLDER
     }
+
     ngOnInit(): void {
         this.customerForm = this.fb.group({
             firstname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
@@ -131,15 +129,8 @@ export class CustomerFormComponent implements OnInit {
                 let id = params.get('id')
                 if (id) {
                     console.log(id)
-                    // this.getCustomer(id||"");
-
-                    const data = await fetch(`http://localhost:3333/customers/${id}`);
-                    console.log(data)
-                    if (!data.ok) throw Error(`Could not fetch...`)
-                    const customer = await data.json();
-                    console.log(customer)
-                    console.log(customer.values)
-
+                    const customer = this.service.getCustomer(id)
+    
                     this.customerForm.patchValue({
                         firstname: customer.firstname,
                         lastname: customer.lastname,
@@ -154,7 +145,7 @@ export class CustomerFormComponent implements OnInit {
                     this.pageTitle.set('Edit Customer')
                 }
                 else {
-                    this.customer.set({} as Customer)
+                    // this.customer.set({} as Customer)
                     this.pageTitle.set('New Customer')
                 }
 
@@ -162,8 +153,6 @@ export class CustomerFormComponent implements OnInit {
         )
 
     }
-
-
 
     toggleImage(event: any): void {
         event.preventDefault();
@@ -179,7 +168,7 @@ export class CustomerFormComponent implements OnInit {
 
             console.log(customer)
 
-            this.customerService.saveCustomer(customer)
+            this.service.saveCustomer(customer)
                 .subscribe(
                     () => this.onSaveComplete())
             //(error: any) => this.errorMessage = <any>error
@@ -193,27 +182,6 @@ export class CustomerFormComponent implements OnInit {
         // Reset the form to clear the flags
         this.customerForm.reset();
         this.router.navigate(['/customer']);
-    }
-
-    onScreensizeChange(result: any) {
-        // debugger
-        const isLess600 = this.breakpointObserver.isMatched('(max-width: 599px)');
-        const isLess1000 = this.breakpointObserver.isMatched('(max-width: 959px)');
-        console.log(
-            ` isLess600  ${isLess600} 
-            isLess1000 ${isLess1000}  `
-        )
-        if (isLess1000) {
-            if (isLess600) {
-                this.fieldColspan = 12;
-            }
-            else {
-                this.fieldColspan = 6;
-            }
-        }
-        else {
-            this.fieldColspan = 3;
-        }
     }
 }
 

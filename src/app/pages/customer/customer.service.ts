@@ -1,131 +1,139 @@
-import { Injectable, resource } from '@angular/core';
+import { inject, Injectable, resource } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 // import { BackendService } from '../../services/backend.service'
 import { Observable } from 'rxjs';
-
 import { Customer } from './customer';
+import db from "../../services/mock.db";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerService {
   private API_URL = 'http://localhost:3333/customers';
-  private CUSTOMER:string = 'NG_DEOM_V3_CUSTOMER_COUNT'
+  private CUSTOMER: string = 'CUSTOMER_TOTAL_COUNT'
+  private ds: Customer[];
+  private USE_MOCK = false
+  private http = inject(HttpClient)
 
-  constructor(private http: HttpClient) { }
-
-  // getResource = () => {
-  //   return resource<Customer[], { query: string }>(
-  //     {
-  //       request: () => ({ query: this.query() }),
-  //       loader: async ({ request, abortSignal }) => {
-  //         // fetch cancels any outstanding HTTP requests when the given `AbortSignal`
-  //         // indicates that the request has been aborted.
-  //         const data = await fetch(`http://localhost:3333/customers?firstname_like=^${request.query}`, { signal: abortSignal });
-  //         console.log(data)
-  //         if (!data.ok) throw Error(`Could not fetch...`)
-  //         const list = await data.json();
-  //         const filteredList = list.filter((d: Customer) =>
-  //           !request.query ? true : (d.name.toLowerCase().indexOf(request.query.toLowerCase()) > -1))
-  //         console.log(filteredList)
-  //         return filteredList
-  //       }
-  //     });
-  // }
-
-  getCustomers(): Observable<Customer[]> {
-    return     this.http.get<Customer[]>(`${this.API_URL}`);
+  useMock() {
+    this.USE_MOCK = true;
+  }
+  useApi() {
+    this.USE_MOCK = false;
+  }
+  constructor() {
+    this.ds = db['customers'] as any
   }
 
-  storeCount ( count: string){
+  reload() {
+    this.ds = db['customers'] as any
+  }
+
+  storeCount(count: string) {
     localStorage.setItem(this.CUSTOMER, count)
   }
 
-  
- getCount ( ): number{
-    return   localStorage.getItem(this.CUSTOMER) ? Number(localStorage.getItem(this.CUSTOMER)): 100
+  async fetchDataWithFilter({ request, abortSignal }: any) {
+    let list, filteredList = [];
+    if (!this.USE_MOCK) {
+      // fetch cancels any outstanding HTTP requests when the given `AbortSignal`
+      // indicates that the request has been aborted.
+      const data = await fetch(`http://localhost:3333/customers`, { signal: abortSignal });
+      if (!data.ok) throw Error(`Could not fetch...`)
+      list = await data.json();
+
+    }
+    else {
+      list = Object.assign([], this.ds)
+    }
+    this.storeCount(list.length)
+    filteredList = list.filter((d: Customer) => {
+      return !request.query ? true : (
+        d.firstname && d.firstname.toLowerCase().indexOf(request.query.toLowerCase()) > -1)
+    })
+    console.log(filteredList)
+    return filteredList
+  }
+
+
+
+  getCustomers(): Observable<Customer[]> {
+    return this.http.get<Customer[]>(`${this.API_URL}`);
+  }
+
+
+
+
+  getCount(): number {
+    return localStorage.getItem(this.CUSTOMER) ? Number(localStorage.getItem(this.CUSTOMER)) : 100
   }
 
   // @ts-ignore
-  getCustomer(id: string): Observable<Customer> {
-    if (id) {
-      return {} as any // Observable.of(this.initializeCustomer());
+  async getCustomer(id: string): Customer {
+    if (!id) {
+      return {} as any
     };
-    const url = `${this.API_URL}/${id}`;
-      const obs =  this.http.get<Customer>(url);
-  //    console.log(obs)
-    return obs
-    // const action = `${this.basicAction}${id}`;
-    // return this.backend.getById(action)
-    //   .map(this.extractData)
-    //   .catch(this.handleError);
+    if (!this.USE_MOCK) {
+      const data = await fetch(`${this.API_URL}/${id}`);
+
+      if (!data.ok) throw Error(`Could not fetch...`)
+      const customer = await data.json();
+      return customer
+    }
+    else {
+      const c = this.ds.find(d => String(d.id) == id)
+      return c as any
+    }
 
   }
 
-  deleteCustomer(id: string): Observable<Response> {
-    const url = `${this.API_URL}/${id}`;
-    return this.http.delete<Response>(url);
+  private createObservable(mock?: any): Observable<any> {
+    return new Observable((subscriber) => {
+      subscriber.next(mock);
+      setTimeout(() => {
+        subscriber.complete();
+      }, 500);
+    })
+  }
+
+  deleteCustomer(id: string): Observable<any> {
+    if (!this.USE_MOCK) {
+      const url = `${this.API_URL}/${id}`;
+      return this.http.delete<Response>(url);
+    }
+    else {
+      const idx = this.ds.findIndex(d => d.id = id)
+      this.ds.splice(idx, 1)
+      return this.createObservable()
+    }
   }
 
   saveCustomer(customer: Customer): Observable<Customer> {
     const id = customer.id
-
-    if(id){
-    const url = `http://localhost:3333/customers/${id}`;
-    return this.http.put<Customer>(url, customer);
+    if (!this.USE_MOCK) {
+      if (id) {
+        const url = `http://localhost:3333/customers/${id}`;
+        return this.http.put<Customer>(url, customer);
+      }
+      else {
+        const id = this.getCount() + 1
+        customer.id = String(id)
+        customer.avatar = '/assets/images/avatar/avatar-0.webp'
+        const url = `http://localhost:3333/customers/`;
+        return this.http.post<Customer>(url, customer);
+      }
     }
-    else{
-      const id  = this.getCount() + 1
-      customer.id = String(id)
-      customer.avatar = '/assets/images/avatar/avatar-0.webp'
-      const url = `http://localhost:3333/customers/`;
-      return this.http.post<Customer>(url, customer);
+    else {
+      if (id) {
+        const idx = this.ds.findIndex(d => d.id = customer.id)
+        this.ds[idx] = Object.assign({}, customer)
+        return this.createObservable()
+      }
+      else {
+        customer.id = String(this.ds.length)
+        this.ds[this.ds.length] = Object.assign({}, customer)
+        return this.createObservable()
+      }
     }
-
-    // if (customer.id === 0) {
-    //   return this.createCustomer(customer);
-    // }
-    // return this.updateCustomer(customer);
   }
-
-  // private createCustomer(customer: Customer): Observable<Customer> {
-  //   customer.id = 0// undefined;
-  //   return this.backend.create(this.basicAction, customer)
-  //     .map(this.extractData)
-  //     .catch(this.handleError);
-  // }
-
-  // private updateCustomer(customer: Customer): Observable<Customer> {
-  //   const action = `${this.basicAction}${customer.id}`;
-  //   return this.backend.update(action, customer)
-  //     .map(() => customer)
-  //     .catch(this.handleError);
-  // }
-
-  // private extractData(response: Response) {
-  //   let body : any = response.json ? response.json() : response;
-  //   return body.data ? body.data : (body || {});
-  // }
-
-  // private handleError(error: Response): Observable<any> {
-  //   // in a real world app, we may send the server to some remote logging infrastructure
-  //   // instead of just logging it to the console
-  //   console.error(error);
-  //   return {} as any // Observable.throw(error.json() || 'Server error');
-  // }
-
-  // initializeCustomer(): Customer {
-  //   // Return an initialized object
-  //   return {
-  //     id: 0,
-  //     avatar: "",
-  //     firstname: "",
-  //     lastname: "",
-  //     rewards: 0,
-  //     email: "",
-  //     membership: false,
-  //     mobile:"",
-  //     phone:""
-  //   };
-  // }
 }

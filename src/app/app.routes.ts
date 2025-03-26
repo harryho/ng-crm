@@ -3,6 +3,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { NotFoundComponent } from './pages/notfound';
 import { AuthGuard } from './auth.guard.service';
 import { LoadingComponent } from './pages/loading';
+import { ComingSoonComponent } from './pages/comingsoon/comingsoon.component';
 
 export const routes: Routes = [
   {
@@ -13,7 +14,6 @@ export const routes: Routes = [
     path: "dashboard",
     component: DashboardComponent
     , canActivate: [AuthGuard],
-
   },
   {
     path: 'ui-components',
@@ -40,7 +40,16 @@ export const routes: Routes = [
       import('./pages/order/order.module').then(m => m.OrderModule)
     , canActivate: [AuthGuard]
   },
-
+  {
+    path: "blog",
+    component: ComingSoonComponent
+    , canActivate: [AuthGuard]
+  },
+  {
+    path: "staff",
+    component: ComingSoonComponent
+    , canActivate: [AuthGuard]
+  },
   {
     path: 'auth',
     loadChildren: () =>
@@ -52,6 +61,7 @@ export const routes: Routes = [
   {
     path: "**",
     component: NotFoundComponent
+
   }
 
 ];

@@ -25,10 +25,10 @@
             </mat-error>
         </mat-form-field>
         <mat-form-field class="dialog-field ">
-            <input matInput placeholder="Quantity" id="quantityId" type="number" placeholder="Quantity (required)" formControlName="quantity"
+            <input matInput placeholder="Unit In Stock" id="unitInStockId" type="number" placeholder="Unit In Stock (required)" formControlName="unitInStock"
             />
-            <mat-error *ngIf="displayMessage.quantity">
-                {{displayMessage.quantity}}
+            <mat-error *ngIf="displayMessage.unitInStock">
+                {{displayMessage.unitInStock}}
             </mat-error>
         </mat-form-field>
     </form>
