@@ -75,11 +75,11 @@ docker logs ng-demo3  -f
 
 [Live Demo V3](https://angular-app-demo.harryho.org?v=3): The demo is just a proof of concept. It doesn't have back-end API.
 
-![Screenshot2](screenshots/v3/screenshot-1.png)
+![Screenshot2](screenshots/v3/Screenshot-1.png)
 
-![Screenshot2](screenshots/v3/screenshot-2.png)
+![Screenshot2](screenshots/v3/Screenshot-2.png)
 
-![Screenshot3](screenshots/v3/screenshot-3.png)
+![Screenshot3](screenshots/v3/Screenshot-3.png)
 
 
 #### V2 Live Screenshots
