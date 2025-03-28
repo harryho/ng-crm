@@ -68,9 +68,7 @@ export class OrderListComponent {
     "quantity": "Quantity", "amount": "Total Price", "customer": "Customer", "orderDate": "Billing Date",
     "shippedDate": "Shipping Date", "delivery":"Delivery Status","id": ""
   };
-  // pager: any = {};
-  // pagedItems: any[];
-  // totalAmount: number;
+
   searchFilter: any = {
     reference: "",
     amount: "",
