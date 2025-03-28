@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Customer } from './customer';
 import db from "../../services/mock.db";
+import { USE_LOCAL_MOCK_DATA } from 'src/app/config';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class CustomerService {
   private API_URL = 'http://localhost:3333/customers';
   private CUSTOMER: string = 'CUSTOMER_TOTAL_COUNT'
   private ds: Customer[];
-  private USE_MOCK = false
+  private USE_MOCK = USE_LOCAL_MOCK_DATA
   private http = inject(HttpClient)
 
   useMock() {
@@ -49,9 +50,9 @@ export class CustomerService {
     this.storeCount(list.length)
     filteredList = list.filter((d: Customer) => {
       return !request.query ? true : (
-        d.firstname && d.firstname.toLowerCase().indexOf(request.query.toLowerCase()) > -1)
+        d.fullname && d.fullname.toLowerCase().indexOf(request.query.toLowerCase()) > -1)
     })
-    console.log(filteredList)
+    
     return filteredList
   }
 
@@ -81,7 +82,7 @@ export class CustomerService {
       return customer
     }
     else {
-      const c = this.ds.find(d => String(d.id) == id)
+      const c = this.ds.find(d => String(d.id) === id)
       return c as any
     }
 
@@ -125,7 +126,7 @@ export class CustomerService {
     }
     else {
       if (id) {
-        const idx = this.ds.findIndex(d => d.id = customer.id)
+        const idx = this.ds.findIndex(d => d.id === customer.id)
         this.ds[idx] = Object.assign({}, customer)
         return this.createObservable()
       }

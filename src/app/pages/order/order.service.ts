@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Order } from './order';
 import db from "../../services/mock.db";
+import {USE_LOCAL_MOCK_DATA} from '../../config'
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class OrderService {
   private API_URL = 'http://localhost:3333/orders';
   private ORDER: string = 'ORDER_TOTAL_COUNT'
   private ds: Order[];
-  private USE_MOCK = false
+  private USE_MOCK = USE_LOCAL_MOCK_DATA
   private http = inject(HttpClient)
 
   useMock() {
@@ -51,7 +52,7 @@ export class OrderService {
         d.reference && d.reference.toLowerCase()
           .indexOf(request.query.toLowerCase()) > -1)
     })
-    console.log(filteredList)
+    
     return filteredList
   }
 
@@ -125,7 +126,7 @@ export class OrderService {
     }
     else {
       if (id) {
-        const idx = this.ds.findIndex(d => d.id = order.id)
+        const idx = this.ds.findIndex(d => d.id === order.id)
         this.ds[idx] = Object.assign({}, order)
         return this.createObservable()
       }

@@ -25,6 +25,19 @@ thead {
   min-width: 200px;
 }
 
+.packing{
+  background-color: azure;
+  color:lightskyblue
+}
+.shipping{
+  background-color: lightpink;
+  color:lightcoral
+}
+.delivered{
+  background-color: lightcyan;
+  color: green
+}
+
 table {
   width: 100%;
 }

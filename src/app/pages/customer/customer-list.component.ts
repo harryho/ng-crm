@@ -28,7 +28,6 @@ import { MatProgressBar } from '@angular/material/progress-bar';
     templateUrl: './customer-list.component.html',
     styleUrls: ['./customer-list.component.css'],
     providers: [ConfirmDialog],
-
     imports: [
         CommonModule,
         RouterLink,
@@ -62,9 +61,9 @@ export class CustomerListComponent {
     AVATAR_PLACEHOLDER = '/assets/images/avatar/avatar-0.webp'
     imageWidth: number = 30;
     imageMargin: number = 2;
-    showImage: boolean = false;
-    listFilter: any = {};
-    errorMessage: string;
+    // showImage: boolean = false;
+    // listFilter: any = {};
+    // errorMessage: string;
     searchFilter: any = {
         firstname: "",
         lastname: "",
@@ -81,7 +80,6 @@ export class CustomerListComponent {
         {
             request: () => ({ query: this.query() }),
             loader: async ({ request, abortSignal }) => {
-                this.customerService.useMock()
                 const filteredList = await this.customerService.fetchDataWithFilter({ request, abortSignal })
                 const ds = new MatTableDataSource(filteredList as Customer[])
                 ds.paginator = this.paginator;
@@ -127,7 +125,6 @@ export class CustomerListComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             this.selectedOption = result;
-            console.log('  dialog  result ', result)
             if (this.selectedOption === dialogRef.componentInstance.ACTION_CONFIRM) {
                 this.customerService.deleteCustomer(id).subscribe(
                     () => {

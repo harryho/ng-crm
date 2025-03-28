@@ -1,14 +1,9 @@
 import { Component, OnInit, ViewChildren, ElementRef, signal, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControlName, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-
-
 import { Subscription } from 'rxjs';
-
 import { Customer } from './customer';
 import { CustomerService } from './customer.service';
-
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,8 +14,6 @@ import { NumberValidators } from '../../shared/number.validator';
 import { GenericValidator } from '../../shared/generic-validator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-
-
 
 @Component({
     selector: 'customer-form',
@@ -45,12 +38,12 @@ import { MatButtonModule } from '@angular/material/button';
         CommonModule,
         MatCardModule,
         MatIconModule,
-        MatFormField, MatLabel,
+        MatFormField, 
+        MatLabel,
         RouterModule,
         ReactiveFormsModule,
         MatInputModule,
         MatButtonModule,
-        MatCardModule,
         MatSelectModule,
         MatFormFieldModule,
     ]
@@ -67,19 +60,17 @@ export class CustomerFormComponent implements OnInit {
 
     errorMessage: string;
     customerForm: FormGroup;
-    // customer: Customer = <Customer>{};
     private sub: Subscription;
     showImage: boolean;
     imageWidth: number = 50;
     imageMargin: number = 5;
     fieldColspan = 3;
-    // avatar = signal('')
+
     pageTitle = signal('');
     customer = signal({} as Customer)
 
     // Use with the generic validation message class
     displayMessage: { [key: string]: string } = {};
-    private genericValidator: GenericValidator;
 
     // Defines all of the validation messages for the form.
     // These could instead be retrieved from a file or database.
@@ -129,7 +120,7 @@ export class CustomerFormComponent implements OnInit {
                 let id = params.get('id')
                 if (id) {
                     console.log(id)
-                    const customer = this.service.getCustomer(id)
+                    const customer = await this.service.getCustomer(id)
     
                     this.customerForm.patchValue({
                         firstname: customer.firstname,
@@ -154,25 +145,20 @@ export class CustomerFormComponent implements OnInit {
 
     }
 
-    toggleImage(event: any): void {
-        event.preventDefault();
-        this.showImage = !this.showImage;
-    }
+    // toggleImage(event: any): void {
+    //     event.preventDefault();
+    //     this.showImage = !this.showImage;
+    // }
 
 
     saveCustomer(): void {
         if (this.customerForm.dirty && this.customerForm.valid) {
             // Copy the form values over the customer object values
             const customer = Object.assign({}, this.customer(), this.customerForm.value);
-            customer.name = `${customer.firstname}  ${customer.lastname}`
-
-            console.log(customer)
+            customer.fullname = `${customer.firstname}  ${customer.lastname}`
 
             this.service.saveCustomer(customer)
-                .subscribe(
-                    () => this.onSaveComplete())
-            //(error: any) => this.errorMessage = <any>error
-            // );
+                .subscribe( () => this.onSaveComplete())
         } else if (!this.customerForm.dirty) {
             this.onSaveComplete();
         }

@@ -7,7 +7,7 @@ COPY . .
 
 RUN cd  /app
 RUN npm install
-RUN npm run build-prod
+RUN npm run build
 
 
 ###### Run #####
@@ -19,7 +19,7 @@ COPY ./config/nginx.conf /etc/nginx/conf.d/default.conf
 
 
 #########################################################
-## docker build . -t  nc-prd:2.0
-## docker run --publish 8080:80  --name nc2 nc-prd:2.0
+## docker build . -t  nc-demo:3.0
+## docker run --publish 8080:80  --name nd3 nc-demo:3.0
 
 

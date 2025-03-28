@@ -6,16 +6,18 @@
 
     <form novalidate (ngSubmit)="saveProduct()" [formGroup]="productForm">
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12" style="margin-bottom: 4rem;">
           <span class="m-l-16">
-            @if(product!= null && product()){
-            <img mat-card-avatar class="" [src]='getImage(product())' [style.width.px]='imageWidth'
+            <!-- // [src]="getImage(product())"  -->
+            @if(product!=null && product().imageUri){
+            <img mat-card-avatar [src]="getImage(product())"
+              [style.width.px]='imageWidth'
               [style.height.px]='imageWidth' [style.margin.px]='imageMargin'>
             }
           </span>
         </div>
         <div class="col-lg-6">
-          <!-- input -->
+          
           <mat-label class="f-w-600 m-b-8 d-block">Product Name</mat-label>
           <mat-form-field appearance="outline" class="w-100" color="primary">
             <input matInput id="name" type="text" placeholder="First Name (required)" formControlName="name" />
@@ -28,7 +30,7 @@
         </div>
 
         <div class="col-lg-6">
-          <!-- input -->
+          
           <mat-label class="f-w-600 m-b-8 d-block">Unit In Stock</mat-label>
           <mat-form-field appearance="outline" class="w-100" color="primary">
             <input matInput id="unitInStock" type="unitInStock" placeholder="Email " formControlName="unitInStock" />
@@ -40,7 +42,7 @@
           </mat-form-field>
         </div>
         <div class="col-lg-6">
-          <!-- input -->
+          
           <mat-label class="f-w-600 m-b-8 d-block">Unit Price</mat-label>
           <mat-form-field appearance="outline" class="w-100" color="primary">
             <input matInput id="price" type="number" placeholder="Unit Price (required)" formControlName="price" />
@@ -52,7 +54,7 @@
           </mat-form-field>
         </div>
         <div class="col-lg-6">
-          <!-- input -->
+          
           <mat-label class="f-w-600 m-b-8 d-block">Retail Price</mat-label>
           <mat-form-field appearance="outline" class="w-100" color="primary">
             <input matInput id="retailPrice" type="number" placeholder="Retail Price (required)"

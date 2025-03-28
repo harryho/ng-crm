@@ -22,16 +22,13 @@
     <mat-toolbar-row>
       <mat-form-field appearance="outline" class="search-form-fileld w-100" color="primary">
         <mat-label>Filter</mat-label>
-        <input matInput (input)="query.set($any($event.target).value)" />
+        <input matInput (input)="query.set($any($event.target).value)" placeholder="Filter by customer name" />
 
         <mat-icon>filter_list</mat-icon>
       </mat-form-field>
 
     </mat-toolbar-row>
   </mat-toolbar>
-
-  <!-- @if (!customers.isLoading()) { -->
-
 
     <mat-table #table [dataSource]="dataSource()" matSort  style="word-break: break-all;">
       <ng-container matColumnDef="avatar">
@@ -73,7 +70,7 @@
         <mat-header-cell *matHeaderCellDef >Shopping Cart</mat-header-cell>
         <mat-cell *matCellDef="let customer" style="display: inline-grid ; justify-content: center;">
           @if(customer.hasItemInShoppingCart){
-          <span style="color: rgb(125, 12, 12);padding-left: 5px;">
+          <span style="color: rgb(125, 12, 12);padding-left: 5px;" alt="Pending items in shopping cart">
             <mat-icon fontIcon="shopping-cart" color="orange"></mat-icon>
           </span>
           }
@@ -102,7 +99,6 @@
     </mat-table>
     <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10]" >
     </mat-paginator>
-    <!-- } -->
 
 
 

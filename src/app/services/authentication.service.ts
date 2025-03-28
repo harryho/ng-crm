@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models'
-import { BackendService } from './backend.service'
-
+import { USE_LOCAL_MOCK_DATA } from '../config';
+import db from "../services/mock.db";
 
 const APP_USER_PROFILE = "NG_CRM_USER_2.0"
 @Injectable()
 export class AuthenticationService {
-   API_URL = "http://localhost:3333/token"
+  API_URL = "http://localhost:3333/token"
+  private USE_MOCK = USE_LOCAL_MOCK_DATA
 
-  constructor(private http: HttpClient, private backend: BackendService) { }
+  constructor(private http: HttpClient) { }
 
   async login(user: any) {
     // return this.backend.login('token', user)
@@ -24,14 +25,22 @@ export class AuthenticationService {
     //       localStorage.setItem(APP_USER_PROFILE, JSON.stringify(user));
     //     }
     //   });
-    const data: any = await this.http.get<User>(this.API_URL)
 
-    user.token = data ? data?.accessToken : "access_token";
+    let authData: any;
+
+    if (!this.USE_MOCK) {
+      authData = await this.http.get<User>(this.API_URL)
+    }
+    else {
+      authData = db['token']
+    }
+
+    user.token = authData ? authData?.accessToken : "access_token";
     user.isAuthenticated = true;
     localStorage.setItem(APP_USER_PROFILE, JSON.stringify(user));
     return new Promise(function (resolve, _reject) {
       setTimeout(resolve, 300, true)
-})
+    })
   }
 
   logout() {
@@ -39,7 +48,7 @@ export class AuthenticationService {
     localStorage.removeItem(APP_USER_PROFILE);
     return new Promise(function (resolve, _reject) {
       setTimeout(resolve, 300, true)
-})
+    })
   }
 
   isAuthenticated() {

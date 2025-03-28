@@ -16,7 +16,6 @@ import { MaterialModule } from "../../material.module";
 @NgModule({
   imports: [
     SharedModule,
-    // ReactiveFormsModule,
     MaterialModule,
     RouterModule.forChild([
       {
@@ -51,8 +50,7 @@ import { MaterialModule } from "../../material.module";
   // entryComponents: [MatOption],
   exports: [
     CustomerListComponent,
-    CustomerFormComponent,
-    RouterModule
+    CustomerFormComponent
 
   ]
 })

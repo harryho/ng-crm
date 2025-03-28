@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, resource, signal, ViewChild } from '@angular/core';
+import { Component, inject, resource, signal, ViewChild } from '@angular/core';
 
 import { Product } from './product';
 import { ProductService } from './product.service';
@@ -7,13 +7,13 @@ import * as _ from 'lodash';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
-import { MatFormField, MatFormFieldControl, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule, MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSortModule, MatSort } from '@angular/material/sort';
-import { MatTableModule, MatTableDataSource, MatCell } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
 import { ConfirmDialog } from 'src/app/shared';
@@ -43,7 +43,6 @@ import { MatProgressBar } from '@angular/material/progress-bar';
         MatInputModule,
         MatMiniFabButton,
         MatIcon,
-        MatMiniFabButton,
         MatMenu,
         MatIconButton,
         MatProgressBar
@@ -60,10 +59,6 @@ export class ProductListComponent {
     pageTitle: string = 'Products';
 
     showImage: boolean = false;
-    // listFilter: any = {};
-    // errorMessage: string;
-
-    // productList: Product[];
 
     displayedColumns = ["name", "price", "unitInStock", "categoryName", "id"];
 
@@ -73,7 +68,6 @@ export class ProductListComponent {
     selectedOption: string;
 
     query = signal('');
-    // dataSource = signal(new MatTableDataSource([] as Product[]))
 
     pageIndex = signal(0)
     pageSize = signal(10)
@@ -88,15 +82,10 @@ export class ProductListComponent {
         this.pageIndex.set(e.pageIndex)
         this.pageSize.set(e.pageSize)
         const fl = this.filteredList();
-
-        console.log(fl)
         console.log(this.pageIndex(), '   ', this.pageSize())
         const start = this.pageIndex() * this.pageSize()
         const paginatedList = fl.slice(start, start + this.pageSize())
-        console.log(paginatedList)
-
         this.paginatedList.set(paginatedList)
-
     }
 
     products = resource<Product[], { query: string }>(
@@ -107,20 +96,15 @@ export class ProductListComponent {
                           this.filteredList.set(filteredList)
                 this.paginatorLength.set(filteredList.length)
                 const paginatedList = filteredList.slice(this.pageIndex() * this.pageSize(), this.pageSize())
-                console.log(paginatedList)
                 this.paginatedList.set(paginatedList)
                 return filteredList
             }
 
         });
-
-
-
+        
     toggleImage(): void {
         this.showImage = !this.showImage;
     }
-
-
 
     reload() {
         this.query.set('')
@@ -142,11 +126,8 @@ export class ProductListComponent {
             }
         );
         dialogRef.disableClose = true;
-
-
         dialogRef.afterClosed().subscribe(result => {
             this.selectedOption = result;
-            console.log('  dialog  result ', result)
             if (this.selectedOption === dialogRef.componentInstance.ACTION_CONFIRM) {
                 this.service.deleteProduct(id).subscribe(
                     () => {

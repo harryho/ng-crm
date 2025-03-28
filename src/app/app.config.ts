@@ -26,7 +26,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 //Import all material modules
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BackendService } from './services/backend.service';
+
 import { AuthenticationService } from './services/authentication.service';
 import { AuthGuard } from './auth.guard.service';
 
@@ -45,17 +45,17 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     importProvidersFrom(
-      FormsModule,
-      ReactiveFormsModule,
+      FormsModule.withConfig({callSetDisabledState: 'whenDisabledForLegacyCode'}),
+      ReactiveFormsModule.withConfig({callSetDisabledState: 'whenDisabledForLegacyCode'}),
       MaterialModule,
       TablerIconsModule.pick(TablerIcons),
       NgScrollbarModule
     ),
 
       AuthGuard,
-      BackendService,
+      // BackendService,
       AuthenticationService,
       
-    
+      // ReactiveFormsModule.withConfig({callSetDisabledState: 'whenDisabledForLegacyCode'}),
   ],
 };

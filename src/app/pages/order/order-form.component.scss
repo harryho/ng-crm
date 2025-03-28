@@ -1,0 +1,106 @@
+.button-float-right {
+  float: right;
+ }
+.form-field{
+   width: 100%;
+   margin-left: 20px;
+   margin-right: 20px;
+}
+.avatar-field {
+   left: 0;
+   margin: 0 auto;
+   position: absolute;
+   margin-left: 50px;
+}
+
+
+ol.stepper {
+  --default-b: lightgrey;
+  --default-c: black;
+  --active-b:rgb(93, 135, 255); // purple;
+  --active-c: white;
+  --circle: 2em; /* size of circle */
+  --b: 4px; /* line thickness */
+  
+  display: flex;
+  list-style: none;
+  justify-content: space-between;
+  background: 
+    linear-gradient(var(--default-b) 0 0) no-repeat
+    50% calc((var(--circle) - var(--b))/2)/100% var(--b);
+  counter-reset: step;
+  margin: 20px;
+  padding: 0;
+  font-size: 18px;
+  // font-weight: bold;
+  counter-reset: step;
+  overflow: hidden;
+}
+
+
+ol.stepper li {
+  display: grid;
+  // place-items: center;
+  gap: 5px;
+  font-family: sans-serif;
+  position: relative;
+}
+// ol.stepper li:first-child{
+//   place-items: start;
+// }
+ol.stepper li:last-child{
+  place-items: end;
+}
+ol.stepper li::before {
+  content: counter(step) " ";
+  counter-increment: step;
+  display: grid;
+  place-content: center;
+  aspect-ratio: 1;
+  height: var(--circle);
+  border: 5px solid #fff;
+  box-sizing: border-box;
+  background: var(--active-b);
+  color: var(--active-c);
+  border-radius: 50%;
+  font-family: monospace;
+  z-index: 1;
+}
+ol.stepper li.active ~ li::before{
+  background: var(--default-b);
+  color: var(--default-c);
+}
+ol.stepper li.active::after {
+  content: "";
+  position: absolute;
+  height: 3px;//var(--b);
+  right: 100%;
+  top: calc((var(--circle) - var(--b))/2);
+  width: 100vw;
+  background: var(--active-b);
+}
+
+
+@media (max-width: 600px) {
+  ol.stepper {
+   display: grid;
+   gap: 20px;
+  background: 
+    linear-gradient(var(--default-b) 0 0) no-repeat
+    calc((var(--circle) - var(--b))/2) 50%/ var(--b) 100%;
+  }
+  ol.stepper li {
+    display: flex;
+  }
+  ol.stepper li.active::after {
+    content: "";
+    position: absolute;
+    width: var(--b);
+    bottom: 100%;
+    left: calc((var(--circle) - var(--b))/2);
+    top: auto;
+    right: auto;
+    height: 100vw;
+    background: var(--active-b);
+  }
+}

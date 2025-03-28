@@ -1,25 +1,9 @@
 ## Angular Demo App V3 (WIP)
 
-> A reusable CRM starter project for real-world business based on Angular 19, Angular-Material 19.x.
+> A reusable Angular starter project for real-world business based on Angular 19, Angular-Material 19.x.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 19.x. The goal of this project is to create reusable project for real-world business. To achieve this target, we need a solution which includes simple authentication process, restful API feature with token support and simple but elegant UI design.
+This project was built with [Angular CLI](https://angular.dev/tools/cli) version 19.x. The goal of this project is to explorer Anguar 19 features. It can be used as foundation for creation of similar Angular App.
 
-
-
-
-
-### Live Demo
-[Demo App](https://angular-app-demo.harryho.org): The demo is just a proof of concept. It doesn't have back-end API and all features of master branch.
-
-### Screenshots
-
-![Screenshot1](screenshots/screenshot-1.JPG)
-
-![Screenshot2](screenshots/screenshot-2.JPG)
-
-![Screenshot3](screenshots/screenshot-3.JPG)
-
-![Screenshot4](screenshots/screenshot-4.JPG)
 
 ## Build & Setup
 
@@ -51,7 +35,7 @@ ng test
 
 
 # build for production 
-npm run build --prod=true
+npm run build
 
 # run as production
 install -g serve
@@ -72,36 +56,56 @@ docker run -p 8080:80 -v \
 
 
 # Build release image
-docker build . -t  nc-prd:2.0
+docker build . -t  nc-demo:3.0
 
 # Launch the development image in the backgroud
-docker run -d --publish 8080:80  --name nc2 nc-prd:2.0
+docker run -d --publish 8080:80  --name ng-demo3 nc-demo:3.0
 
 # Check the log
-docker logs nc2  -f
+docker logs ng-demo3  -f
 ```
+
+### Live Demo
+
+
+### Screenshots
+
+<!-- ![Screenshot1](screenshots/v2/screenshot-1.JPG) -->
+#### V3 Live Screenshots
+
+[Live Demo V3](https://angular-app-demo.harryho.org): The demo is just a proof of concept. It doesn't have back-end API.
+
+![Screenshot2](screenshots/v3/screenshot-1.png)
+
+![Screenshot2](screenshots/v3/screenshot-2.png)
+
+![Screenshot3](screenshots/v3/screenshot-3.png)
+
+
+#### V2 Live Screenshots
+
+[Demo App](https://angular-app-demo.harryho.org): The demo is just a proof of concept. It doesn't have back-end API.
+
+![Screenshot2](screenshots/v2/screenshot-2.JPG)
+
+![Screenshot3](screenshots/v2/screenshot-3.JPG)
+
+<!-- ![Screenshot4](screenshots/v2/screenshot-4.JPG) -->
+
 
 ## Welcome to fork or clone!
 
 For detailed explanation on how things work, checkout following links please.
 
-* [angular](https://angular.io/)
+* [angular](https://angular.dev/)
 * [angular-material](https://material.angular.io/)
-* [ng-charts](https://github.com/valor-software/ng2-charts)
 * [rxjs](https://rxjs.dev/api)
 
-
-#### Alternatives
-
-There are some similar projects respectively built on the Vue.js and React. If you have interests in those technical stacks. You can find and clone those repositories below.
-
-* [Vue-Crm](https://github.com/harryho/vue-crm.git).
-* [React-Crm](https://github.com/harryho/react-crm.git).
 
 
 ###  Change log
 
-* Dec 2024 - Uplift from version 9 to 19
+* Dec 2024 - Uplift from version 9 to 19. Work in progress.
 
 * Jun 2020 - Re-create the project with Angular CLI
 

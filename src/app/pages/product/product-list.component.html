@@ -8,9 +8,6 @@
       <span class="f-w-800 f-s-24"> {{pageTitle}}</span>
       <span class="title-spacer"></span>
       <mat-card-actions>
-        <!-- <button mat-mini-fab color="bg-light-primary" class="m-r-16" [routerLink]="['/customer/new']">
-          <mat-icon>add</mat-icon>
-        </button> -->
         <button mat-mini-fab class="bg-light-secondary" (click)="reload()">
           <mat-icon>refresh</mat-icon>
         </button>
@@ -22,11 +19,9 @@
       <mat-toolbar-row>
         <mat-form-field appearance="outline" class="search-form-fileld w-100" color="primary">
           <mat-label>Filter</mat-label>
-          <input matInput (input)="query.set($any($event.target).value)" />
-  
+          <input matInput (input)="query.set($any($event.target).value)" placeholder="Filter by product name" />
           <mat-icon>filter_list</mat-icon>
         </mat-form-field>
-  
       </mat-toolbar-row>
     </mat-toolbar>
   @if (!products.isLoading()) {
@@ -37,9 +32,7 @@
     
       <img mat-card-image class="card-img" [src]="product.imageUri" alt="Photo of a Shiba Inu">
       <mat-card-content class="mat-card-content f-w-800">
-
-        <h3>{{product.name}}</h3>
-
+        <h4>{{product.name}}</h4>
       </mat-card-content>
       <mat-card-actions style="display:flex;justify-content: space-between;">
         <div style="display: inline-flex;">{{product.price | currency}}
@@ -66,7 +59,6 @@
         </div>
       </mat-card-actions>
     </mat-card>
-  
     }
   </div>
   }

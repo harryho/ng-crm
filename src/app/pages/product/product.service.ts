@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from './product';
 import db from "../../services/mock.db";
+import { USE_LOCAL_MOCK_DATA } from 'src/app/config';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ProductService {
   private API_URL = 'http://localhost:3333/products';
   private PRODUCT: string = 'PRODUCT_TOTAL_COUNT'
   private ds: Product[];
-  private USE_MOCK = false
+  private USE_MOCK = USE_LOCAL_MOCK_DATA
   private http = inject(HttpClient)
 
   useMock() {
@@ -51,7 +52,6 @@ export class ProductService {
       return !request.query ? true : (
         d.name && d.name.toLowerCase().indexOf(request.query.toLowerCase()) > -1)
     })
-    console.log(filteredList)
     return filteredList
   }
 
@@ -125,7 +125,7 @@ export class ProductService {
     }
     else {
       if (id) {
-        const idx = this.ds.findIndex(d => d.id = product.id)
+        const idx = this.ds.findIndex(d => d.id === product.id)
         this.ds[idx] = Object.assign({}, product)
         return this.createObservable()
       }

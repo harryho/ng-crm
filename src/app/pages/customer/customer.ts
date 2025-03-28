@@ -1,7 +1,7 @@
 /* Defines the customer entity */
 export interface Customer {
   id: string;
-  name: string;
+  fullname: string;
   avatar: string;
   firstname: string;
   lastname: string;

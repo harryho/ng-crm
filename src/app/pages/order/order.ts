@@ -5,21 +5,23 @@ import { Product } from "../product";
 export interface Order {
   reference: string;
   amount: number;
-  quantity: number;
-  customerId: number;
+  // quantity: number;
+
   id: string;
-  avatar: string;
+  // avatar: string;
   membership: boolean;
   orderDate: any;
   shippedDate: any;
-  customer: Customer;
+  customer: string;
   products: Array<Product>;
   shipAddress: IAddress;
-  expand?:""
+  delivery: string;
+  expand?:"";
+  lineItems: Product[];
 }
 
 export interface IAddress {
-  address: string;
+  street: string;
   city: string;
   country: string;
   zipcode: string;

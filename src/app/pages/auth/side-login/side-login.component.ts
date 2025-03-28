@@ -7,6 +7,10 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { User } from 'src/app/models';
+import { CustomerService } from '../../customer';
+import { ProductService } from '../../product';
+import { OrderService } from '../../order';
+import { C } from '@angular/cdk/portal-directives.d-a65be59b';
 
 @Component({
   selector: 'app-side-login',
@@ -15,6 +19,10 @@ import { User } from 'src/app/models';
 })
 export class AppSideLoginComponent {
   authService = inject(AuthenticationService)
+  constomerService =     inject(CustomerService)
+  productService =     inject(ProductService)
+  orderService =     inject(OrderService)
+
   user = {} as User
   constructor(private router: Router) { }
 
@@ -28,7 +36,11 @@ export class AppSideLoginComponent {
   }
 
   submit() {
-    // console.log(this.form.value);
+      // Reload mock data when login happens
+    this.constomerService.reload()
+    this.productService.reload()
+    this.orderService.reload()
+
     const user: User = Object.assign({}, this.user, this.form.value);
     this.authService.login(user).then(() => this.router.navigate(['/loading'])).
       catch(e => console.log(e))

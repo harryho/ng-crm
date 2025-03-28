@@ -1,6 +1,6 @@
 @if (orders.isLoading()) {
-  <mat-progress-bar mode="query" />
-  }
+<mat-progress-bar mode="query" />
+}
 
 <mat-card class='light' style="height: 100%;">
   <mat-toolbar style="background-color: #FFF">
@@ -8,10 +8,10 @@
       <span class="view-card-title"> {{pageTitle}}</span>
       <span class="title-spacer"></span>
       <mat-card-actions>
-        <button mat-mini-fab color="bg-light-primary" class="m-r-16" [routerLink]="['/customer/new']">
+        <!-- <button mat-mini-fab color="bg-light-primary" class="m-r-16" [routerLink]="['/customer/new']">
           <mat-icon>add</mat-icon>
-        </button>
-        <button mat-mini-fab  class="bg-light-secondary" (click)="reload()">
+        </button> -->
+        <button mat-mini-fab class="bg-light-secondary" (click)="reload()">
           <mat-icon>refresh</mat-icon>
         </button>
       </mat-card-actions>
@@ -22,7 +22,7 @@
     <mat-toolbar-row>
       <mat-form-field appearance="outline" class="search-form-fileld w-100">
         <mat-label>Filter</mat-label>
-        <input matInput>
+        <input matInput (input)="query.set($any($event.target).value)" placeholder="Filter by order reference"  />
         <mat-icon>filter_list</mat-icon>
       </mat-form-field>
     </mat-toolbar-row>
@@ -60,10 +60,37 @@
             <span>Delete</span>
           </button>
         </mat-menu>
-
         }
         @else {
-        {{element[column]}}
+          @if(column=="delivery"){
+            @if(element.delivery == 'packing') {
+            <span class="bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12">
+                {{ element.delivery | titlecase }}
+            </span>
+            }
+
+            @if(element.delivery == 'shipping') {
+            <span class="bg-light-warning text-warning rounded f-w-600 p-6 p-y-4 f-s-12">
+                {{ element.delivery | titlecase }}
+            </span>
+            }
+
+            @if(element.delivery == 'customs-clearance') {
+            <span class="bg-light-primary text-primary rounded f-w-600 p-6 p-y-4 f-s-12">
+                {{ element.delivery.replace('-',' ') |  titlecase }}
+            </span>
+            }
+
+            @if(element.delivery == 'delivered') {
+            <span class="bg-light-success  text-secondary  rounded f-w-600 p-6 p-y-4 f-s-12">
+                {{ element.delivery | titlecase }}
+            </span>
+            }
+          }
+          @else{
+            {{element[column]}}
+          }
+     
         }
 
       </td>
@@ -76,9 +103,10 @@
           [class.example-element-detail-wrapper-expanded]="isExpanded(element)">
           <div class="example-element-detail">
             <div class="example-element-description">
+              <h4 class="p-b-10">Shipping Address</h4>
               <div class="row">
-                <div class="col-lg-4"><span class="f-w-600">Address:</span></div>
-                <div class="col-lg-8">{{element.shipAddress.address}}</div>
+                <div class="col-lg-4"><span class="f-w-600">Street:</span></div>
+                <div class="col-lg-8">{{element.shipAddress.street}}</div>
                 <div class="col-lg-4"><span class="f-w-600">City: </span></div>
                 <div class="col-lg-8">{{element.shipAddress.city}}</div>
                 <div class="col-lg-4"><span class="f-w-600"> Country:</span> </div>
@@ -98,7 +126,7 @@
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
   </table>
-  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10]" [length]="totalAmount">
+  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10]" >
   </mat-paginator>
 
 </mat-card>
