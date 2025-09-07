@@ -1,6 +1,9 @@
 {
   "name": "NgDemo",
   "version": "0.0.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
