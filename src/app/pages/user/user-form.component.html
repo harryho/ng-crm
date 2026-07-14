@@ -1,0 +1,151 @@
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title class="m-b-0">{{pageTitle()}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="b-t-1">
+    <form novalidate (ngSubmit)="saveUser()" [formGroup]="userForm">
+
+      <div class="row">
+        <div class="col-lg-12">
+          <span class="m-l-16">
+            @if (user()) {
+            <img mat-card-avatar class="" [src]="getAvatar(user())" [style.width.px]="imageWidth"
+              [style.height.px]="imageWidth" [style.margin.px]="imageMargin">
+            }
+          </span>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">First Name</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="firstname" type="text" placeholder="First Name (required)" formControlName="firstname" />
+            <mat-error *ngIf="userForm.controls['firstname'].hasError('required')">
+              {{ValidatorMessages.firstname.required}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Last Name</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="lastname" placeholder="Last Name (required)" formControlName="lastname" />
+            <mat-error *ngIf="userForm.controls['lastname'].hasError('required')">
+              {{ValidatorMessages.lastname.required}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Email</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="email" type="email" placeholder="Email" formControlName="email" />
+            <mat-error *ngIf="userForm.controls['email'].hasError('required')">
+              {{ValidatorMessages.email.required}}
+            </mat-error>
+            <mat-error *ngIf="userForm.controls['email'].hasError('email')">
+              {{ValidatorMessages.email.email}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Avatar URL</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput id="avatarUrl" type="url" placeholder="https://..." formControlName="avatarUrl" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Mobile</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="mobile" type="text" placeholder="Mobile (required)" formControlName="mobile" />
+            <mat-error *ngIf="userForm.controls['mobile'].hasError('required')">
+              {{ValidatorMessages.mobile.required}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Phone</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput id="phone" type="text" placeholder="Phone (optional)" formControlName="phone" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Rewards</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="Rewards" id="rewards" type="number" formControlName="rewards" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Membership</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select id="membership" formControlName="membership">
+              <mat-option value="standard">Standard</mat-option>
+              <mat-option value="vip">VIP</mat-option>
+              <mat-option value="premium">Premium</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <mat-divider class="m-t-12"></mat-divider>
+      <div class="section-title">Address</div>
+      <div class="row" formGroupName="address">
+        <div class="col-lg-8">
+          <mat-label class="f-w-600 m-b-8 d-block">Street</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="street" type="text" placeholder="Street" formControlName="street" />
+            <mat-error *ngIf="userForm.controls['address'].get('street')?.hasError('required')">
+              {{ValidatorMessages.street.required}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+          <mat-label class="f-w-600 m-b-8 d-block">City</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="city" type="text" placeholder="City" formControlName="city" />
+            <mat-error *ngIf="userForm.controls['address'].get('city')?.hasError('required')">
+              {{ValidatorMessages.city.required}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+          <mat-label class="f-w-600 m-b-8 d-block">State</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput id="state" type="text" placeholder="State (optional)" formControlName="state" />
+          </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+          <mat-label class="f-w-600 m-b-8 d-block">Zipcode</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="zipcode" type="text" placeholder="Zipcode" formControlName="zipcode" />
+            <mat-error *ngIf="userForm.controls['address'].get('zipcode')?.hasError('required')">
+              {{ValidatorMessages.zipcode.required}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-lg-4">
+          <mat-label class="f-w-600 m-b-8 d-block">Country</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="country" type="text" placeholder="Country" formControlName="country" />
+            <mat-error *ngIf="userForm.controls['address'].get('country')?.hasError('required')">
+              {{ValidatorMessages.country.required}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="m-t-12 button-float-right">
+        <button mat-flat-button extended color="secondary" class="m-r-8" type="submit" [disabled]="!userForm.valid">
+          <mat-icon fontIcon="save"></mat-icon>Submit
+        </button>
+        <button mat-stroked-button extended color="warn" [routerLink]="['/user']">
+          <mat-icon fontIcon="cancel"></mat-icon>Cancel
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -7,7 +7,6 @@ import { OrderFormComponent } from "./order-form.component";
 
 import { OrderService } from "./order.service";
 
-import { CustomerService } from '../customer';
 import { MaterialModule } from "src/app/material.module";
 import { SharedModule } from "src/app/shared/shared.module";
 @NgModule({
@@ -29,7 +28,6 @@ import { SharedModule } from "src/app/shared/shared.module";
     OrderService,
     OrderDetailGuard,
     OrderEditGuard,
-    CustomerService,
 
   ],
   exports: [

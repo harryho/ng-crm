@@ -22,10 +22,10 @@ export const routes: Routes = [
         (m) => m.UiComponentsRoutes
       ),
   },
-  {
-    path: "customer",
+{
+    path: "user",
     loadChildren: () =>
-      import('./pages/customer/customer.module').then(m => m.CustomerModule)
+      import('./pages/user/user.routes').then(m => m.USER_ROUTES)
     , canActivate: [AuthGuard]
   },
   {
