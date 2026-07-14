@@ -24,6 +24,7 @@ import { Category } from '../models/domain/category';
 import { Carrier } from '../models/domain/carrier';
 import { Address } from '../models/domain/address';
 import { OrderStatusEntry } from '../models/domain/order-status';
+import { Cart, CartItem } from '../models/domain/cart';
 
 import {
   USERS,
@@ -66,6 +67,10 @@ export class Repository {
   // Lookup tables - categories and carriers don't mutate, so just clone once.
   private readonly categories: Category[] = clone(CATEGORIES);
   private readonly carriers: Carrier[] = clone(CARRIERS);
+
+  // Carts: keyed by userId. Each user has at most one active cart;
+  // checkout converts the cart to an Order and clears the slot.
+  private cartsDb: Map<number, Cart> = new Map();
 
   // ---- Users ----
 
@@ -270,6 +275,160 @@ export class Repository {
       this.staffDb.splice(idx, 1);
     }
     return of(undefined).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  // ---- Carts + Checkout (M4) ----
+
+  /**
+   * Returns the user's active cart, or an empty cart if none exists.
+   * Per lessons-learned scope, the cart is a per-user construct - in
+   * this demo, the cart is keyed by the (currently logged-in) user's
+   * id; the login page doesn't track a real session, so the cart UI
+   * uses a stable default user id (see CartService).
+   */
+  getCart(userId: number): Observable<Cart> {
+    const existing = this.cartsDb.get(userId);
+    const cart: Cart = existing
+      ? clone(existing)
+      : { userId, items: [], updatedAt: new Date().toISOString() };
+    return of(cart).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  /**
+   * Add a product to the user's cart. If the product is already in
+   * the cart, increment its quantity rather than adding a duplicate
+   * row. Returns the updated cart.
+   */
+  addToCart(userId: number, productId: number, quantity = 1): Observable<Cart> {
+    return new Observable<Cart>((subscriber) => {
+      const sub = this.getProduct(productId).subscribe((product) => {
+        if (!product) {
+          subscriber.next(this.emptyCart(userId));
+          subscriber.complete();
+          return;
+        }
+        const current = this.cartsDb.get(userId) ?? this.emptyCart(userId);
+        const existingIdx = current.items.findIndex(
+          (i) => i.productId === productId,
+        );
+        if (existingIdx >= 0) {
+          current.items[existingIdx] = {
+            ...current.items[existingIdx],
+            quantity: current.items[existingIdx].quantity + quantity,
+          };
+        } else {
+          const item: CartItem = {
+            productId,
+            quantity,
+            priceAtAdd: product.price,
+            productName: product.name,
+            productImageUrl: product.imageUrl,
+          };
+          current.items.push(item);
+        }
+        current.updatedAt = new Date().toISOString();
+        this.cartsDb.set(userId, current);
+        subscriber.next(clone(current));
+        subscriber.complete();
+      });
+      return () => sub.unsubscribe();
+    }).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  updateCartItemQuantity(
+    userId: number,
+    productId: number,
+    quantity: number,
+  ): Observable<Cart> {
+    const current = this.cartsDb.get(userId) ?? this.emptyCart(userId);
+    const idx = current.items.findIndex((i) => i.productId === productId);
+    if (idx >= 0) {
+      if (quantity <= 0) {
+        current.items.splice(idx, 1);
+      } else {
+        current.items[idx] = { ...current.items[idx], quantity };
+      }
+      current.updatedAt = new Date().toISOString();
+      this.cartsDb.set(userId, current);
+    }
+    return of(clone(current)).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  removeFromCart(userId: number, productId: number): Observable<Cart> {
+    return this.updateCartItemQuantity(userId, productId, 0);
+  }
+
+  clearCart(userId: number): Observable<Cart> {
+    const empty = this.emptyCart(userId);
+    this.cartsDb.set(userId, empty);
+    return of(clone(empty)).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  /**
+   * Convert the user's cart to a real Order. The cart is cleared on
+   * success. The Order's status starts at 'pending' (matching the
+   * lessons-learned scope: "orders originate from cart/checkout
+   * flow").
+   */
+  checkout(userId: number, shippingAddress: Address): Observable<Order | null> {
+    return new Observable<Order | null>((subscriber) => {
+      const cart = this.cartsDb.get(userId);
+      if (!cart || cart.items.length === 0) {
+        subscriber.next(null);
+        subscriber.complete();
+        return;
+      }
+      const sub = this.getUser(userId).subscribe((user) => {
+        const total = cart.items.reduce(
+          (sum, i) => sum + i.priceAtAdd * i.quantity,
+          0,
+        );
+        const today = new Date().toISOString().slice(0, 10);
+        const nextId =
+          Math.max(0, ...this.ordersDb.map((o) => o.id)) + 1;
+        const order: Order = {
+          id: nextId,
+          reference: `order-${nextId}-${userId}-${cart.items.length}`,
+          userId,
+          items: cart.items.map((i) => ({
+            productId: i.productId,
+            productName: i.productName,
+            productImageUrl: i.productImageUrl,
+            quantity: i.quantity,
+            priceAtOrder: i.priceAtAdd,
+          })),
+          status: { status: 'pending', at: today },
+          statusHistory: [{ status: 'pending', at: today }],
+          payment: {
+            method: 'card',
+            status: 'pending',
+            last4: null,
+            authCode: '',
+            paidAt: null,
+          },
+          shipment: {
+            carrierId: null,
+            trackingNumber: null,
+            shippedAt: null,
+            deliveredAt: null,
+          },
+          shippingAddress,
+          total,
+          orderDate: today,
+          shippedDate: null,
+          deliveredDate: null,
+        };
+        this.ordersDb.push(order);
+        this.cartsDb.delete(userId);
+        subscriber.next(clone(order));
+        subscriber.complete();
+      });
+      return () => sub.unsubscribe();
+    }).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  private emptyCart(userId: number): Cart {
+    return { userId, items: [], updatedAt: new Date().toISOString() };
   }
 }
 

@@ -23,8 +23,13 @@ export const navItems: NavItem[] = [
     displayName: 'Order',
     iconName: 'shopping-cart',
     route: '/order',
-  }
-  ,
+  },
+  {
+    displayName: 'Cart',
+    iconName: 'shopping-bag',
+    route: '/cart',
+  },
+
   {
     navCap: 'Marketing',
   },

@@ -4,6 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { Product } from '../../models/domain/product';
 import { Category } from '../../models/domain/category';
 import { ProductService } from '../../services/product.service';
+import { CartService } from '../../services/cart.service';
 import { Repository } from '../../data/repository';
 
 import { CommonModule } from '@angular/common';
@@ -55,6 +56,7 @@ export class ProductListComponent {
 
   service = inject(ProductService);
   private readonly repo = inject(Repository);
+  private readonly cartService = inject(CartService);
   readonly dialog = inject(MatDialog);
   readonly snackBar = inject(MatSnackBar);
 
@@ -123,5 +125,10 @@ export class ProductListComponent {
         });
       }
     });
+  }
+
+  async addToCart(productId: number): Promise<void> {
+    await this.cartService.addToCart(productId, 1);
+    this.openSnackBar('Added to cart', 'Close');
   }
 }

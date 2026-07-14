@@ -1,0 +1,81 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title class="m-b-0">Checkout</mat-card-title>
+    <mat-card-subtitle>Review your cart and confirm shipping address</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="b-t-1">
+
+    <div class="section-title">Cart Summary</div>
+    @if (cartService.cart().items.length === 0) {
+    <p>Your cart is empty.</p>
+    <a mat-stroked-button color="primary" [routerLink]="['/product']">
+      <mat-icon fontIcon="storefront"></mat-icon>Browse Products
+    </a>
+    } @else {
+    <ul style="list-style: none; padding: 0; margin: 0;">
+      @for (item of cartService.cart().items; track item.productId) {
+      <li style="display: flex; align-items: center; gap: 16px; padding: 8px 0; border-bottom: 1px solid #eee;">
+        <img [src]="item.productImageUrl"
+          style="width: 48px; height: 48px; object-fit: cover; border-radius: 4px;" [alt]="item.productName" />
+        <div style="flex: 1;">{{ item.productName }} <small>(x{{ item.quantity }})</small></div>
+        <div style="width: 120px; text-align: right;">{{ (item.priceAtAdd * item.quantity) | currency }}</div>
+      </li>
+      }
+    </ul>
+
+    <div class="totals">
+      <strong>Total:</strong> {{ cartService.total() | currency }}
+    </div>
+
+    <mat-divider class="m-t-12"></mat-divider>
+    <div class="section-title">Shipping Address</div>
+
+    <form [formGroup]="shippingForm" class="row">
+      <div class="col-lg-8">
+        <mat-label class="f-w-600 m-b-8 d-block">Street</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput formControlName="street" />
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4">
+        <mat-label class="f-w-600 m-b-8 d-block">City</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput formControlName="city" />
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4">
+        <mat-label class="f-w-600 m-b-8 d-block">State</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput formControlName="state" />
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4">
+        <mat-label class="f-w-600 m-b-8 d-block">Zipcode</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput formControlName="zipcode" />
+        </mat-form-field>
+      </div>
+      <div class="col-lg-4">
+        <mat-label class="f-w-600 m-b-8 d-block">Country</mat-label>
+        <mat-form-field appearance="outline" class="w-100">
+          <input matInput formControlName="country" />
+        </mat-form-field>
+      </div>
+    </form>
+
+    @if (errorMessage(); as err) {
+    <p style="color: #b71c1c;">{{ err }}</p>
+    }
+
+    <div class="actions">
+      <button mat-stroked-button class="m-r-8" [routerLink]="['/cart']">
+        <mat-icon fontIcon="arrow_back"></mat-icon>Back to Cart
+      </button>
+      <button mat-flat-button extended color="primary" (click)="confirmOrder()"
+        [disabled]="!shippingForm.valid || processing()">
+        <mat-icon fontIcon="check"></mat-icon>Confirm Order
+      </button>
+    </div>
+    }
+  </mat-card-content>
+</mat-card>
