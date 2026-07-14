@@ -1,41 +1,30 @@
-import { ActivatedRoute, Data } from '@angular/router';
 import { Component } from '@angular/core';
-import { inject, TestBed } from '@angular/core/testing';
-
-/**
- * Load the implementations that should be tested.
- */
+import { TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { AboutComponent } from './about.component';
 
 describe('About', () => {
-  /**
-   * Provide our implementations or mocks to the dependency injector
-   */
-  beforeEach(() => TestBed.configureTestingModule({
-    providers: [
-      /**
-       * Provide a better mock.
-       */
-      {
-        provide: ActivatedRoute,
-        useValue: {
-          data: {
-            subscribe: (fn: (value: Data) => void) => fn({
-              yourData: 'yolo'
-            })
-          }
-        }
-      },
-      AboutComponent
-    ]
-  }));
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [AboutComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            data: {
+              subscribe: (fn: (value: any) => void) =>
+                fn({ yourData: 'yolo' }),
+            },
+          },
+        },
+      ],
+    }),
+  );
 
-  it('should log ngOnInit', inject([AboutComponent], (about: AboutComponent) => {
-    spyOn(console, 'log');
-    expect(console.log).not.toHaveBeenCalled();
-
-    about.ngOnInit();
-    expect(console.log).toHaveBeenCalled();
-  }));
-
+  it('should create the about component', () => {
+    const fixture = TestBed.createComponent(AboutComponent);
+    const about = fixture.componentInstance;
+    expect(about).toBeTruthy();
+    expect(about.pageTitle).toEqual('About');
+  });
 });
