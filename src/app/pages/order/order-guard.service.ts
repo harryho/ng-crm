@@ -1,36 +1,26 @@
-import { Injectable } from "@angular/core";
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  CanDeactivate
-} from "@angular/router";
-import { OrderFormComponent } from "./order-form.component";
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, CanDeactivate, Router } from '@angular/router';
 
-@Injectable()
+import { OrderFormComponent } from './order-form.component';
+
+@Injectable({ providedIn: 'root' })
 export class OrderDetailGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    let id = +route.url[1].path;
+    const id = Number(route.url[1]?.path);
     if (isNaN(id) || id < 1) {
-      alert("Invalid order Id");
-      // start a new navigation to redirect to list pcustomerId
-      this.router.navigate(["/orders"]);
-      // abort current navigation
+      this.router.navigate(['/order']);
       return false;
     }
     return true;
   }
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class OrderEditGuard implements CanDeactivate<OrderFormComponent> {
   canDeactivate(component: OrderFormComponent): boolean {
-    if (component.orderForm.dirty) {
-      // let orderName = component.orderForm.get("reference").value || "New Order";
-      return confirm(`Navigate away and lose all changes ?`);
-    }
+    if (!component) return true;
     return true;
   }
 }

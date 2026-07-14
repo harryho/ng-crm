@@ -37,7 +37,7 @@ export const routes: Routes = [
   {
     path: "order",
     loadChildren: () =>
-      import('./pages/order/order.module').then(m => m.OrderModule)
+      import('./pages/order/order.routes').then(m => m.ORDER_ROUTES)
     , canActivate: [AuthGuard]
   },
   {
