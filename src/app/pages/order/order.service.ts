@@ -33,7 +33,7 @@ export class OrderService {
     localStorage.setItem(this.ORDER, count)
   }
 
-  async fetchDataWithFilter({ request, abortSignal }: any) {
+  async fetchDataWithFilter({ params, abortSignal }: any) {
     let list, filteredList = [];
     if (!this.USE_MOCK) {
       // fetch cancels any outstanding HTTP requests when the given `AbortSignal`
@@ -48,9 +48,9 @@ export class OrderService {
     }
     this.storeCount(list.length)
     filteredList = list.filter((d: Order) => {
-      return !request.query ? true : (
+      return !params.query ? true : (
         d.reference && d.reference.toLowerCase()
-          .indexOf(request.query.toLowerCase()) > -1)
+          .indexOf(params.query.toLowerCase()) > -1)
     })
     
     return filteredList

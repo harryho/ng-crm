@@ -78,9 +78,9 @@ export class CustomerListComponent {
     displayedColumns = ["avatar", "firstname", "lastname", "email", "membership", "hasItemInShoppingCart", "id"];
     customers = resource<Customer[], { query: string }>(
         {
-            request: () => ({ query: this.query() }),
-            loader: async ({ request, abortSignal }) => {
-                const filteredList = await this.customerService.fetchDataWithFilter({ request, abortSignal })
+            params: () => ({ query: this.query() }),
+            loader: async ({ params, abortSignal }) => {
+                const filteredList = await this.customerService.fetchDataWithFilter({ params, abortSignal })
                 const ds = new MatTableDataSource(filteredList as Customer[])
                 ds.paginator = this.paginator;
                 ds.sort = this.sort;

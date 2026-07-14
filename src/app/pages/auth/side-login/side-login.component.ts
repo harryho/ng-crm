@@ -10,7 +10,6 @@ import { User } from 'src/app/models';
 import { CustomerService } from '../../customer';
 import { ProductService } from '../../product';
 import { OrderService } from '../../order';
-import { C } from '@angular/cdk/portal-directives.d-a65be59b';
 
 @Component({
   selector: 'app-side-login',

@@ -90,9 +90,9 @@ export class ProductListComponent {
 
     products = resource<Product[], { query: string }>(
         {
-            request: () => ({ query: this.query() }),
-            loader: async ({ request, abortSignal }) => {
-                const filteredList = await this.service.fetchDataWithFilter({ request, abortSignal })
+            params: () => ({ query: this.query() }),
+            loader: async ({ params, abortSignal }) => {
+                const filteredList = await this.service.fetchDataWithFilter({ params, abortSignal })
                           this.filteredList.set(filteredList)
                 this.paginatorLength.set(filteredList.length)
                 const paginatedList = filteredList.slice(this.pageIndex() * this.pageSize(), this.pageSize())

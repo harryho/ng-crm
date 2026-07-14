@@ -96,10 +96,10 @@ export class OrderListComponent {
 
   orders = resource<Order[], { query: string }>(
     {
-      request: () => ({ query: this.query() }),
-      loader: async ({ request, abortSignal }) => {
+      params: () => ({ query: this.query() }),
+      loader: async ({ params, abortSignal }) => {
         // this.customerService.useMock()
-        const filteredList = await this.service.fetchDataWithFilter({ request, abortSignal })
+        const filteredList = await this.service.fetchDataWithFilter({ params, abortSignal })
         const ds = new MatTableDataSource(filteredList as Order[])
         ds.paginator = this.paginator;
         ds.sort = this.sort;

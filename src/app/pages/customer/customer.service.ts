@@ -34,7 +34,7 @@ export class CustomerService {
     localStorage.setItem(this.CUSTOMER, count)
   }
 
-  async fetchDataWithFilter({ request, abortSignal }: any) {
+  async fetchDataWithFilter({ params, abortSignal }: any) {
     let list, filteredList = [];
     if (!this.USE_MOCK) {
       // fetch cancels any outstanding HTTP requests when the given `AbortSignal`
@@ -49,8 +49,8 @@ export class CustomerService {
     }
     this.storeCount(list.length)
     filteredList = list.filter((d: Customer) => {
-      return !request.query ? true : (
-        d.fullname && d.fullname.toLowerCase().indexOf(request.query.toLowerCase()) > -1)
+      return !params.query ? true : (
+        d.fullname && d.fullname.toLowerCase().indexOf(params.query.toLowerCase()) > -1)
     })
     
     return filteredList
