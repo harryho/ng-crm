@@ -8,20 +8,18 @@
       <div class="row">
         <div class="col-lg-12" style="margin-bottom: 4rem;">
           <span class="m-l-16">
-            <!-- // [src]="getImage(product())"  -->
-            @if(product!=null && product().imageUri){
-            <img mat-card-avatar [src]="getImage(product())"
-              [style.width.px]='imageWidth'
-              [style.height.px]='imageWidth' [style.margin.px]='imageMargin'>
+            @if (product()) {
+            <img mat-card-avatar [src]="getImage(product())" [style.width.px]="imageWidth"
+              [style.height.px]="imageWidth" [style.margin.px]="imageMargin">
             }
           </span>
         </div>
+
         <div class="col-lg-6">
-          
           <mat-label class="f-w-600 m-b-8 d-block">Product Name</mat-label>
           <mat-form-field appearance="outline" class="w-100" color="primary">
-            <input matInput id="name" type="text" placeholder="First Name (required)" formControlName="name" />
-            @if(this.productForm.controls['name']!=null){
+            <input matInput id="name" type="text" placeholder="Product Name (required)" formControlName="name" />
+            @if (productForm.controls['name']) {
             <mat-error *ngIf="productForm.controls['name'].hasError('required')">
               {{ValidatorMessages.name.required}}
             </mat-error>
@@ -30,59 +28,103 @@
         </div>
 
         <div class="col-lg-6">
-          
-          <mat-label class="f-w-600 m-b-8 d-block">Unit In Stock</mat-label>
+          <mat-label class="f-w-600 m-b-8 d-block">Brand</mat-label>
           <mat-form-field appearance="outline" class="w-100" color="primary">
-            <input matInput id="unitInStock" type="unitInStock" placeholder="Email " formControlName="unitInStock" />
-            @if(this.productForm.controls['unitInStock']!=null){
-            <mat-error *ngIf="productForm.controls['unitInStock'].hasError('required')">
-              {{ValidatorMessages.unitInStock.required}}
+            <input matInput id="brand" type="text" placeholder="Brand (required)" formControlName="brand" />
+            <mat-error *ngIf="productForm.controls['brand'].hasError('required')">
+              {{ValidatorMessages.brand.required}}
             </mat-error>
-            }
           </mat-form-field>
         </div>
+
         <div class="col-lg-6">
-          
+          <mat-label class="f-w-600 m-b-8 d-block">Category</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-select id="categoryId" formControlName="categoryId">
+              @for (cat of categories(); track cat.id) {
+              <mat-option [value]="cat.id">{{cat.name}}</mat-option>
+              }
+            </mat-select>
+            <mat-error *ngIf="productForm.controls['categoryId'].hasError('required')">
+              {{ValidatorMessages.categoryId.required}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Status</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select id="status" formControlName="status">
+              <mat-option value="standard">Standard</mat-option>
+              <mat-option value="new">New</mat-option>
+              <mat-option value="sale">Sale</mat-option>
+              <mat-option value="out-of-stock">Out of stock</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
           <mat-label class="f-w-600 m-b-8 d-block">Unit Price</mat-label>
           <mat-form-field appearance="outline" class="w-100" color="primary">
             <input matInput id="price" type="number" placeholder="Unit Price (required)" formControlName="price" />
-
             <mat-error *ngIf="productForm.controls['price'].hasError('required')">
-              {{ValidatorMessages.price.required}}
+              {{ValidatorMessages.price.range}}
             </mat-error>
-
           </mat-form-field>
         </div>
+
         <div class="col-lg-6">
-          
           <mat-label class="f-w-600 m-b-8 d-block">Retail Price</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput id="retailPrice" type="number" placeholder="Retail Price" formControlName="retailPrice" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Stock</mat-label>
           <mat-form-field appearance="outline" class="w-100" color="primary">
-            <input matInput id="retailPrice" type="number" placeholder="Retail Price (required)"
-              formControlName="retailPrice" />
-
-            <mat-error *ngIf="productForm.controls['retailPrice'].hasError('required')">
-              {{ValidatorMessages.retailPrice.required}}
+            <input matInput id="stock" type="number" placeholder="Stock (required)" formControlName="stock" />
+            <mat-error *ngIf="productForm.controls['stock'].hasError('required')">
+              {{ValidatorMessages.stock.range}}
             </mat-error>
+          </mat-form-field>
+        </div>
 
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Colors (comma-separated hex)</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput id="colors" type="text" placeholder="#00AB55, #000000" formControlName="colors" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-12">
+          <mat-label class="f-w-600 m-b-8 d-block">Description</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <textarea matInput id="description" placeholder="Description" formControlName="description"
+              rows="2"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-12">
+          <mat-label class="f-w-600 m-b-8 d-block">Image URL</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput id="imageUrl" type="url" placeholder="https://..." formControlName="imageUrl" />
+            <mat-error *ngIf="productForm.controls['imageUrl'].hasError('required')">
+              {{ValidatorMessages.imageUrl.required}}
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
 
       <div class="m-t-12 button-float-right">
         <button mat-flat-button extended color="secondary" class="m-r-8" type="submit"
-          [disabled]='!productForm.valid'><mat-icon fontIcon="save"></mat-icon>Submit</button>
+          [disabled]="!productForm.valid">
+          <mat-icon fontIcon="save"></mat-icon>Submit
+        </button>
         <button mat-stroked-button extended color="warn" [routerLink]="['/product']">
-          <mat-icon fontIcon="cancel"></mat-icon>Cancel</button>
+          <mat-icon fontIcon="cancel"></mat-icon>Cancel
+        </button>
       </div>
-
-
     </form>
   </mat-card-content>
-
 </mat-card>
-
-
-
-<!-- <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
-    </div>
-</div> -->
