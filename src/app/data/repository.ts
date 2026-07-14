@@ -23,6 +23,7 @@ import { Staff } from '../models/domain/staff';
 import { Category } from '../models/domain/category';
 import { Carrier } from '../models/domain/carrier';
 import { Address } from '../models/domain/address';
+import { OrderStatusEntry } from '../models/domain/order-status';
 
 import {
   USERS,
@@ -153,6 +154,122 @@ export class Repository {
     this.productsDb = clone(PRODUCTS);
     this.ordersDb = clone(ORDERS);
     this.staffDb = clone(STAFF);
+  }
+
+  // ---- Mutations (added in M3, per lessons: GET-only first, then CRUD) ----
+
+  // Users
+
+  saveUser(user: User): Observable<User> {
+    const idx = this.usersDb.findIndex((u) => u.id === user.id);
+    if (idx >= 0) {
+      this.usersDb[idx] = clone(user);
+    } else {
+      // New user - assign next id.
+      const nextId = Math.max(0, ...this.usersDb.map((u) => u.id)) + 1;
+      this.usersDb.push({ ...clone(user), id: nextId });
+    }
+    return of(clone(this.usersDb[this.usersDb.findIndex((u) => u.id === user.id)])).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  deleteUser(id: number): Observable<void> {
+    const idx = this.usersDb.findIndex((u) => u.id === id);
+    if (idx >= 0) {
+      this.usersDb.splice(idx, 1);
+    }
+    return of(undefined).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  // Products
+
+  saveProduct(product: Product): Observable<Product> {
+    const idx = this.productsDb.findIndex((p) => p.id === product.id);
+    if (idx >= 0) {
+      this.productsDb[idx] = clone(product);
+      return of(clone(this.productsDb[idx])).pipe(delay(SIMULATED_LATENCY_MS));
+    }
+    const nextId = Math.max(0, ...this.productsDb.map((p) => p.id)) + 1;
+    const created: Product = { ...clone(product), id: nextId };
+    this.productsDb.push(created);
+    return of(clone(created)).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  deleteProduct(id: number): Observable<void> {
+    const idx = this.productsDb.findIndex((p) => p.id === id);
+    if (idx >= 0) {
+      this.productsDb.splice(idx, 1);
+    }
+    return of(undefined).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  // Orders
+
+  /**
+   * Save an order. If `order.id` matches an existing order, update it;
+   * otherwise create a new one. Per the lessons-learned scope rules,
+   * manual order creation via admin form is removed in M3 - this method
+   * exists for cart-checkout conversion (M4) and for status-history
+   * updates (e.g. marking an order as shipped).
+   */
+  saveOrder(order: Order): Observable<Order> {
+    const idx = this.ordersDb.findIndex((o) => o.id === order.id);
+    if (idx >= 0) {
+      this.ordersDb[idx] = clone(order);
+      return of(clone(this.ordersDb[idx])).pipe(delay(SIMULATED_LATENCY_MS));
+    }
+    const nextId = Math.max(0, ...this.ordersDb.map((o) => o.id)) + 1;
+    const created: Order = { ...clone(order), id: nextId };
+    this.ordersDb.push(created);
+    return of(clone(created)).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  /**
+   * Append a status-history entry to an existing order and bump the
+   * current status. Use this for shipment / delivery / cancellation
+   * transitions; creation goes through saveOrder with full history.
+   */
+  appendOrderStatus(id: number, entry: Order['status']): Observable<Order | null> {
+    const idx = this.ordersDb.findIndex((o) => o.id === id);
+    if (idx < 0) {
+      return of(null).pipe(delay(SIMULATED_LATENCY_MS));
+    }
+    const updated: Order = {
+      ...this.ordersDb[idx],
+      status: clone(entry),
+      statusHistory: [...this.ordersDb[idx].statusHistory, clone(entry)],
+    };
+    this.ordersDb[idx] = updated;
+    return of(clone(updated)).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  deleteOrder(id: number): Observable<void> {
+    const idx = this.ordersDb.findIndex((o) => o.id === id);
+    if (idx >= 0) {
+      this.ordersDb.splice(idx, 1);
+    }
+    return of(undefined).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  // Staff
+
+  saveStaff(member: Staff): Observable<Staff> {
+    const idx = this.staffDb.findIndex((s) => s.id === member.id);
+    if (idx >= 0) {
+      this.staffDb[idx] = clone(member);
+      return of(clone(this.staffDb[idx])).pipe(delay(SIMULATED_LATENCY_MS));
+    }
+    const nextId = Math.max(0, ...this.staffDb.map((s) => s.id)) + 1;
+    const created: Staff = { ...clone(member), id: nextId };
+    this.staffDb.push(created);
+    return of(clone(created)).pipe(delay(SIMULATED_LATENCY_MS));
+  }
+
+  deleteStaff(id: number): Observable<void> {
+    const idx = this.staffDb.findIndex((s) => s.id === id);
+    if (idx >= 0) {
+      this.staffDb.splice(idx, 1);
+    }
+    return of(undefined).pipe(delay(SIMULATED_LATENCY_MS));
   }
 }
 
