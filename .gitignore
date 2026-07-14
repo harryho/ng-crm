@@ -40,3 +40,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Docs (local-only working notes, specs, plans)
+docs/*
