@@ -6,6 +6,7 @@
   },
   "scripts": {
     "ng": "ng",
+    "prestart": "node scripts/cache-redirect.js",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
