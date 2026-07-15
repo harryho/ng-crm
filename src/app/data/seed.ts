@@ -304,31 +304,39 @@ export const USERS: User[] = [
   },
 ];
 
+/**
+ * Staff - sourced from react-crm's `src/data/staff.ts`, reshaped to fit
+ * the ng-crm Staff type. Per the lessons-learned doc's "pick one schema,
+ * delete, don't duplicate" rule, this REPLACES the previous hand-authored
+ * 24-row ng-crm staff seed.
+ *
+ * Reshape notes:
+ *   - react-crm id (string 'stf-NN') -> ng-crm id (number N)
+ *   - react-crm name (single field) -> firstname + lastname split on first space
+ *   - react-crm role -> ng-crm StaffRole:
+ *       'Sales Agent'      -> 'Sales'
+ *       'Sales Manager'    -> 'Sales Leader'
+ *       'Account Manager'  -> 'Operations'
+ *   - react-crm doesn't carry city/state; left empty
+ *   - avatarUrl derived from i.pravatar.cc with a deterministic image
+ *     index per staff id (matches the local-asset-deletion trap
+ *     avoidance from the lessons-learned doc)
+ */
 export const STAFF: Staff[] = [
-  { id: 0, firstname: 'Billy', lastname: 'Stoltenberg', company: 'Medhurst, Moore and Franey', role: 'Sales Leader', email: 'Billy.Stoltenberg@test.com', mobile: '(499) 633-7585', city: 'Murray', state: ' UT', status: 'locked', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=12' },
-  { id: 1, firstname: 'Eloise', lastname: 'Ebert', company: 'Medhurst, Moore and Franey', role: 'Sales', email: 'Eloise.Ebert@test.com', mobile: '(922) 436-7361', city: 'Jeromeshire', state: ' CA', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=24' },
-  { id: 2, firstname: 'Teresa', lastname: 'Luettgen', company: 'Medhurst, Moore and Franey', role: 'Engineer', email: 'Teresa.Luettgen@test.com', mobile: '528-376-5760', city: 'East Elmira', state: ' NY', status: 'active', isVerified: false, avatarUrl: 'https://i.pravatar.cc/300?img=32' },
-  { id: 3, firstname: 'Salvador', lastname: 'Mayert', company: 'Medhurst, Moore and Franey', role: 'Designer', email: 'Salvador.Mayert@test.com', mobile: '624.509.7392', city: 'New Rupert', state: ' IA', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=53' },
-  { id: 4, firstname: 'Guadalupe', lastname: 'Rath', company: 'Medhurst, Moore and Franey', role: 'Operations', email: 'Guadalupe.Rath@test.com', mobile: '848-314-0999', city: 'West Madonna', state: ' OR', status: 'invited', isVerified: false, avatarUrl: 'https://i.pravatar.cc/300?img=46' },
-  { id: 5, firstname: 'Tony', lastname: 'Paucek', company: 'Medhurst, Moore and Franey', role: 'Owner', email: 'Tony.Paucek@test.com', mobile: '1-735-980-4850', city: 'North Rick', state: ' MT', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=51' },
-  { id: 6, firstname: 'Betty', lastname: 'Hammes', company: 'Medhurst, Moore and Franey', role: 'Sales', email: 'Betty.Hammes@test.com', mobile: '1-226-573-7979', city: 'West Vernice', state: ' WY', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=48' },
-  { id: 7, firstname: 'Kerry', lastname: 'Kuhlman', company: 'Medhurst, Moore and Franey', role: 'Engineer', email: 'Kerry.Kuhlman@test.com', mobile: '406-912-2464', city: 'Krajcikberg', state: ' NV', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=50' },
-  { id: 8, firstname: 'Charlene', lastname: 'Krajcik', company: 'Medhurst, Moore and Franey', role: 'Sales', email: 'Charlene.Krajcik@test.com', mobile: '528-376-5761', city: 'Hodkiewiczside', state: ' ME', status: 'active', isVerified: false, avatarUrl: 'https://i.pravatar.cc/300?img=27' },
-  { id: 9, firstname: 'Conrad', lastname: 'Spinka', company: 'Medhurst, Moore and Franey', role: 'Operations', email: 'Conrad.Spinka@test.com', mobile: '852-2345-6789', city: 'Raynorfort', state: ' RI', status: 'locked', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=58' },
-  { id: 10, firstname: 'Lillie', lastname: 'Schultz', company: 'Medhurst, Moore and Franey', role: 'Support', email: 'Lillie.Schultz@test.com', mobile: '1-415-555-0199', city: 'South Cielo', state: ' HI', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=21' },
-  { id: 11, firstname: 'Brian', lastname: 'Jacobs', company: 'Medhurst, Moore and Franey', role: 'Finance', email: 'Brian.Jacobs@test.com', mobile: '1-416-555-0142', city: 'West Naomibury', state: ' NE', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=16' },
-  { id: 12, firstname: 'Naomi', lastname: 'Carter', company: 'Medhurst, Moore and Franey', role: 'Sales', email: 'Naomi.Carter@test.com', mobile: '1-212-555-0167', city: 'East Cassandre', state: ' VT', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=29' },
-  { id: 13, firstname: 'Owen', lastname: 'Reyes', company: 'Medhurst, Moore and Franey', role: 'Engineer', email: 'Owen.Reyes@test.com', mobile: '44-20-7946-0958', city: 'Reyesfurt', state: ' ND', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=18' },
-  { id: 14, firstname: 'Maya', lastname: 'Patel', company: 'Medhurst, Moore and Franey', role: 'Designer', email: 'Maya.Patel@test.com', mobile: '91-22-12345678', city: 'Bombay', state: ' MH', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=38' },
-  { id: 15, firstname: 'Diego', lastname: 'Suarez', company: 'Medhurst, Moore and Franey', role: 'Sales', email: 'Diego.Suarez@test.com', mobile: '34-91-1234567', city: 'Madrid', state: ' MD', status: 'active', isVerified: false, avatarUrl: 'https://i.pravatar.cc/300?img=60' },
-  { id: 16, firstname: 'Yuki', lastname: 'Tanaka', company: 'Medhurst, Moore and Franey', role: 'Engineer', email: 'Yuki.Tanaka@test.com', mobile: '81-3-1234-5678', city: 'Tokyo', state: ' TK', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=42' },
-  { id: 17, firstname: 'Anika', lastname: 'Larsen', company: 'Medhurst, Moore and Franey', role: 'Operations', email: 'Anika.Larsen@test.com', mobile: '47-22-12-34-56', city: 'Oslo', state: ' OS', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=36' },
-  { id: 18, firstname: 'Mateus', lastname: 'Oliveira', company: 'Medhurst, Moore and Franey', role: 'Support', email: 'Mateus.Oliveira@test.com', mobile: '55-11-1234-5678', city: 'Sao Paulo', state: ' SP', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=63' },
-  { id: 19, firstname: 'Fatima', lastname: 'Al-Sayed', company: 'Medhurst, Moore and Franey', role: 'Finance', email: 'Fatima.AlSayed@test.com', mobile: '971-4-123-4567', city: 'Dubai', state: ' DU', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=44' },
-  { id: 20, firstname: 'Lukas', lastname: 'Müller', company: 'Medhurst, Moore and Franey', role: 'Engineer', email: 'Lukas.Muller@test.com', mobile: '49-30-98765432', city: 'Berlin', state: ' BE', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=56' },
-  { id: 21, firstname: 'Sofia', lastname: 'Lindqvist', company: 'Medhurst, Moore and Franey', role: 'Designer', email: 'Sofia.Lindqvist@test.com', mobile: '46-8-12345678', city: 'Stockholm', state: ' ST', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=31' },
-  { id: 22, firstname: 'Jamal', lastname: 'Carter', company: 'Medhurst, Moore and Franey', role: 'Sales', email: 'Jamal.Carter@test.com', mobile: '1-312-555-0145', city: 'Chicago', state: ' IL', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=8' },
-  { id: 23, firstname: 'Priya', lastname: 'Singh', company: 'Medhurst, Moore and Franey', role: 'Engineer', email: 'Priya.Singh@test.com', mobile: '91-11-12345678', city: 'Delhi', state: ' DL', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=41' },
+  { id: 1, firstname: 'Adam', lastname: 'Trantow', company: 'Mohr, Langworth and Hills', role: 'Sales', email: 'adam.trantow@example.com', mobile: '(942) 208-5834', city: '', state: '', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=33' },
+  { id: 2, firstname: 'Angel', lastname: 'Rolfson-Kulas', company: 'Koch and Sons', role: 'Sales', email: 'angel.rolfson-kulas@example.com', mobile: '1-684-465-4948', city: '', state: '', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=44' },
+  { id: 3, firstname: 'Betty', lastname: 'Hammes', company: 'Waelchi - VonRueden', role: 'Sales Leader', email: 'betty.hammes@example.com', mobile: '(427) 981-0673', city: '', state: '', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=47' },
+  { id: 4, firstname: 'Billy', lastname: 'Braun', company: 'White, Cassin and Goldner', role: 'Sales', email: 'billy.braun@example.com', mobile: '1-958-665-8195', city: '', state: '', status: 'locked', isVerified: false, avatarUrl: 'https://i.pravatar.cc/300?img=11' },
+  { id: 5, firstname: 'Charlene', lastname: 'Herzog', company: 'Bogisich Group', role: 'Operations', email: 'charlene.herzog@example.com', mobile: '(217) 345-9021', city: '', state: '', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=49' },
+  { id: 6, firstname: 'Dana', lastname: 'Kuhlman', company: 'Reilly - Stroman', role: 'Sales', email: 'dana.kuhlman@example.com', mobile: '1-303-778-2214', city: '', state: '', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=45' },
+  { id: 7, firstname: 'Edgar', lastname: 'Prosacco', company: 'Turner, Bode and Kreiger', role: 'Sales Leader', email: 'edgar.prosacco@example.com', mobile: '(508) 662-3390', city: '', state: '', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=52' },
+  { id: 8, firstname: 'Frieda', lastname: 'Wisozk', company: 'Lindgren - Bashirian', role: 'Sales', email: 'frieda.wisozk@example.com', mobile: '1-772-901-4456', city: '', state: '', status: 'locked', isVerified: false, avatarUrl: 'https://i.pravatar.cc/300?img=36' },
+  { id: 9, firstname: 'Garrett', lastname: 'Ondricka', company: 'Schuster Inc', role: 'Operations', email: 'garrett.ondricka@example.com', mobile: '(614) 233-8871', city: '', state: '', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=58' },
+  { id: 10, firstname: 'Hazel', lastname: 'Kertzmann', company: 'Nienow - Ratke', role: 'Sales', email: 'hazel.kertzmann@example.com', mobile: '1-409-556-7723', city: '', state: '', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=38' },
+  { id: 11, firstname: 'Irwin', lastname: 'Feeney', company: 'Kuvalis, Rippin and Toy', role: 'Sales Leader', email: 'irwin.feeney@example.com', mobile: '(325) 887-4462', city: '', state: '', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=60' },
+  { id: 12, firstname: 'Jolene', lastname: 'Schuppe', company: 'Bahringer - Bartell', role: 'Sales', email: 'jolene.schuppe@example.com', mobile: '1-716-234-9987', city: '', state: '', status: 'active', isVerified: false, avatarUrl: 'https://i.pravatar.cc/300?img=32' },
+  { id: 13, firstname: 'Kelvin', lastname: 'Doyle', company: 'Metz, Klein and Hodkiewicz', role: 'Operations', email: 'kelvin.doyle@example.com', mobile: '(802) 445-1290', city: '', state: '', status: 'active', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=53' },
+  { id: 14, firstname: 'Lorene', lastname: 'Abernathy', company: 'Wisoky - Runolfsdottir', role: 'Sales', email: 'lorene.abernathy@example.com', mobile: '1-215-678-3345', city: '', state: '', status: 'locked', isVerified: true, avatarUrl: 'https://i.pravatar.cc/300?img=27' },
 ];
 
 const productImg = (seed: string) => `https://picsum.photos/seed/${seed}/600/400`;

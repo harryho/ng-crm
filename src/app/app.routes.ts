@@ -53,13 +53,15 @@ export const routes: Routes = [
     , canActivate: [AuthGuard]
   },
   {
-    path: "blog",
-    component: ComingSoonComponent
+    path: "staff",
+    loadChildren: () =>
+      import('./pages/staff/staff.routes').then(m => m.STAFF_ROUTES)
     , canActivate: [AuthGuard]
   },
   {
     path: "staff",
-    component: ComingSoonComponent
+    loadChildren: () =>
+      import('./pages/staff/staff.routes').then(m => m.STAFF_ROUTES)
     , canActivate: [AuthGuard]
   },
   {
