@@ -67,7 +67,7 @@ export class ProductListComponent {
 
   query = signal('');
   pageIndex = signal(0);
-  pageSize = signal(10);
+  pageSize = signal(8);
   paginatorLength = signal(0);
 
   filteredList = signal<Product[]>([]);

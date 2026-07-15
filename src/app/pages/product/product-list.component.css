@@ -16,9 +16,6 @@
   padding: 0;
 }
 
-.search-form-fileld{
-  width: 98%;
-}
 
 /*
  * Responsive product grid.
@@ -35,7 +32,7 @@
   max-width: 100%;
   margin: 0 auto;
   display: grid;
-  padding: 0 1rem;
+  padding: 0 2rem;
   gap: 1rem;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
