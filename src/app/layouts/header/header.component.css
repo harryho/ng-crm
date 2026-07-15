@@ -1,0 +1,24 @@
+/* Cart button + badge pulse animation when a new item is added. */
+
+.cart-button .mat-badge-content {
+  transition: none;
+}
+
+.cart-button.cart-pulse .mat-badge {
+  animation: cart-pulse 0.55s ease-out;
+}
+
+@keyframes cart-pulse {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.55);
+  }
+  70% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
