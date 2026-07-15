@@ -4,10 +4,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { Router, RouterLink } from '@angular/router';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { BrandingComponent } from './branding.component';
 
 @Component({
     selector: 'app-topstrip',
-    imports: [TablerIconsModule, MatButtonModule, MatMenuModule],
+    imports: [BrandingComponent, TablerIconsModule, MatButtonModule, MatMenuModule],
     templateUrl: './topstrip.component.html'
 
 })
