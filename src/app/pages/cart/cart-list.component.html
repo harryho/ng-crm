@@ -33,8 +33,8 @@
       <strong>Total:</strong> {{ cartService.total() | currency }}
     </div>
 
-    <div class="actions">
-      <button mat-stroked-button color="warn" class="m-r-8" (click)="clear()">
+    <div class="m-t-12 button-float-right d-flex gap-8">
+      <button mat-stroked-button color="warn" (click)="clear()">
         <mat-icon fontIcon="delete_sweep"></mat-icon>Clear Cart
       </button>
       <button mat-flat-button extended color="primary" (click)="goToCheckout()">

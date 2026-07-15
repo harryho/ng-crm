@@ -67,8 +67,8 @@
     <p style="color: #b71c1c;">{{ err }}</p>
     }
 
-    <div class="actions">
-      <button mat-stroked-button class="m-r-8" [routerLink]="['/cart']">
+    <div class="m-t-12 button-float-right d-flex gap-8">
+      <button mat-stroked-button  [routerLink]="['/cart']">
         <mat-icon fontIcon="arrow_back"></mat-icon>Back to Cart
       </button>
       <button mat-flat-button extended color="primary" (click)="confirmOrder()"
