@@ -31,18 +31,18 @@ describe('OrderTimelineComponent', () => {
 
   describe('stateOf(entry, idx)', () => {
     it('flags a cancelled entry as "cancelled" regardless of position', () => {
-      // History: [paid, cancelled, refunded], current is "delivered" (not in history)
+      // History: [paid, cancelled, packing], current is "delivered" (not in history)
       setEntries('delivered', [
         { status: 'paid', at: '2025-01-01' },
         { status: 'cancelled', at: '2025-01-02' },
-        { status: 'refunded', at: '2025-01-03' },
+        { status: 'packing', at: '2025-01-03' },
       ]);
-      // The currentStatus fallback logic treats "no match" as if first
-      // entry is current. So entries BEFORE that fallback land at
-      // idx 0 (current) and others are "done".
+      // Defensive fallback puts idx 0 (paid) at "current" - in real
+      // data this never fires, but it mustn't render as broken.
       expect(component.stateOf(component.entries()[0], 0)).toBe('current');
-      // But a cancelled entry overrides to cancelled.
+      // The cancelled entry overrides to "cancelled".
       expect(component.stateOf(component.entries()[1], 1)).toBe('cancelled');
+      // Everything past the fallback is "done".
       expect(component.stateOf(component.entries()[2], 2)).toBe('done');
     });
 
