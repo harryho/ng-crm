@@ -82,21 +82,11 @@
 
     <mat-divider class="m-t-12"></mat-divider>
     <div class="section-title">Status History</div>
-    @for (entry of o.statusHistory; track entry.at + entry.status) {
-    <div class="timeline-step"
-      [class.current]="entry.status === o.status.status && o.status.status !== 'delivered' && o.status.status !== 'cancelled'"
-      [class.done]="o.statusHistory.indexOf(entry) < o.statusHistory.length - 1"
-      [class.cancelled]="entry.status === 'cancelled'">
-      <div class="timeline-dot"
-        [class.current]="entry.status === o.status.status && o.status.status !== 'delivered' && o.status.status !== 'cancelled'"
-        [class.done]="o.statusHistory.indexOf(entry) < o.statusHistory.length - 1"
-        [class.cancelled]="entry.status === 'cancelled'"></div>
-      <div>
-        <strong>{{ entry.status | titlecase }}</strong> &mdash; {{ entry.at }}
-        @if (entry.note) { <span class="m-l-8">{{ entry.note }}</span> }
-      </div>
-    </div>
-    }
+    <app-order-timeline
+      [entries]="o.statusHistory"
+      [currentStatus]="o.status.status"
+      [currentAt]="o.status.at">
+    </app-order-timeline>
 
     <mat-divider class="m-t-12"></mat-divider>
     <div class="section-title">Payment</div>

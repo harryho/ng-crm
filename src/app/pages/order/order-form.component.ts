@@ -15,6 +15,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/domain/user';
+import { OrderTimelineComponent } from '../../shared/components/order-timeline';
 
 /**
  * Order detail page - VIEW-ONLY.
@@ -39,35 +40,6 @@ import { User } from '../../models/domain/user';
         margin: 16px 0 8px 0;
         font-weight: 600;
       }
-      .timeline-step {
-        display: flex;
-        align-items: center;
-        margin-bottom: 8px;
-        padding: 8px 12px;
-        background: #f5f5f5;
-        border-radius: 4px;
-      }
-      .timeline-step.current {
-        background: #fff3e0;
-        border-left: 3px solid #ff9800;
-      }
-      .timeline-step.done {
-        background: #e8f5e9;
-      }
-      .timeline-step.cancelled {
-        background: #ffebee;
-        color: #b71c1c;
-      }
-      .timeline-dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #9e9e9e;
-        margin-right: 12px;
-      }
-      .timeline-dot.current { background: #ff9800; }
-      .timeline-dot.done { background: #4caf50; }
-      .timeline-dot.cancelled { background: #b71c1c; }
     `,
   ],
   imports: [
@@ -78,6 +50,7 @@ import { User } from '../../models/domain/user';
     MatButtonModule,
     MatDividerModule,
     MatTableModule,
+    OrderTimelineComponent,
   ],
 })
 export class OrderFormComponent implements OnInit {
