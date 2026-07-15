@@ -19,10 +19,12 @@
     <mat-toolbar-row>
       <mat-form-field appearance="outline" class="search-form-fileld w-100">
         <mat-label>Filter</mat-label>
-        <input matInput (input)="query.set($any($event.target).value)" placeholder="Filter by order reference" />
-        <mat-icon>filter_list</mat-icon>
+        <input matInput (input)="query.set($any($event.target).value)" placeholder="Filter by order reference">
+      
       </mat-form-field>
+        
     </mat-toolbar-row>
+      
   </mat-toolbar>
 
   <table mat-table [dataSource]="dataSource()" matSort multiTemplateDataRows class="mat-elevation-z8">

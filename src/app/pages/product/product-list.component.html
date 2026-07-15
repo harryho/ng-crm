@@ -2,7 +2,7 @@
 <mat-progress-bar mode="query" />
 }
 
-<mat-card>
+<mat-card >
   <mat-toolbar>
     <mat-toolbar-row>
       <span class="f-w-800 f-s-24">{{pageTitle}}</span>
@@ -20,11 +20,11 @@
       <mat-form-field appearance="outline" class="search-form-fileld w-100" color="primary">
         <mat-label>Filter</mat-label>
         <input matInput (input)="query.set($any($event.target).value)" placeholder="Filter by product name" />
-        <mat-icon>filter_list</mat-icon>
+        
       </mat-form-field>
     </mat-toolbar-row>
   </mat-toolbar>
-
+ 
   @if (!products.isLoading()) {
   <div class="card-view">
     @for (product of paginatedList(); track product.id) {
