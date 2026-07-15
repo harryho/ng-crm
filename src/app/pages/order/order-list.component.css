@@ -31,3 +31,14 @@
 .search-form-fileld{
   width: 98%;
 }
+
+/* Expand/collapse row toggle. The icon literal stays
+   `keyboard_arrow_down`; we just rotate the button 180° when the
+   row is expanded for a smooth visual flip. */
+.expand-toggle {
+  transition: transform 0.2s ease-out;
+}
+
+.expand-toggle.expanded {
+  transform: rotate(180deg);
+}
