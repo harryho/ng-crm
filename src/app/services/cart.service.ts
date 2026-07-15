@@ -37,9 +37,24 @@ export class CartService {
   });
 
   readonly cart = this._cart.asReadonly();
+
+  /**
+   * Sum of every line's quantity (the "total items in cart" count a
+   * typical e-commerce badge shows). Use for headline-number math
+   * (e.g. cart subtotals).
+   */
   readonly itemCount = computed(() =>
     this._cart().items.reduce((sum, i) => sum + i.quantity, 0),
   );
+
+  /**
+   * Number of DISTINCT line items (unique products) in the cart.
+   * Use for the header badge and for "did I just add a new product?"
+   * pulse - quantity bumps on an existing line don't change this
+   * count, so the header animation only fires for genuinely new
+   * additions.
+   */
+  readonly lineCount = computed(() => this._cart().items.length);
   readonly total = computed(() =>
     this._cart().items.reduce(
       (sum, i) => sum + i.priceAtAdd * i.quantity,

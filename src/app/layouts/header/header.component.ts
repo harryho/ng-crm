@@ -37,23 +37,23 @@ export class HeaderComponent implements OnInit {
   cartService = inject(CartService);
 
   /**
-   * True for ~600ms after the cart count goes UP. Drives a CSS pulse
-   * animation on the badge so the user notices a new product being
-   * added. Decrementing (item removal) doesn't trigger a pulse - "I
-   * added something" is the moment that needs drawing attention.
+   * True for ~600ms after the cart gets a new line item. Drives a CSS
+   * pulse animation so the user notices "I just added a new product."
+   * Quantitiy bumps on an existing line don't trigger this - lineCount
+   * only goes up when a brand-new product enters the cart.
    */
   pulse = false;
 
-  private prevCount = -1;
+  private prevLineCount = -1;
   private pulseTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
     effect(() => {
-      const count = this.cartService.itemCount();
-      // prevCount starts at -1 so the very first effect run (after
+      const count = this.cartService.lineCount();
+      // prevLineCount starts at -1 so the very first effect run (after
       // ensureLoaded hydrates the cart) doesn't pulse. After that,
       // any increase pulses.
-      if (this.prevCount >= 0 && count > this.prevCount) {
+      if (this.prevLineCount >= 0 && count > this.prevLineCount) {
         this.pulse = true;
         if (this.pulseTimer) clearTimeout(this.pulseTimer);
         this.pulseTimer = setTimeout(() => {
@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit {
           this.pulseTimer = null;
         }, 600);
       }
-      this.prevCount = count;
+      this.prevLineCount = count;
     });
   }
 
