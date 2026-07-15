@@ -1,15 +1,26 @@
-@use "sass:map";
-@use "sass:meta";
-@use "sass:list";
-@use "variables";
+@use 'sass:map';
+@use 'sass:meta';
+@use 'sass:list';
+@use 'variables';
 
-@use "functions";
-@use "flexbox";
-@use "display";
-@use "border";
-@use "text";
-@use "spacing";
-@use "rounded";
+@use 'functions';
+@use 'flexbox';
+@use 'display';
+@use 'border';
+@use 'text';
+@use 'spacing';
+@use 'rounded';
+
+// Helper: add a trailing '-' to a class prefix unless it's already empty.
+// Using a function (with @return) instead of `if(): ...; @else ...;`
+// avoids the @if/@else variable-scoping trap and the if()-function
+// deprecation. Lives at module scope.
+@function _with-hyphen($prefix) {
+  @if $prefix == '' {
+    @return $prefix;
+  }
+  @return $prefix + '-';
+}
 
 $utilities: functions.map-collect(variables.$utilities,
     display.$utilities,
@@ -33,73 +44,10 @@ $utilities: functions.map-collect(variables.$utilities,
   $property-class-prefix: map.get($utility, class);
 
   // Utility class maybe empty, (e.g. with position class)
-  $property-class-prefix-hyphen: if($property-class-prefix =="",
-      $property-class-prefix,
-      $property-class-prefix + "-"
-    );
+  $property-class-prefix-hyphen: _with-hyphen($property-class-prefix);
 
   @each $class-modifier, $value in $values {
     .#{$property-class-prefix-hyphen + $class-modifier} {
-      @each $property in $properties {
-        #{$property}: $value !important;
-      }
-    }
-  }
-}
-
-$ltrutilities: functions.map-collect(spacing.$ltr);
-
-@each $key, $utility in $ltrutilities {
-  $values: map.get($utility, values);
-
-  // If the values are a list or string, convert it into a map
-  @if meta.type-of($values)=="string" or meta.type-of(list.nth($values, 1)) !="list"
-
-    {
-    $values: list.zip($values, $values);
-  }
-
-  $properties: map.get($utility, property);
-  $property-class-prefix: map.get($utility, class);
-
-  // Utility class maybe empty, (e.g. with position class)
-  $property-class-prefix-hyphen: if($property-class-prefix =="",
-      $property-class-prefix,
-      $property-class-prefix + "-"
-    );
-
-  @each $class-modifier, $value in $values {
-    [dir="ltr"] .#{$property-class-prefix-hyphen + $class-modifier} {
-      @each $property in $properties {
-        #{$property}: $value !important;
-      }
-    }
-  }
-}
-
-$rtlutilities: functions.map-collect(spacing.$rtl);
-
-@each $key, $utility in $rtlutilities {
-  $values: map.get($utility, values);
-
-  // If the values are a list or string, convert it into a map
-  @if meta.type-of($values)=="string" or meta.type-of(list.nth($values, 1)) !="list"
-
-    {
-    $values: list.zip($values, $values);
-  }
-
-  $properties: map.get($utility, property);
-  $property-class-prefix: map.get($utility, class);
-
-  // Utility class maybe empty, (e.g. with position class)
-  $property-class-prefix-hyphen: if($property-class-prefix =="",
-      $property-class-prefix,
-      $property-class-prefix + "-"
-    );
-
-  @each $class-modifier, $value in $values {
-    [dir="rtl"] .#{$property-class-prefix-hyphen + $class-modifier} {
       @each $property in $properties {
         #{$property}: $value !important;
       }

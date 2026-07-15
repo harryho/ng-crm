@@ -2,6 +2,17 @@
 @use 'sass:math';
 @use 'variables';
 
+// Helper: normalize a Sass breakpoint name into a CSS class suffix.
+// Returns '' for falsy/empty, otherwise '-#{$name}'. Using a function
+// (with @return) avoids the @if/@else variable-scoping trap that the
+// new `if(): …; @else …;` expression form runs into.
+@function _infix-class($name) {
+  @if $name == '' {
+    @return '';
+  }
+  @return '-#{$name}';
+}
+
 @function bp($name, $breakpoints: variables.$breakpoints) {
   $min: map.get($breakpoints, $name);
 
@@ -16,8 +27,7 @@
     @media (min-width: $min) {
       @content;
     }
-  }
-  @else {
+  } @else {
     @content;
   }
 }
@@ -30,15 +40,14 @@
     @media (max-width: $max) {
       @content;
     }
-  }
-  @else {
+  } @else {
     @content;
   }
 }
 
 @mixin make-grid-columns($i: 1, $list: '.col') {
   @each $breakpoint, $infix in variables.$breakpoint-infixs {
-    $infix: if($infix == '', '', '-#{$infix}');
+    $infix: _infix-class($infix);
 
     @if ($infix != '') {
       $list: '#{$list}, .col#{$infix}';
@@ -58,7 +67,7 @@
 }
 
 @mixin loop-grid-columns($columns: $grid-columns, $breakpoint-infix: '') {
-  $infix: if($breakpoint-infix == '', '', '-#{$breakpoint-infix}');
+  $infix: _infix-class($breakpoint-infix);
 
   .col#{$infix} {
     flex-basis: 0;
