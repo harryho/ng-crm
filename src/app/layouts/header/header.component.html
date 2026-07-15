@@ -14,10 +14,12 @@
     <button mat-menu-item>Item 2</button>
   </mat-menu>
 
-  <!-- Cart - badge auto-updates from CartService.itemCount signal.
-       The cart-pulse class is toggled on every count increase (see
-       header.component.ts) so the user notices a new product being
-       added. Auto-hides at count 0. -->
+  <!-- Cart - badge shows the number of distinct line items in the cart
+       (cartService.lineCount()). matBadge auto-hides when 0, so the
+       badge only appears once at least one product is in the cart.
+       The cart-pulse class is toggled on every lineCount increase
+       (see header.component.ts) so the user notices a new product
+       being added. -->
   <button
     mat-icon-button
     routerLink="/cart"
@@ -28,6 +30,7 @@
       class="d-flex"
       name="shopping-cart"
       [matBadge]="cartService.lineCount()"
+      [matBadgeHidden]="cartService.lineCount() === 0"
       matBadgeColor="warn"
       matBadgeSize="small"
       matBadgePosition="above after"
