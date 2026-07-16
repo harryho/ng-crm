@@ -1,17 +1,9 @@
 ## Angular Ecom Demo
 
-> A reusable Angular starter project for real-world business apps based on Angular 22 and Angular Material 22.
+> A reusable Angular starter project for real-world ecom business app based on Angular 22 and Angular Material 22.
 
 This project was built with [Angular CLI](https://angular.dev/tools/cli) version 22.x. It demonstrates a modern Angular single-page app with standalone components, signals, RxJS, and Angular Material.
 
-## Architecture
-
-The app uses an **in-memory data layer** — no backend server is required.
-
-- `src/app/data/seed.ts` holds the deterministic demo data (users, products, orders, staff, categories, carriers).
-- `src/app/data/repository.ts` provides the runtime data store and CRUD operations.
-- Services are thin wrappers over the repository.
-- All data resets to the seed state when the page is reloaded.
 
 ## Requirements
 
@@ -61,37 +53,18 @@ docker logs ng-demo3 -f
 
 The bundled app is served from `/usr/share/nginx/html` with a fallback to `index.html` for Angular routing.
 
-## Deploying to IIS
+## Deployment
 
-For an IIS release, build the production bundle and copy it to an IIS site:
+For an  release, build the production bundle:
 
 ```bash
 npm run build -- --configuration=production
 ```
 
-Copy the contents of `dist/ngDemo/browser` to your IIS website folder. Add a `web.config` with a URL Rewrite rule so deep links fall back to `index.html`:
+Launch the bundle locally:
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<configuration>
-  <system.webServer>
-    <rewrite>
-      <rules>
-        <rule name="Angular Routes" stopProcessing="true">
-          <match url=".*" />
-          <conditions logicalGrouping="MatchAll">
-            <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
-            <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
-          </conditions>
-          <action type="Rewrite" url="/index.html" />
-        </rule>
-      </rules>
-    </rewrite>
-    <staticContent>
-      <mimeMap fileExtension=".webp" mimeType="image/webp" />
-    </staticContent>
-  </system.webServer>
-</configuration>
+```bash
+npx serve -S dist/ngDemo/browser
 ```
 
 If the site is served from a subfolder (e.g., `/ng-crm/`), build with:
