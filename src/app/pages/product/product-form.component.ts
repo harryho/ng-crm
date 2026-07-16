@@ -1,51 +1,36 @@
-import {
-  Component,
-  OnInit,
-  ViewChildren,
-  ElementRef,
-  signal,
-  inject
-} from "@angular/core";
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControlName,
-  ReactiveFormsModule
-} from "@angular/forms";
-import { ActivatedRoute, Router, RouterModule } from "@angular/router";
-import { Product } from "./product";
-import { ProductService } from "./product.service";
-import { NumberValidators } from "src/app/shared";
-import { CommonModule } from "@angular/common";
-import { MatButtonModule } from "@angular/material/button";
-import { MatCardModule } from "@angular/material/card";
-import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatIconModule } from "@angular/material/icon";
-import { MatInputModule } from "@angular/material/input";
-import { MatSelectModule } from "@angular/material/select";
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
-import { Customer, CustomerService } from "../customer";
+import { Component, OnInit, signal, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+
+import { Product } from '../../models/domain/product';
+import { Category } from '../../models/domain/category';
+import { ProductService } from '../../services/product.service';
+import { Repository } from '../../data/repository';
+
+import { NumberValidators } from '../../shared/number.validator';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 
 @Component({
   selector: 'product-form',
-  templateUrl: "./product-form.component.html",
+  templateUrl: './product-form.component.html',
   styles: [
-    `  
-    .button-float-right {
-      float: right;
-     }
-    .title-spacer {
-      flex: 1 1 auto;
-    }
-  .form-field{
-      width: 100%;
-      margin-left: 20px;
-      margin-right: 20px;
-    }
-   
     `
+      .title-spacer {
+        flex: 1 1 auto;
+      }
+      .form-field {
+        width: 100%;
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+    `,
   ],
   imports: [
     CommonModule,
@@ -57,126 +42,121 @@ import { Customer, CustomerService } from "../customer";
     ReactiveFormsModule,
     MatButtonModule,
     MatSelectModule,
-    MatDatepickerModule,
-    MatToolbarModule,
-    MatLabel
-  ]
+    MatLabel,
+  ],
 })
 export class ProductFormComponent implements OnInit {
-  @ViewChildren(FormControlName, { read: ElementRef })
-  // IMAGE_URI_PLACEHOLDER = '/assets/images/product/product-0.webp'
-  IMAGE_URI_PLACEHOLDER = '/assets/images/product/product-0.webp'
-  AVATAR_PLACEHOLDER = '/assets/images/avatar/avatar-0.webp'
+  IMAGE_PLACEHOLDER = 'https://picsum.photos/seed/placeholder/600/400';
 
-  route = inject(ActivatedRoute)
-  router = inject(Router)
-  productService = inject(ProductService)
-  constomerService = inject(CustomerService)
-  fb = inject(FormBuilder)
+  route = inject(ActivatedRoute);
+  router = inject(Router);
+  productService = inject(ProductService);
+  private repo = inject(Repository);
+  fb = inject(FormBuilder);
 
-  formInputElements: ElementRef[];
   errorMessage: string;
   productForm: FormGroup;
 
-  showImage: boolean;
-  imageWidth: number = 200;
-  imageMargin: number = 5;
-  fieldColspan = 2;
+  imageWidth = 200;
+  imageMargin = 5;
 
   pageTitle = signal('');
-  product = signal({} as Product)
-  customer = signal({} as Customer)
-  // Use with the generic validation messageId class
-  displayMessage: { [key: string]: string } & any = {};
-  ValidatorMessages: { [key: string]: { [key: string]: string } } & any = {
+  product = signal<Product | null>(null);
+  categories = signal<Category[]>([]);
+
+  ValidatorMessages = {
     name: {
-      required: "Product name is required.",
-      minlength: "Product name must be at least one characters.",
-      maxlength: "Product name cannot exceed 200 characters."
+      required: 'Product name is required.',
+      minlength: 'Product name must be at least 3 characters.',
+      maxlength: 'Product name cannot exceed 200 characters.',
     },
     price: {
-      range:
-        "Price of the product must be between 1 (lowest) and 9999 (highest)."
+      range: 'Price of the product must be between 1 and 99999.',
     },
-    unitInStock: {
-      range:
-        "Unit In Stock of the product must be between 1 (lowest) and 2000 (highest)."
-    }
+    stock: {
+      range: 'Stock of the product must be between 0 and 2000.',
+    },
+    imageUrl: { required: 'Image URL is required.' },
+    brand: { required: 'Brand is required.' },
+    categoryId: { required: 'Category is required.' },
+  } as const;
+
+  getImage(product: Product | null) {
+    return product?.imageUrl ? product.imageUrl : this.IMAGE_PLACEHOLDER;
   }
-
-
-  getImage(product: Product) {
-    return (product.imageUri) ? product.imageUri : this.IMAGE_URI_PLACEHOLDER
-  }
-
-
 
   ngOnInit(): void {
     this.productForm = this.fb.group({
-      name: ["", [Validators.required,
-      Validators.minLength(3), Validators.maxLength(100)]
-      ],
-      price: ["", [Validators.required, , NumberValidators.range(1, 99999)]],
-      retailPrice: ["", NumberValidators.range(1, 99999)],
-      unitInStock: ["", NumberValidators.range(1, 2000)],
-      // category: [""],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(200)]],
+      description: [''],
+      brand: ['', Validators.required],
+      categoryId: [null, Validators.required],
+      price: [0, [Validators.required, NumberValidators.range(1, 99999)]],
+      retailPrice: [0, NumberValidators.range(1, 99999)],
+      stock: [0, [Validators.required, NumberValidators.range(0, 2000)]],
+      status: ['standard', Validators.required],
+      colors: [''],
+      imageUrl: ['', [Validators.required]],
     });
 
-
-    // Read the product Id from the route parameter
-    // @ts-ignore
-    this.route.paramMap.subscribe(
-      async (params) => {
-        let id = params.get('id')
-        if (id) {
-          console.log(id)
-
-          const product = await this.productService.getProduct(id)
-          const customer = await this.constomerService.getCustomer(id)
-
+    this.route.paramMap.subscribe(async (params) => {
+      const idParam = params.get('id');
+      const cats = await firstValueFrom(this.repo.listCategories());
+      this.categories.set(cats);
+      if (idParam) {
+        const id = Number(idParam);
+        const product = await firstValueFrom(this.productService.get(id));
+        if (product) {
           this.productForm.patchValue({
             name: product.name,
+            description: product.description,
+            brand: product.brand,
+            categoryId: product.categoryId,
             price: product.price,
             retailPrice: product.retailPrice,
-            unitInStock: product.unitInStock,
-
+            stock: product.stock,
+            status: product.status,
+            colors: (product.colors ?? []).join(','),
+            imageUrl: product.imageUrl,
           });
-          // this.avatar.set(product.avatar)
-          this.product.set(product)
-          this.pageTitle.set('Edit Product')
-          this.customer.set(customer)
+          this.product.set(product);
+          this.pageTitle.set('Edit Product');
+        } else {
+          this.pageTitle.set('Product Not Found');
         }
-        else {
-          this.pageTitle.set('New Product')
-        }
-      });
-
+      } else {
+        this.pageTitle.set('New Product');
+      }
+    });
   }
-
-
-
 
   saveProduct(): void {
     if (this.productForm.dirty && this.productForm.valid) {
-      // Copy the form values over the product object values
-      let p = Object.assign({}, this.product(), this.productForm.value);
-
-      this.productService
-        .saveProduct(p)
-        .subscribe(
-          () => this.onSaveComplete(),
-          (error: any) => (this.errorMessage = <any>error)
-        );
+      const v = this.productForm.value;
+      const existing = this.product();
+      const saved: Product = {
+        id: existing?.id ?? 0,
+        name: v.name,
+        description: v.description ?? '',
+        brand: v.brand,
+        categoryId: v.categoryId,
+        price: v.price,
+        retailPrice: v.retailPrice,
+        stock: v.stock,
+        status: v.status,
+        colors: typeof v.colors === 'string' && v.colors.length
+          ? v.colors.split(',').map((c: string) => c.trim()).filter(Boolean)
+          : [],
+        imageUrl: v.imageUrl,
+      };
+      this.productService.save(saved).subscribe(() => this.onSaveComplete());
     } else if (!this.productForm.dirty) {
       this.onSaveComplete();
     }
   }
 
   onSaveComplete(): void {
-    // Reset the form to clear the flags
     this.productForm.reset();
-    this.router.navigate(["/product"]);
+    this.router.navigate(['/product']);
   }
-
-
 }

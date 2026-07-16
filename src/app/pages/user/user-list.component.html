@@ -1,0 +1,91 @@
+@if (users.isLoading()) {
+<mat-progress-bar mode="query" />
+}
+
+<mat-card>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span class="f-w-800 f-s-24">{{pageTitle}}</span>
+      <span class="title-spacer"></span>
+      <mat-card-actions>
+        <button mat-mini-fab color="bg-light-primary" class="m-r-16" [routerLink]="['/user/new']">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-mini-fab class="bg-light-secondary" (click)="reload()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-toolbar class="m-t-8">
+    <mat-toolbar-row>
+      <mat-form-field appearance="outline" class="search-form-fileld w-100" color="primary">
+        <mat-label>Filter</mat-label>
+        <input matInput (input)="query.set($any($event.target).value)" placeholder="Filter by user name or email" />
+        
+      </mat-form-field>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-table #table [dataSource]="dataSource()" matSort style="word-break: break-all;">
+    <ng-container matColumnDef="avatar">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let user">
+        <img [src]="getAvatar(user)" style="clip-path: circle(50%);" [title]="user.firstname"
+          [style.width.px]="imageWidth" [style.margin.px]="imageMargin" />
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="firstname">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
+      <mat-cell *matCellDef="let user">{{user.firstname}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="lastname">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</mat-header-cell>
+      <mat-cell *matCellDef="let user">{{user.lastname}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+      <mat-cell *matCellDef="let user">{{user.email}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="membership">
+      <mat-header-cell *matHeaderCellDef>Membership</mat-header-cell>
+      <mat-cell *matCellDef="let user" style="display: inline-grid; justify-content: center;">
+        @if (user.membership === "standard") {
+        <span style="color: rgb(7, 124, 202); padding-left: 5px;">
+          <mat-icon fontIcon="verified" color="orange"></mat-icon>
+        </span>
+        } @else if (user.membership === "vip") {
+        <span style="color: rgb(210, 123, 37); padding-left: 5px;">
+          <mat-icon fontIcon="brightness_7" color="gold"></mat-icon>
+        </span>
+        } @else if (user.membership === "premium") {
+        <span style="color: rgb(140, 60, 200); padding-left: 5px;">
+          <mat-icon fontIcon="workspace_premium" color="primary"></mat-icon>
+        </span>
+        }
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let user" style="justify-content: center;">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="User actions menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [routerLink]="['/user/edit/', user.id]">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="openDialog(user.id)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10]"></mat-paginator>
+</mat-card>

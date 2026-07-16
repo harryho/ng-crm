@@ -22,32 +22,46 @@ export const routes: Routes = [
         (m) => m.UiComponentsRoutes
       ),
   },
-  {
-    path: "customer",
+{
+    path: "user",
     loadChildren: () =>
-      import('./pages/customer/customer.module').then(m => m.CustomerModule)
+      import('./pages/user/user.routes').then(m => m.USER_ROUTES)
     , canActivate: [AuthGuard]
   },
   {
     path: "product",
     loadChildren: () =>
-      import('./pages/product/product.module').then(m => m.ProductModule)
+      import('./pages/product/product.routes').then(m => m.PRODUCT_ROUTES)
     , canActivate: [AuthGuard]
   },
   {
     path: "order",
     loadChildren: () =>
-      import('./pages/order/order.module').then(m => m.OrderModule)
+      import('./pages/order/order.routes').then(m => m.ORDER_ROUTES)
     , canActivate: [AuthGuard]
   },
   {
-    path: "blog",
-    component: ComingSoonComponent
+    path: "cart",
+    loadChildren: () =>
+      import('./pages/cart/cart.routes').then(m => m.CART_ROUTES)
+    , canActivate: [AuthGuard]
+  },
+  {
+    path: "checkout",
+    loadChildren: () =>
+      import('./pages/checkout/checkout.routes').then(m => m.CHECKOUT_ROUTES)
     , canActivate: [AuthGuard]
   },
   {
     path: "staff",
-    component: ComingSoonComponent
+    loadChildren: () =>
+      import('./pages/staff/staff.routes').then(m => m.STAFF_ROUTES)
+    , canActivate: [AuthGuard]
+  },
+  {
+    path: "staff",
+    loadChildren: () =>
+      import('./pages/staff/staff.routes').then(m => m.STAFF_ROUTES)
     , canActivate: [AuthGuard]
   },
   {

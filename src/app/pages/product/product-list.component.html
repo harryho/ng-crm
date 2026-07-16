@@ -1,11 +1,11 @@
 @if (products.isLoading()) {
-  <mat-progress-bar mode="query" />
-  } 
+<mat-progress-bar mode="query" />
+}
 
-  <mat-card >
-    <mat-toolbar >
+<mat-card >
+  <mat-toolbar>
     <mat-toolbar-row>
-      <span class="f-w-800 f-s-24"> {{pageTitle}}</span>
+      <span class="f-w-800 f-s-24">{{pageTitle}}</span>
       <span class="title-spacer"></span>
       <mat-card-actions>
         <button mat-mini-fab class="bg-light-secondary" (click)="reload()">
@@ -14,36 +14,39 @@
       </mat-card-actions>
     </mat-toolbar-row>
   </mat-toolbar>
-  
-    <mat-toolbar class="m-t-8">
-      <mat-toolbar-row>
-        <mat-form-field appearance="outline" class="search-form-fileld w-100" color="primary">
-          <mat-label>Filter</mat-label>
-          <input matInput (input)="query.set($any($event.target).value)" placeholder="Filter by product name" />
-          <mat-icon>filter_list</mat-icon>
-        </mat-form-field>
-      </mat-toolbar-row>
-    </mat-toolbar>
-  @if (!products.isLoading()) {
 
+  <mat-toolbar class="m-t-8">
+    <mat-toolbar-row>
+      <mat-form-field appearance="outline" class="search-form-fileld w-100" color="primary">
+        <mat-label>Filter</mat-label>
+        <input matInput (input)="query.set($any($event.target).value)" placeholder="Filter by product name" />
+        
+      </mat-form-field>
+    </mat-toolbar-row>
+  </mat-toolbar>
+ 
+  @if (!products.isLoading()) {
   <div class="card-view">
-    @for (product of paginatedList(); track product.id ) {
+    @for (product of paginatedList(); track product.id) {
     <mat-card key="product.id" class="prod-card" appearance="outlined">
-    
-      <img mat-card-image class="card-img" [src]="product.imageUri" alt="Photo of a Shiba Inu">
+      <img mat-card-image class="card-img" [src]="product.imageUrl" [alt]="product.name" />
       <mat-card-content class="mat-card-content f-w-800">
         <h4>{{product.name}}</h4>
+        <small>{{product.brand}} · {{categoryName(product.categoryId)}}</small>
       </mat-card-content>
-      <mat-card-actions style="display:flex;justify-content: space-between;">
+      <mat-card-actions style="display: flex; justify-content: space-between;">
         <div style="display: inline-flex;">{{product.price | currency}}
           <div class="chips">
-            @for (col of product.colors; track $index){
+            @for (col of product.colors; track $index) {
             <div class="chip" [style.background-color]="col"></div>
             }
           </div>
         </div>
         <div>
-          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <button mat-icon-button color="primary" (click)="addToCart(product.id)" aria-label="Add to cart">
+            <mat-icon>add_shopping_cart</mat-icon>
+          </button>
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Product actions menu">
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
@@ -62,7 +65,8 @@
     }
   </div>
   }
-  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10]" [length]="paginatorLength()"  (page)="handlePageEvent($event)">
-  </mat-paginator>
 
+  <mat-paginator #paginator [pageSize]="8" [pageSizeOptions]="[8, 16]" [length]="paginatorLength()"
+    (page)="handlePageEvent($event)">
+  </mat-paginator>
 </mat-card>

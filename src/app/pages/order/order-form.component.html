@@ -1,128 +1,117 @@
+@if (order(); as o) {
 <mat-card class="cardWithShadow theme-card">
   <mat-card-header>
     <mat-card-title class="m-b-0">{{pageTitle()}}</mat-card-title>
+    <mat-card-subtitle>Placed on {{o.orderDate}}</mat-card-subtitle>
   </mat-card-header>
-
-
   <mat-card-content class="b-t-1">
 
-    <ol class="stepper" color="primary">
-      <li [class]="deliveryStatus.packing">Packing</li>
-      <li [class]="deliveryStatus.shipping">Shipping</li>
-      <li [class]="deliveryStatus.customs">Customs Clearance</li>
-      <li [class]="deliveryStatus.delivered">Delivered</li>
-    </ol>
-
-    <form novalidate (ngSubmit)="saveOrder()" [formGroup]="orderForm">
-
-      <div class="row">
-        <!-- <mat-grid-list cols="12"> -->
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Reference No.</mat-label>
-          <mat-form-field appearance="outline" class="w-100" color="primary">
-            <input matInput [disabled]="true" placeholder="Reference No" id="referenceId" type="text"
-              placeholder="Reference No. " formControlName="reference" />
-          </mat-form-field>
-        </div>
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Customer</mat-label> <mat-form-field appearance="outline"
-            class="w-100" color="primary">
-            <input matInput [disabled]="true" placeholder="Reference No" id="customer" type="text"
-              placeholder="Customer" formControlName="customer" />
-          </mat-form-field>
-        </div>
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Total Price</mat-label> <mat-form-field appearance="outline"
-            class="w-100" color="primary">
-            <input matInput placeholder="Amount" id="amountId" type="number" placeholder="Price "
-              formControlName="amount" />
-            <mat-error *ngIf="displayMessage.amount">
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Billing Date</mat-label> <mat-form-field appearance="outline"
-            class="w-100" color="primary">
-            <input matInput [matDatepicker]="orderpickerId" placeholder="Order date" formControlName="orderDate">
-
-            <mat-datepicker-toggle matSuffix [for]="orderpickerId"></mat-datepicker-toggle>
-            <mat-datepicker #orderpickerId></mat-datepicker>
-          </mat-form-field>
-        </div>
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Shipping Date</mat-label> <mat-form-field appearance="outline"
-            class="w-100" color="primary">
-            <input matInput [matDatepicker]="shippedDateId" placeholder="Shipped date" formControlName="shippedDate">
-
-            <mat-datepicker-toggle matSuffix [for]="shippedDateId"></mat-datepicker-toggle>
-            <mat-datepicker #shippedDateId></mat-datepicker>
-          </mat-form-field>
-        </div>
-        <div class="col-lg-6">
-
-          <mat-label class="f-w-600 m-b-8 d-block">Street</mat-label> <mat-form-field appearance="outline" class="w-100"
-            color="primary">
-            <input matInput placeholder="Address" id="addressId" type="text" formControlName="street" />
-            <mat-error class="help-block" *ngIf="displayMessage.street">
-
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">City</mat-label> <mat-form-field appearance="outline" class="w-100"
-            color="primary">
-            <input matInput placeholder="City" id="cityId" type="text" formControlName="city" />
-            <mat-error class="help-block" *ngIf="displayMessage.city">
-
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Country</mat-label> <mat-form-field appearance="outline"
-            class="w-100" color="primary">
-            <input matInput placeholder="Country" id="countryId" type="text" formControlName="country" />
-            <mat-error class="help-block" *ngIf="displayMessage.country">
-
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-lg-6">
-          <mat-label class="f-w-600 m-b-8 d-block">Zipcode</mat-label> <mat-form-field appearance="outline"
-            class="w-100" color="primary">
-            <input matInput placeholder="Zipcode" id="zipcodeId" type="text" formControlName="zipcode" />
-            <mat-error class="help-block" *ngIf="displayMessage.zipcode">
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <!-- </mat-grid-list> -->
-      </div>
-      <!-- </div> -->
-
-      <!-- product list -->
-
-      <h3 mat-subheader>Items</h3>
-      <!-- @for( product  of lineItems; track product.id){
-        {{product.name}}
-      } -->
-      <mat-list *ngIf="lineItems!=null" role="list">
-
-        <mat-list-item role="listitem" class="m-b-10" style="vertical-align:bottom;" *ngFor="let product  of lineItems">
-          <span style="vertical-align: bottom;display: inline-flex; letter-spacing: ">
-            <mat-icon class="m-t-0 m-r-8" mat-list-icon>circle</mat-icon>
-
-            Name: {{product.name}} , Unit Price: {{product.price | currency}} </span>
-        </mat-list-item>
-      </mat-list>
-      <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
-      <div class="m-t-12 button-float-right">
-        <button mat-flat-button extended color="secondary" class="m-r-8" type="submit"
-          [disabled]='!orderForm.valid'><mat-icon fontIcon="save"></mat-icon>Submit</button>
-        <button mat-stroked-button extended color="warn" [routerLink]="['/order']">
-          <mat-icon fontIcon="cancel"></mat-icon>Cancel</button>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="section-title">Customer</div>
+        @if (user(); as u) {
+        <p>
+          <strong>{{u.fullname}}</strong><br>
+          {{u.email}}<br>
+          {{u.mobile}}
+        </p>
+        } @else {
+        <p class="f-w-600">User #{{o.userId}}</p>
+        }
       </div>
 
-    </form>
+      <div class="col-lg-4">
+        <div class="section-title">Shipping Address</div>
+        <p>
+          {{o.shippingAddress.street}}<br>
+          {{o.shippingAddress.city}} {{o.shippingAddress.state}}<br>
+          {{o.shippingAddress.zipcode}} {{o.shippingAddress.country}}
+        </p>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="section-title">Shipment</div>
+        <p>
+          @if (carrier(); as c) {
+          <strong>Carrier:</strong> {{c.name}}<br>
+          }
+          @if (o.shipment.trackingNumber) {
+          <strong>Tracking:</strong> {{o.shipment.trackingNumber}}<br>
+          }
+          @if (o.shipment.shippedAt) {
+          <strong>Shipped:</strong> {{o.shipment.shippedAt}}<br>
+          }
+          @if (o.shipment.deliveredAt) {
+          <strong>Delivered:</strong> {{o.shipment.deliveredAt}}<br>
+          } @else {
+          <em>Not yet delivered</em>
+          }
+        </p>
+      </div>
+    </div>
+
+    <mat-divider class="m-t-12"></mat-divider>
+    <div class="section-title">Line Items</div>
+    <table mat-table [dataSource]="o.items" class="mat-elevation-z0 w-100">
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let item">
+          <img [src]="item.productImageUrl" style="width: 48px; height: 48px; object-fit: cover; border-radius: 4px;"
+            [alt]="item.productName" />
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Product</th>
+        <td mat-cell *matCellDef="let item">{{item.productName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="qty">
+        <th mat-header-cell *matHeaderCellDef>Qty</th>
+        <td mat-cell *matCellDef="let item">{{item.quantity}}</td>
+      </ng-container>
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>Price (at order)</th>
+        <td mat-cell *matCellDef="let item">{{item.priceAtOrder | currency}}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="['image', 'name', 'qty', 'price']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['image', 'name', 'qty', 'price']"></tr>
+    </table>
+
+    <div class="m-t-12" style="text-align: right;">
+      <strong>Total:</strong> {{o.total | currency}}
+    </div>
+
+    <mat-divider class="m-t-12"></mat-divider>
+    <div class="section-title">Status History</div>
+    <app-order-timeline
+      [entries]="o.statusHistory"
+      [currentStatus]="o.status.status"
+      [currentAt]="o.status.at">
+    </app-order-timeline>
+
+    <mat-divider class="m-t-12"></mat-divider>
+    <div class="section-title">Payment</div>
+    <p>
+      <strong>Method:</strong> {{o.payment.method}} &nbsp;
+      @if (o.payment.last4) { <span>(**** {{o.payment.last4}})</span> }<br>
+      <strong>Status:</strong> {{o.payment.status}}<br>
+      <strong>Auth Code:</strong> {{o.payment.authCode}}<br>
+      @if (o.payment.paidAt) { <strong>Paid:</strong> {{o.payment.paidAt}} }
+    </p>
+
+    <div class="m-t-12 d-flex gap-8 justify-content-end">
+      @if (o.status.status !== 'delivered' && o.status.status !== 'cancelled') {
+      <button mat-flat-button extended color="primary" (click)="advanceStatus()">
+        <mat-icon fontIcon="fast_forward"></mat-icon>Advance Status
+      </button>
+      }
+      <button mat-stroked-button extended [routerLink]="['/order']">
+        <mat-icon fontIcon="list"></mat-icon>Back to Orders
+      </button>
+    </div>
   </mat-card-content>
-  <!-- </div> -->
-
 </mat-card>
+} @else {
+<mat-card>
+  <mat-card-content>{{pageTitle()}}</mat-card-content>
+</mat-card>
+}

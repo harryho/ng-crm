@@ -1,0 +1,130 @@
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title class="m-b-0">{{ pageTitle() }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="b-t-1">
+    <form novalidate (ngSubmit)="saveMember()" [formGroup]="staffForm">
+
+      <div class="row">
+        <div class="col-lg-12">
+          @if (member()) {
+          <img mat-card-avatar [src]="member()!.avatarUrl" [style.width.px]="imageWidth"
+            [style.height.px]="imageWidth" [style.margin.px]="imageMargin">
+          }
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">First Name</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput type="text" placeholder="First Name" formControlName="firstname" />
+            <mat-error *ngIf="staffForm.controls['firstname'].hasError('required')">
+              {{ ValidatorMessages.firstname.required }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Last Name</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput type="text" placeholder="Last Name" formControlName="lastname" />
+            <mat-error *ngIf="staffForm.controls['lastname'].hasError('required')">
+              {{ ValidatorMessages.lastname.required }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Email</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput type="email" placeholder="Email" formControlName="email" />
+            <mat-error *ngIf="staffForm.controls['email'].hasError('required')">
+              {{ ValidatorMessages.email.required }}
+            </mat-error>
+            <mat-error *ngIf="staffForm.controls['email'].hasError('email')">
+              {{ ValidatorMessages.email.email }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Mobile</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput type="text" placeholder="Mobile" formControlName="mobile" />
+            <mat-error *ngIf="staffForm.controls['mobile'].hasError('required')">
+              {{ ValidatorMessages.mobile.required }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Company</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <input matInput type="text" placeholder="Company" formControlName="company" />
+            <mat-error *ngIf="staffForm.controls['company'].hasError('required')">
+              {{ ValidatorMessages.company.required }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Role</mat-label>
+          <mat-form-field appearance="outline" class="w-100" color="primary">
+            <mat-select formControlName="role">
+              @for (r of roleOptions; track r) {
+              <mat-option [value]="r">{{ r }}</mat-option>
+              }
+            </mat-select>
+            <mat-error *ngIf="staffForm.controls['role'].hasError('required')">
+              {{ ValidatorMessages.role.required }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Status</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select formControlName="status">
+              @for (s of statusOptions; track s) {
+              <mat-option [value]="s">{{ s }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">City</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput type="text" placeholder="City (optional)" formControlName="city" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">State</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput type="text" placeholder="State (optional)" formControlName="state" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6">
+          <mat-label class="f-w-600 m-b-8 d-block">Avatar URL</mat-label>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput type="url" placeholder="https://..." formControlName="avatarUrl" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-6" style="display: flex; align-items: center; gap: 12px; padding-top: 16px;">
+          <mat-slide-toggle formControlName="isVerified">Verified</mat-slide-toggle>
+        </div>
+      </div>
+
+      <div class="m-t-12 d-flex gap-8 justify-content-end">
+        <button mat-flat-button extended color="secondary" type="submit" [disabled]="!staffForm.valid">
+          <mat-icon fontIcon="save"></mat-icon>Submit
+        </button>
+        <button mat-stroked-button extended color="warn" [routerLink]="['/staff']">
+          <mat-icon fontIcon="cancel"></mat-icon>Cancel
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

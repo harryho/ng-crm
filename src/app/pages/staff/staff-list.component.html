@@ -1,0 +1,101 @@
+@if (staff.isLoading()) {
+<mat-progress-bar mode="query" />
+}
+
+<mat-card>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span class="f-w-800 f-s-24">{{ pageTitle }}</span>
+      <span class="title-spacer"></span>
+      <mat-card-actions>
+        <button mat-mini-fab color="bg-light-primary" class="m-r-16" [routerLink]="['/staff/new']">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-mini-fab class="bg-light-secondary" (click)="reload()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-toolbar class="m-t-8">
+    <mat-toolbar-row>
+      <mat-form-field appearance="outline" class="search-form-fileld w-100" color="primary">
+        <mat-label>Filter</mat-label>
+        <input matInput (input)="query.set($any($event.target).value)" placeholder="Filter by name, email, company, role" />
+        
+      </mat-form-field>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-table #table [dataSource]="dataSource()" matSort style="word-break: break-all;">
+    <ng-container matColumnDef="avatar">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let member">
+        <img [src]="getAvatar(member)" style="clip-path: circle(50%);" [title]="member.firstname"
+          [style.width.px]="imageWidth" [style.margin.px]="imageMargin" />
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="firstname">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>First Name</mat-header-cell>
+      <mat-cell *matCellDef="let member">{{ member.firstname }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="lastname">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Last Name</mat-header-cell>
+      <mat-cell *matCellDef="let member">{{ member.lastname }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="role">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Role</mat-header-cell>
+      <mat-cell *matCellDef="let member">
+        <span class="rounded f-w-600 p-6 p-y-4 f-s-12" [ngClass]="roleClass(member.role)">
+          {{ member.role }}
+        </span>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="company">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Company</mat-header-cell>
+      <mat-cell *matCellDef="let member">{{ member.company }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+      <mat-cell *matCellDef="let member">{{ member.email }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+      <mat-cell *matCellDef="let member">
+        <span class="rounded f-w-600 p-6 p-y-4 f-s-12" [ngClass]="statusClass(member.status)">
+          {{ member.status }}
+        </span>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="isVerified">
+      <mat-header-cell *matHeaderCellDef>Verified</mat-header-cell>
+      <mat-cell *matCellDef="let member">
+        @if (member.isVerified) {
+        <mat-icon fontIcon="verified" color="primary"></mat-icon>
+        }
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let member" style="justify-content: center;">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Staff actions menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [routerLink]="['/staff/edit/', member.id]">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="openDialog(member.id)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10]"></mat-paginator>
+</mat-card>

@@ -7,17 +7,15 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { NavItem } from './nav-item';
-import { Router } from '@angular/router';
-import { NavService } from '../../../services/nav.service';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
-import { TranslateModule } from '@ngx-translate/core';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-nav-item',
-  imports: [TranslateModule, TablerIconsModule, MaterialModule, CommonModule],
+  imports: [TablerIconsModule, MaterialModule, CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './nav-item.component.html',
   styleUrls: [],
 })
@@ -31,11 +29,16 @@ export class AppNavItemComponent implements OnChanges {
   @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
   @Input() depth: any;
 
-  constructor(public navService: NavService, public router: Router) {}
+  constructor(public router: Router) {}
 
   ngOnChanges() {
-    const url = this.navService.currentUrl();
-    if (this.item.route && url) {
+    // expansion (parent/child accordion) is now driven purely by the
+    // current URL prefix at render time. Using indexOf startsWith matches
+    // the previous behaviour for child-route auto-expansion; ngOnChanges
+    // runs once per @Input() change, which is enough since parent
+    // nav-items re-render their children whenever the route list changes.
+    const url = this.router.url || '';
+    if (this.item && this.item.route) {
       this.expanded = url.indexOf(`/${this.item.route}`) === 0;
       this.ariaExpanded = this.expanded;
     }
@@ -43,21 +46,15 @@ export class AppNavItemComponent implements OnChanges {
 
   onItemSelected(item: NavItem) {
     if (!item.children || !item.children.length) {
-      this.router.navigate([item.route]);
+      // Navigation now happens via [routerLink] on the <a>; no manual
+      // navigate() call needed here.
     }
     if (item.children && item.children.length) {
       this.expanded = !this.expanded;
     }
-    //scroll
-    window.scroll({
-      top: 0,
-      left: 0,
-      behavior: 'smooth',
-    });
-    if (!this.expanded) {
-      if (window.innerWidth < 1024) {
-        this.notify.emit();
-      }
+    window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+    if (!this.expanded && window.innerWidth < 1024) {
+      this.notify.emit();
     }
   }
 

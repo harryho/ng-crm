@@ -36,11 +36,17 @@
       padding: 8px 10px !important;
       margin-bottom: 2px;
 
-      &:before,
-      &:focus {
-        z-index: -1;
+      // Show focus ring only for keyboard navigation, not mouse clicks -
+      // this stops the previously-clicked <a> from looking "still active"
+      // after navigating to a different route.
+      &:focus-visible {
+        outline: 2px solid var(--mat-sys-primary);
+        outline-offset: -2px;
       }
 
+      &:before {
+        z-index: -1;
+      }
 
       .item-chip {
         height: 18px;
@@ -50,6 +56,9 @@
         font-size: 10px;
       }
 
+      // Only routerLinkActive adds this class, and only on the route
+      // that's actually active. Previous click focus doesn't bleed
+      // into a permanent highlight any more.
       &.activeMenu {
         background-color: var(--mat-sys-primary);
 

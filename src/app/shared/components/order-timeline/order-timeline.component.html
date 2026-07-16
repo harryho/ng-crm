@@ -1,0 +1,39 @@
+<div class="timeline">
+  @for (entry of entries(); track entry.at + entry.status; let i = $index, last = $last) {
+  <div class="timeline-row" [attr.data-state]="stateOf(entry, i)">
+    <!-- Rail (left column): vertical line + dot -->
+    <div class="timeline-rail">
+      @if (!last) {
+      <div class="timeline-line" [class.done]="stateOf(entry, i) === 'done' || stateOf(entry, i) === 'cancelled'"
+        [class.cancelled]="stateOf(entry, i) === 'cancelled'"
+        [class.current]="stateOf(entry, i) === 'current'"></div>
+      }
+      <div class="timeline-dot" [class.done]="stateOf(entry, i) === 'done'"
+        [class.cancelled]="stateOf(entry, i) === 'cancelled'"
+        [class.current]="stateOf(entry, i) === 'current'">
+        <mat-icon [fontIcon]="stateIcons[entry.status]"></mat-icon>
+      </div>
+    </div>
+
+    <!-- Card (right column): status name, date, note -->
+    <div class="timeline-card" [class.done]="stateOf(entry, i) === 'done'"
+      [class.cancelled]="stateOf(entry, i) === 'cancelled'"
+      [class.current]="stateOf(entry, i) === 'current'">
+      <div class="timeline-card-header">
+        <span class="timeline-status">{{ formatStatus(entry.status) }}</span>
+        @if (stateOf(entry, i) === 'current') {
+        <span class="timeline-badge current">Current</span>
+        } @else if (stateOf(entry, i) === 'done') {
+        <span class="timeline-badge done">Done</span>
+        } @else if (stateOf(entry, i) === 'cancelled') {
+        <span class="timeline-badge cancelled">Cancelled</span>
+        }
+      </div>
+      <div class="timeline-date">{{ entry.at }}</div>
+      @if (entry.note) {
+      <div class="timeline-note">{{ entry.note }}</div>
+      }
+    </div>
+  </div>
+  }
+</div>
