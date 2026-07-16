@@ -1,120 +1,133 @@
-## Angular Demo App V3 (WIP)
+## Angular Ecom Demo
 
-> A reusable Angular starter project for real-world business based on Angular 19, Angular-Material 19.x.
+> A reusable Angular starter project for real-world business apps based on Angular 22 and Angular Material 22.
 
-This project was built with [Angular CLI](https://angular.dev/tools/cli) version 19.x. The goal of this project is to explorer Anguar 19 features. It can be used as foundation for creation of similar Angular App.
+This project was built with [Angular CLI](https://angular.dev/tools/cli) version 22.x. It demonstrates a modern Angular single-page app with standalone components, signals, RxJS, and Angular Material.
 
+## Architecture
+
+The app uses an **in-memory data layer** — no backend server is required.
+
+- `src/app/data/seed.ts` holds the deterministic demo data (users, products, orders, staff, categories, carriers).
+- `src/app/data/repository.ts` provides the runtime data store and CRUD operations.
+- Services are thin wrappers over the repository.
+- All data resets to the seed state when the page is reloaded.
+
+## Requirements
+
+- Node.js >= 22.0.0
+- npm >= 10
 
 ## Build & Setup
 
 ```bash
 # Clone project
 git clone https://github.com/harryho/ng-crm.git
-
-
-# Install Angular CLI
-npm install -g @angular/cli
-
-# prepare Json-Server as fake Restful API
 cd ng-crm
 
-
-# Install the packages with npm
+# Install dependencies
 npm install
 
-
-# Start the app with npm
+# Start the development server
 npm start
-# Or use ng
-ng serve 
+# Or directly with Angular CLI
+ng serve
 
-# Test with npm
+# Run unit tests
 npm run test
-# Or use ng
+# Or directly with Angular CLI
 ng test
 
-
-# build for production 
+# Build for production
 npm run build
-
-# run as production
-install -g serve
-serve dist
-
 ```
+
+The production build is emitted to `dist/ngDemo/browser`.
 
 ## Docker
 
-```
-## Run / Test release without building new image
-npm run build
+Build and run the app inside a container with nginx:
 
-# Launch nginx image to test latest release
-docker pull nginx:alpine
-docker run -p 8080:80 -v \
-    <your_aboslute_path>/dist:/usr/share/nginx/html nginx:alpine
+```bash
+# Build the release image
+docker build . -t nc-demo:3.5
 
+# Run the container in the background
+docker run -d --publish 8080:80 --name ng-demo3 nc-demo:3.5
 
-# Build release image
-docker build . -t  nc-demo:3.0
-
-# Launch the development image in the backgroud
-docker run -d --publish 8080:80  --name ng-demo3 nc-demo:3.0
-
-# Check the log
-docker logs ng-demo3  -f
+# View logs
+docker logs ng-demo3 -f
 ```
 
-### Live Demo
+The bundled app is served from `/usr/share/nginx/html` with a fallback to `index.html` for Angular routing.
 
+## Deploying to IIS
 
-### Screenshots
+For an IIS release, build the production bundle and copy it to an IIS site:
 
-<!-- ![Screenshot1](screenshots/v2/screenshot-1.JPG) -->
-#### V3 Live Screenshots
+```bash
+npm run build -- --configuration=production
+```
 
-[Live Demo V3](https://angular-app-demo.harryho.org?v=3): The demo is just a proof of concept. It doesn't have back-end API.
+Copy the contents of `dist/ngDemo/browser` to your IIS website folder. Add a `web.config` with a URL Rewrite rule so deep links fall back to `index.html`:
 
-![Screenshot2](screenshots/v3/Screenshot-1.png)
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <system.webServer>
+    <rewrite>
+      <rules>
+        <rule name="Angular Routes" stopProcessing="true">
+          <match url=".*" />
+          <conditions logicalGrouping="MatchAll">
+            <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+            <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+          </conditions>
+          <action type="Rewrite" url="/index.html" />
+        </rule>
+      </rules>
+    </rewrite>
+    <staticContent>
+      <mimeMap fileExtension=".webp" mimeType="image/webp" />
+    </staticContent>
+  </system.webServer>
+</configuration>
+```
 
-![Screenshot2](screenshots/v3/Screenshot-2.png)
+If the site is served from a subfolder (e.g., `/ng-crm/`), build with:
 
-![Screenshot3](screenshots/v3/Screenshot-3.png)
+```bash
+npm run build -- --configuration=production --base-href=/ng-crm/
+```
 
+And update the rewrite action to `/ng-crm/index.html`.
 
-#### V2 Live Screenshots
+## Live Demo
 
-[Demo App](https://angular-app-demo.harryho.org): The demo is just a proof of concept. It doesn't have back-end API.
+### Live Screenshots
 
-![Screenshot2](screenshots/v2/screenshot-2.JPG)
+![Screenshot 1](screenshots/v3.5/Screenshot-3.png)
 
-![Screenshot3](screenshots/v2/screenshot-3.JPG)
+![Screenshot 2](screenshots/v3.5/Screenshot-4.png)
 
-<!-- ![Screenshot4](screenshots/v2/screenshot-4.JPG) -->
+### Previous Screenshots
 
+![Screenshot 3](screenshots/v3/Screenshot-1.png)
+
+![Screenshot 4](screenshots/v3/Screenshot-2.png)
 
 ## Welcome to fork or clone!
 
-For detailed explanation on how things work, checkout following links please.
+For detailed explanations on how things work, check out the following links:
 
-* [angular](https://angular.dev/)
-* [angular-material](https://material.angular.io/)
-* [rxjs](https://rxjs.dev/api)
+- [Angular](https://angular.dev/)
+- [Angular Material](https://material.angular.io/)
+- [RxJS](https://rxjs.dev/api)
 
+## Change log
 
-
-###  Change log
-
-* Dec 2024 - Uplift from version 9 to 19. Work in progress.
-
-* Jun 2020 - Re-create the project with Angular CLI
-
-  The whole project is built from scratch based on the Angular CLI & Angular Material Schematics.
-
-* Oct 2018 - Rebase demo branch to master
-
-  New master doesn't rely on Json-Server as fake API. It will only have Readonly fake API. It means any new or updated data will be stored to any physical file. All test data will be rolled back after system restart.
-
-* Jan 2018 - Create an archived branch json-server
-
-  This branch was the master which used Json-Server as fake API. Considering the hiccup of setting Json-Server up and maintenance, it will be replaced by fake service ( Readonly fake API). You still can find clone this branch by branch name __json-server__, but it will be no longer updated. It is an archived branch.
+- **Jul 2026** — Aligned README with the current codebase: Angular 22, in-memory repository, no Json-Server, corrected Docker/IIS instructions, and removed legacy backend service.
+- **Dec 2024** — Uplift from Angular 9 to Angular 19+. Work in progress.
+- **Jun 2020** — Re-created the project with Angular CLI.
+- **Oct 2018** — Rebased demo branch to master. Removed Json-Server dependency in favor of an in-memory fake API.
+- **Jan 2018** — Created archived `json-server` branch. No longer updated.
