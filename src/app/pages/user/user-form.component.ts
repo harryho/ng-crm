@@ -21,11 +21,6 @@ import { MatDividerModule } from '@angular/material/divider';
   templateUrl: './user-form.component.html',
   styles: [
     `
-      .button-float-right {
-        display: flex;
-        gap: 0.5rem;
-        justify-content: flex-end;
-      }
       .form-field {
         width: 100%;
         margin-left: 20px;

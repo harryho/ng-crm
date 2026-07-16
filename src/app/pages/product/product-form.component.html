@@ -116,9 +116,8 @@
         </div>
       </div>
 
-      <div class="m-t-12 button-float-right">
-        <button mat-flat-button extended color="secondary" class="m-r-8" type="submit"
-          [disabled]="!productForm.valid">
+      <div class="m-t-12 d-flex gap-8 justify-content-end">
+        <button mat-flat-button extended color="secondary" type="submit" [disabled]="!productForm.valid">
           <mat-icon fontIcon="save"></mat-icon>Submit
         </button>
         <button mat-stroked-button extended color="warn" [routerLink]="['/product']">

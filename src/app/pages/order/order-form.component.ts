@@ -35,7 +35,6 @@ import { OrderTimelineComponent } from '../../shared/components/order-timeline';
   templateUrl: './order-form.component.html',
   styles: [
     `
-      .button-float-right { float: right; }
       .section-title {
         margin: 16px 0 8px 0;
         font-weight: 600;

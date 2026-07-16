@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models'
 import { USE_LOCAL_MOCK_DATA } from '../config';
-import db from "../services/mock.db";
 
 const APP_USER_PROFILE = "NG_CRM_USER_2.0"
+
+const MOCK_TOKEN = { accessToken: 'fake-token-12345789-abcdefgh' };
+
 @Injectable()
 export class AuthenticationService {
   API_URL = "http://localhost:3333/token"
@@ -32,7 +34,7 @@ export class AuthenticationService {
       authData = await this.http.get<User>(this.API_URL)
     }
     else {
-      authData = db['token']
+      authData = MOCK_TOKEN;
     }
 
     user.token = authData ? authData?.accessToken : "access_token";

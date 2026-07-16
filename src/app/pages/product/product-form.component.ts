@@ -22,9 +22,6 @@ import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
   templateUrl: './product-form.component.html',
   styles: [
     `
-      .button-float-right {
-        float: right;
-      }
       .title-spacer {
         flex: 1 1 auto;
       }
