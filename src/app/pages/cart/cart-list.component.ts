@@ -58,10 +58,6 @@ import { CartService } from '../../services/cart.service';
         padding: 16px;
         font-size: 18px;
       }
-      .actions {
-        text-align: right;
-        padding: 8px 16px 16px;
-      }
     `,
   ],
   imports: [

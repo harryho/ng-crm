@@ -169,12 +169,13 @@ export class Repository {
     const idx = this.usersDb.findIndex((u) => u.id === user.id);
     if (idx >= 0) {
       this.usersDb[idx] = clone(user);
-    } else {
-      // New user - assign next id.
-      const nextId = Math.max(0, ...this.usersDb.map((u) => u.id)) + 1;
-      this.usersDb.push({ ...clone(user), id: nextId });
+      return of(clone(this.usersDb[idx])).pipe(delay(SIMULATED_LATENCY_MS));
     }
-    return of(clone(this.usersDb[this.usersDb.findIndex((u) => u.id === user.id)])).pipe(delay(SIMULATED_LATENCY_MS));
+    // New user - assign next id.
+    const nextId = Math.max(0, ...this.usersDb.map((u) => u.id)) + 1;
+    const created: User = { ...clone(user), id: nextId };
+    this.usersDb.push(created);
+    return of(clone(created)).pipe(delay(SIMULATED_LATENCY_MS));
   }
 
   deleteUser(id: number): Observable<void> {

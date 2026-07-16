@@ -98,7 +98,7 @@
       @if (o.payment.paidAt) { <strong>Paid:</strong> {{o.payment.paidAt}} }
     </p>
 
-    <div class="m-t-12 button-float-right d-flex gap-8">
+    <div class="m-t-12 d-flex gap-8 justify-content-end">
       @if (o.status.status !== 'delivered' && o.status.status !== 'cancelled') {
       <button mat-flat-button extended color="primary" (click)="advanceStatus()">
         <mat-icon fontIcon="fast_forward"></mat-icon>Advance Status

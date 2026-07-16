@@ -15,15 +15,7 @@ import { CartService } from '../../services/cart.service';
 import { UserService } from '../../services/user.service';
 import { Address } from '../../models/domain/address';
 
-/**
- * Checkout page.
- *
- * Reviews the active cart, lets the user confirm or override the
- * shipping address, and on submit converts the cart to an Order via
- * CartService.checkout(). Per lessons-learned scope rules, payment
- * collection and shipment selection are deferred (M5/next session) -
- * the order goes out with a 'pending' status.
- */
+
 @Component({
   selector: 'checkout',
   templateUrl: './checkout.component.html',
@@ -37,10 +29,6 @@ import { Address } from '../../models/domain/address';
         text-align: right;
         padding: 16px;
         font-size: 18px;
-      }
-      .actions {
-        text-align: right;
-        padding: 8px 16px 16px;
       }
     `,
   ],

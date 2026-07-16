@@ -53,7 +53,7 @@ export class UserListComponent {
   @ViewChild(MatSort) sort: MatSort;
 
   userService = inject(UserService);
-  pageTitle: string = 'Users';
+  pageTitle: string = 'Customer';
   AVATAR_PLACEHOLDER = 'https://i.pravatar.cc/300?img=0';
   imageWidth: number = 30;
   imageMargin: number = 2;

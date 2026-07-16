@@ -60,7 +60,7 @@ export class ProductListComponent {
   readonly dialog = inject(MatDialog);
   readonly snackBar = inject(MatSnackBar);
 
-  pageTitle: string = 'Products';
+  pageTitle: string = 'Product';
   showImage: boolean = false;
 
   displayedColumns = ['image', 'name', 'brand', 'price', 'stock', 'categoryName', 'status', 'id'];

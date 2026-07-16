@@ -98,4 +98,34 @@ describe('Repository', () => {
     const after = await firstValueFrom(repo.listProducts());
     expect(after.length).toBeGreaterThan(0);
   });
+
+  it('saveUser creates a new user and returns it', async () => {
+    const newUser = {
+      id: 0,
+      firstname: 'Test',
+      lastname: 'User',
+      fullname: 'Test User',
+      email: 'test@example.com',
+      mobile: '555-1234',
+      phone: null,
+      address: {
+        street: '123 Main St',
+        city: 'Anytown',
+        state: '',
+        zipcode: '12345',
+        country: 'USA',
+      },
+      membership: 'standard' as const,
+      rewards: 0,
+      avatarUrl: 'https://i.pravatar.cc/300?img=0',
+    };
+
+    const saved = await firstValueFrom(repo.saveUser(newUser));
+    expect(saved.id).toBeGreaterThan(0);
+    expect(saved.firstname).toBe('Test');
+
+    const found = await firstValueFrom(repo.getUser(saved.id));
+    expect(found).not.toBeNull();
+    expect(found!.email).toBe('test@example.com');
+  });
 });

@@ -22,7 +22,9 @@ import { MatDividerModule } from '@angular/material/divider';
   styles: [
     `
       .button-float-right {
-        float: right;
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
       }
       .form-field {
         width: 100%;

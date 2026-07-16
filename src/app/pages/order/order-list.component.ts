@@ -57,7 +57,7 @@ export class OrderListComponent {
   readonly dialog = inject(MatDialog);
   readonly snackBar = inject(MatSnackBar);
 
-  pageTitle: string = 'Orders';
+  pageTitle: string = 'Order';
 
   query = signal('');
   dataSource = signal(new MatTableDataSource([] as Order[]));
